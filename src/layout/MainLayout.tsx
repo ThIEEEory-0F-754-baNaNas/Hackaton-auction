@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import classNames from "classnames";
-import React from "react";
+import React, { PropsWithChildren } from "react";
 
 function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -67,13 +67,13 @@ const Navbar = () => {
         as="a"
         href="#"
         variant="h6"
-        className="mr-4 ml-2 cursor-pointer py-1.5 w-drawer"
+        className="cursor-pointer py-1.5 w-drawer min-w-drawer"
       >
         Auctions
       </Typography>
 
       <div className="flex justify-between w-full">
-        <div className="flex-grow pr-9 max-w-[700px]">
+        <div className="flex-grow max-w-[700px]">
           <Input label="Search" crossOrigin={"unknown"} />
         </div>
 
@@ -87,10 +87,36 @@ const Navbar = () => {
   );
 };
 
-const MainLayout = () => {
+const Drawer = () => {
+  const buttons = [
+    { label: "Home", href: "#" },
+    { label: "Browse", href: "#" },
+  ];
   return (
-    <div className="w-screen h-screen bg-bg px-5 pt-3">
+    <div className="flex gap-3 flex-col">
+      {buttons.map(({ label, href }) => (
+        <Button variant="text" key={label} className="w-full">
+          {label}
+        </Button>
+      ))}
+    </div>
+  );
+};
+
+const MainContent = ({ children }: PropsWithChildren) => {
+  return <div className="bg-primary w-full h-full rounded-2xl">{children}</div>;
+};
+
+const MainLayout = ({ children }: PropsWithChildren) => {
+  return (
+    <div className="w-screen h-screen bg-bg px-5 py-3 flex flex-col">
       <Navbar />
+      <div className="flex grow mt-3">
+        <div className="pr-3 mt-8 box-border w-drawer min-w-drawer ">
+          <Drawer />
+        </div>
+        <MainContent>{children}</MainContent>
+      </div>
     </div>
   );
 };
