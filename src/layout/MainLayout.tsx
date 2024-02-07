@@ -71,18 +71,18 @@ function ProfileMenu() {
 
 const Navbar = () => {
   return (
-    <div className="text-on-primary flex">
+    <div className="text-on-primary flex justify-between">
       <Typography
         as="a"
         href="#"
         variant="h6"
-        className="cursor-pointer py-1.5 w-drawer min-w-drawer"
+        className="cursor-pointer py-1.5 md:w-drawer md:min-w-drawer"
       >
         Auctions
       </Typography>
 
-      <div className="flex justify-between w-full">
-        <div className="flex-grow max-w-[700px]">
+      <div className="flex justify-between md:w-full">
+        <div className="hidden md:block md:flex-grow md:max-w-[700px]">
           <Input label="Search" crossOrigin={"unknown"} />
         </div>
 
@@ -102,7 +102,7 @@ const Drawer = () => {
 
   return (
     <div className="flex gap-3 flex-col">
-      <List>
+      <List className="p-0">
         <Link to={HOME}>
           <ListItem selected={isSelected(HOME)}>
             <ListItemPrefix>
@@ -135,10 +135,10 @@ const MainContent = ({ children }: PropsWithChildren) => {
 
 const MainLayout = ({ children }: PropsWithChildren) => {
   return (
-    <div className="w-screen h-screen bg-bg px-5 py-3 flex flex-col">
+    <div className="w-screen h-screen bg-bg px-3 py-2 md:px-5 md:py-3 flex flex-col">
       <Navbar />
       <div className="flex grow overflow-auto mt-3">
-        <div className="pr-5 mt-8 box-border w-drawer min-w-drawer ">
+        <div className="w-12 md:pr-5 md:mt-8 md:w-drawer md:min-w-drawer ">
           <Drawer />
         </div>
         <MainContent>{children}</MainContent>
