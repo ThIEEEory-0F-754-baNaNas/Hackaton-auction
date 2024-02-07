@@ -6,7 +6,9 @@ function App() {
   return (
     <>
       <ThemeProvider value={theme}>
-        <MainLayout />
+        <MainLayout>
+          <Button color="red">Button</Button>
+        </MainLayout>
       </ThemeProvider>
     </>
   );
