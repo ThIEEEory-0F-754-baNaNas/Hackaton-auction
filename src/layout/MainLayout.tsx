@@ -1,3 +1,4 @@
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import {
   Avatar,
   Button,
@@ -12,10 +13,12 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import classNames from "classnames";
-import React, { PropsWithChildren, useEffect, useRef } from "react";
+import React, { PropsWithChildren } from "react";
+import { useLocation } from "react-router-dom";
+import { EXPLORE, HOME } from "../Navigation";
 import Divider from "../components/Divider";
+import Link from "../components/Link";
 import { HomeIcon } from "../icons/HomeIcon";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -94,21 +97,28 @@ const Navbar = () => {
 };
 
 const Drawer = () => {
+  const location = useLocation();
+  const isSelected = (path: string) => location.pathname.startsWith(path);
+
   return (
     <div className="flex gap-3 flex-col">
       <List>
-        <ListItem selected>
-          <ListItemPrefix>
-            <HomeIcon />
-          </ListItemPrefix>
-          Home
-        </ListItem>
-        <ListItem>
-          <ListItemPrefix>
-            <MagnifyingGlassIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Explore
-        </ListItem>
+        <Link to={HOME}>
+          <ListItem selected={isSelected(HOME)}>
+            <ListItemPrefix>
+              <HomeIcon isOutlined={!isSelected(HOME)} />
+            </ListItemPrefix>
+            Home
+          </ListItem>
+        </Link>
+        <Link to={EXPLORE}>
+          <ListItem selected={isSelected(EXPLORE)}>
+            <ListItemPrefix>
+              <MagnifyingGlassIcon className="h-5 w-5" />
+            </ListItemPrefix>
+            Explore
+          </ListItem>
+        </Link>
       </List>
       <Divider />
     </div>
