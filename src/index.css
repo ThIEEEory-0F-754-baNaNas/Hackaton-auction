@@ -4,11 +4,13 @@
 
 
 :root {
-  --color-primary: #53a457;
+  --color-primary: #FBE3C7;
+  --color-on-primary: #18020C;
+
+  --color-background: #FFF7E1;
   /*
   TODO: add the following colors
 
-  --color-on-primary:
 
   --color-secondary:
   --color-on-secondary:
@@ -23,6 +25,9 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-primary: #c8d422;
+    --color-primary: #808F85;
+    --color-on-primary: #F6CD61;
+
+    --color-background: #18020C;
   }
 }

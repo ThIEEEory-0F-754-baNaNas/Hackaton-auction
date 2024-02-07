@@ -1,14 +1,11 @@
 import { Button, ThemeProvider } from "@material-tailwind/react";
-
-const theme = {};
+import theme from "./theme";
 
 function App() {
-  console.log(document.documentElement.style);
-  console.log(document.documentElement.classList);
   return (
     <>
       <ThemeProvider value={theme}>
-        <Button className="bg-primary">Button</Button>
+        <Button>Button</Button>
       </ThemeProvider>
     </>
   );
