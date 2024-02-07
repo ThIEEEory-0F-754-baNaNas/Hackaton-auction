@@ -131,7 +131,7 @@ const MainContent = ({ children }: PropsWithChildren) => {
   }, []);
 
   return (
-    <div className="bg-primary w-full h-full rounded-2xl relative p-4">
+    <div className="bg-primary w-full h-full rounded-2xl relative p-4 overflow-auto">
       <div
         ref={moveHandler}
         className="absolute top-1/2 -left-5 -translate-y-1/2 cursor-w-resize bg-primary w-[10px] h-[120px] rounded-full"
@@ -145,7 +145,7 @@ const MainLayout = ({ children }: PropsWithChildren) => {
   return (
     <div className="w-screen h-screen bg-bg px-5 py-3 flex flex-col">
       <Navbar />
-      <div className="flex grow mt-3">
+      <div className="flex grow overflow-auto mt-3">
         <div className="pr-3 mt-8 box-border w-drawer min-w-drawer ">
           <Drawer />
         </div>
