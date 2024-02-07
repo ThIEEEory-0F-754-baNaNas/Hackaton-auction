@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import classNames from "classnames";
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useEffect, useRef } from "react";
 
 function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -104,7 +104,41 @@ const Drawer = () => {
 };
 
 const MainContent = ({ children }: PropsWithChildren) => {
-  return <div className="bg-primary w-full h-full rounded-2xl">{children}</div>;
+  const moveHandler = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = moveHandler.current;
+    if (!handler) return;
+
+    handler.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      const initialX = e.clientX;
+      const handleResize = (e: MouseEvent) => {
+        const dx = e.clientX - initialX;
+        const newWidth = Math.min(Math.max(initialX + dx, 80), 250);
+        document.documentElement.style.setProperty(
+          "--left-drawer-width",
+          `${newWidth}px`
+        );
+      };
+      const handleMouseUp = () => {
+        window.removeEventListener("mousemove", handleResize);
+        window.removeEventListener("mouseup", handleMouseUp);
+      };
+      window.addEventListener("mousemove", handleResize);
+      window.addEventListener("mouseup", handleMouseUp);
+    });
+  }, []);
+
+  return (
+    <div className="bg-primary w-full h-full rounded-2xl relative p-4">
+      <div
+        ref={moveHandler}
+        className="absolute top-1/2 -left-5 -translate-y-1/2 cursor-w-resize bg-primary w-[10px] h-[120px] rounded-full"
+      ></div>
+      {children}
+    </div>
+  );
 };
 
 const MainLayout = ({ children }: PropsWithChildren) => {
