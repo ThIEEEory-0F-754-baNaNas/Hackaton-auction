@@ -28,7 +28,38 @@ const theme = {
         },
         text: {
           primary: {
-            color: "text-primary",
+            color: "text-on-primary",
+          },
+        },
+      },
+    },
+  },
+  input: {
+    defaultProps: {
+      color: "outlined",
+    },
+    styles: {
+      base: {
+        input: {
+          color: "text-on-primary",
+        },
+        label: {
+          color: "text-on-primary",
+        },
+      },
+    },
+  },
+  menu: {
+    styles: {
+      base: {
+        menu: {
+          bg: "bg-bg",
+          color: "text-on-bg",
+        },
+        item: {
+          initial: {
+            bg: "hover:bg-primary",
+            color: "hover:text-on-primary ",
           },
         },
       },

@@ -8,6 +8,8 @@
   --color-on-primary: #18020C;
 
   --color-background: #FFF7E1;
+
+  --left-drawer-width: 300px;
   /*
   TODO: add the following colors
 
@@ -23,11 +25,11 @@
   */
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --color-primary: #808F85;
     --color-on-primary: #F6CD61;
 
     --color-background: #18020C;
   }
-}
+} */
