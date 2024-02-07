@@ -99,26 +99,30 @@ const Navbar = () => {
 const Drawer = () => {
   const location = useLocation();
   const isSelected = (path: string) => location.pathname.startsWith(path);
+  const list = [
+    {
+      label: "Home",
+      path: HOME,
+      icon: <HomeIcon isOutlined={!isSelected(HOME)} />,
+    },
+    {
+      label: "Explore",
+      path: EXPLORE,
+      icon: <MagnifyingGlassIcon className="h-5 w-5" />,
+    },
+  ];
 
   return (
     <div className="flex gap-3 flex-col">
-      <List className="p-0">
-        <Link to={HOME}>
-          <ListItem selected={isSelected(HOME)}>
-            <ListItemPrefix>
-              <HomeIcon isOutlined={!isSelected(HOME)} />
-            </ListItemPrefix>
-            Home
-          </ListItem>
-        </Link>
-        <Link to={EXPLORE}>
-          <ListItem selected={isSelected(EXPLORE)}>
-            <ListItemPrefix>
-              <MagnifyingGlassIcon className="h-5 w-5" />
-            </ListItemPrefix>
-            Explore
-          </ListItem>
-        </Link>
+      <List className="p-0 min-w-[20px]">
+        {list.map(({ label, path, icon }) => (
+          <Link to={path} key={label}>
+            <ListItem selected={isSelected(path)}>
+              <ListItemPrefix>{icon}</ListItemPrefix>
+              {label}
+            </ListItem>
+          </Link>
+        ))}
       </List>
       <Divider />
     </div>

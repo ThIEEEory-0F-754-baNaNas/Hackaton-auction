@@ -100,7 +100,7 @@ const theme = {
           initial: {
             bg: "hover:bg-primary hover:bg-opacity-80 focus:bg-primary focus:bg-opacity-80 active:bg-primary active:bg-opacity-80",
             color:
-              "hover:text-blue-gray-900 focus:text-blue-gray-900 active:text-blue-gray-900",
+              "hover:text-on-primary focus:text-on-primary active:text-on-primary",
           },
           selected: {
             bg: "bg-primary",
