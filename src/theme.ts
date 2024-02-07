@@ -1,5 +1,3 @@
-import gradient from "@material-tailwind/react/theme/components/timeline/timelineIconColors/gradient";
-
 const theme = {
   button: {
     defaultProps: {
