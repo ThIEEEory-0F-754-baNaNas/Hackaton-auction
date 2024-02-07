@@ -16,6 +16,12 @@ export default withMT({
       width: {
         drawer: "var(--left-drawer-width)",
       },
+      maxWidth: {
+        drawer: "var(--left-drawer-width)",
+      },
+      minWidth: {
+        drawer: "var(--left-drawer-width)",
+      },
     },
   },
   plugins: [],
