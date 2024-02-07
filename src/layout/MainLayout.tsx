@@ -2,6 +2,9 @@ import {
   Avatar,
   Button,
   Input,
+  List,
+  ListItem,
+  ListItemPrefix,
   Menu,
   MenuHandler,
   MenuItem,
@@ -10,6 +13,9 @@ import {
 } from "@material-tailwind/react";
 import classNames from "classnames";
 import React, { PropsWithChildren, useEffect, useRef } from "react";
+import Divider from "../components/Divider";
+import { HomeIcon } from "../icons/HomeIcon";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -88,54 +94,30 @@ const Navbar = () => {
 };
 
 const Drawer = () => {
-  const buttons = [
-    { label: "Home", href: "#" },
-    { label: "Browse", href: "#" },
-  ];
   return (
     <div className="flex gap-3 flex-col">
-      {buttons.map(({ label, href }) => (
-        <Button variant="text" key={label} className="w-full">
-          {label}
-        </Button>
-      ))}
+      <List>
+        <ListItem selected>
+          <ListItemPrefix>
+            <HomeIcon />
+          </ListItemPrefix>
+          Home
+        </ListItem>
+        <ListItem>
+          <ListItemPrefix>
+            <MagnifyingGlassIcon className="h-5 w-5" />
+          </ListItemPrefix>
+          Explore
+        </ListItem>
+      </List>
+      <Divider />
     </div>
   );
 };
 
 const MainContent = ({ children }: PropsWithChildren) => {
-  const moveHandler = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handler = moveHandler.current;
-    if (!handler) return;
-
-    handler.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      const initialX = e.clientX;
-      const handleResize = (e: MouseEvent) => {
-        const dx = e.clientX - initialX;
-        const newWidth = Math.min(Math.max(initialX + dx, 80), 250);
-        document.documentElement.style.setProperty(
-          "--left-drawer-width",
-          `${newWidth}px`
-        );
-      };
-      const handleMouseUp = () => {
-        window.removeEventListener("mousemove", handleResize);
-        window.removeEventListener("mouseup", handleMouseUp);
-      };
-      window.addEventListener("mousemove", handleResize);
-      window.addEventListener("mouseup", handleMouseUp);
-    });
-  }, []);
-
   return (
     <div className="bg-primary w-full h-full rounded-2xl relative p-4 overflow-auto">
-      <div
-        ref={moveHandler}
-        className="absolute top-1/2 -left-5 -translate-y-1/2 cursor-w-resize bg-primary w-[10px] h-[120px] rounded-full"
-      ></div>
       {children}
     </div>
   );
@@ -146,7 +128,7 @@ const MainLayout = ({ children }: PropsWithChildren) => {
     <div className="w-screen h-screen bg-bg px-5 py-3 flex flex-col">
       <Navbar />
       <div className="flex grow overflow-auto mt-3">
-        <div className="pr-3 mt-8 box-border w-drawer min-w-drawer ">
+        <div className="pr-5 mt-8 box-border w-drawer min-w-drawer ">
           <Drawer />
         </div>
         <MainContent>{children}</MainContent>
