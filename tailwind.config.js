@@ -1,3 +1,4 @@
+import { drawer } from "@material-tailwind/react";
 import withMT from "@material-tailwind/react/utils/withMT";
 
 /** @type {import('tailwindcss').Config} */
@@ -11,6 +12,9 @@ export default withMT({
         bg: "var(--color-background)",
 
         // TODO: Map colors from the index.css
+      },
+      width: {
+        drawer: "var(--left-drawer-width)",
       },
     },
   },
