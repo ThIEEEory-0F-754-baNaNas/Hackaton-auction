@@ -1,3 +1,5 @@
+import gradient from "@material-tailwind/react/theme/components/timeline/timelineIconColors/gradient";
+
 const theme = {
   button: {
     defaultProps: {
@@ -60,6 +62,30 @@ const theme = {
           initial: {
             bg: "hover:bg-primary",
             color: "hover:text-on-primary ",
+          },
+        },
+      },
+    },
+  },
+
+  card: {
+    defaultProps: {
+      color: "bg",
+      variant: "filled",
+    },
+    valid: {
+      colors: ["primary", "bg"],
+    },
+    styles: {
+      variants: {
+        filled: {
+          primary: {
+            background: "bg-primary",
+            color: "text-on-primary",
+          },
+          bg: {
+            background: "bg-bg",
+            color: "text-on-bg",
           },
         },
       },
