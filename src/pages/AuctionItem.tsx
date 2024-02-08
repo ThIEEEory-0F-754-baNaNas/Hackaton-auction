@@ -72,16 +72,22 @@ const BidMenu = () => {
           type="number"
           label="Enter your bid"
           crossOrigin={undefined}
-          value={bid}
+          value={bid === 0 ? "" : bid}
           onChange={(value) => setBid(parseInt(value.target.value))}
         />
-        <Button
-          variant="gradient"
-          onClick={toggleDrawer}
-          className="w-full mt-5"
-        >
-          Place bid
-        </Button>
+        <div className="flex gap-3 mt-5">
+          <Button variant="gradient" className="flex-1" onClick={toggleDrawer}>
+            Place bid
+          </Button>
+          <Button
+            variant="gradient"
+            color="red"
+            className="flex-1"
+            onClick={() => setBid(0)}
+          >
+            Clear
+          </Button>
+        </div>
       </CardBody>
 
       <Dialog open={isOpen} handler={toggleDrawer}>
