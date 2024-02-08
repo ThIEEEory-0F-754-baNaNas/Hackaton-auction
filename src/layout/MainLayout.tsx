@@ -13,12 +13,13 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import classNames from "classnames";
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { EXPLORE, HOME } from "../Navigation";
 import Divider from "../components/Divider";
 import Link from "../components/Link";
 import { HomeIcon } from "../icons/HomeIcon";
+import { UserContext } from "../context/userContext";
 
 function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -70,6 +71,8 @@ function ProfileMenu() {
 }
 
 const Navbar = () => {
+  const [user] = useContext(UserContext);
+
   return (
     <div className="text-on-primary flex justify-between">
       <Typography
@@ -87,9 +90,14 @@ const Navbar = () => {
         </div>
 
         <div className="flex gap-2 min-w-fit">
-          <Button variant="text">Log in</Button>
-          <Button variant="gradient">Sign in</Button>
-          <ProfileMenu />
+          {user ? (
+            <ProfileMenu />
+          ) : (
+            <>
+              <Button variant="text">Log in</Button>
+              <Button variant="gradient">Sign in</Button>
+            </>
+          )}
         </div>
       </div>
     </div>
