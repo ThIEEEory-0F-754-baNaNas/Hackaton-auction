@@ -16,8 +16,8 @@ const theme = {
         },
         outlined: {
           primary: {
-            border: "border border-primary",
-            color: "text-primary",
+            border: "border border-on-primary",
+            color: "text-on-primary",
           },
         },
         gradient: {
@@ -111,6 +111,16 @@ const theme = {
             color:
               "hover:text-on-primary focus:text-on-primary active:text-on-primary",
           },
+        },
+      },
+    },
+  },
+  dialog: {
+    styles: {
+      base: {
+        container: {
+          bg: "bg-bg",
+          color: "text-on-bg",
         },
       },
     },
