@@ -3,10 +3,11 @@ import MainLayoutNavigation from "./layout/MainLayoutNavigation";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import AuctionItem from "./pages/AuctionItem";
+import AuctionItems from "./pages/AuctionItems";
 
 export const HOME = "/home";
 export const EXPLORE = "/explore";
-export const AUCTION_ITEM = "/auction-item";
+export const AUCTION_ITEMS = "/auction-items";
 
 const Navigation = () => {
   const router = createBrowserRouter([
@@ -27,7 +28,11 @@ const Navigation = () => {
               element: <h1>Explore</h1>,
             },
             {
-              path: `${EXPLORE}${AUCTION_ITEM}/:id`,
+              path: `${EXPLORE}${AUCTION_ITEMS}`,
+              element: <AuctionItems />,
+            },
+            {
+              path: `${EXPLORE}${AUCTION_ITEMS}/:id`,
               element: <AuctionItem />,
             },
           ],

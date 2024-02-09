@@ -13,9 +13,9 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import classNames from "classnames";
-import React, { PropsWithChildren, useContext } from "react";
-import { useLocation } from "react-router-dom";
-import { EXPLORE, HOME } from "../Navigation";
+import React, { PropsWithChildren, useContext, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { AUCTION_ITEMS, EXPLORE, HOME } from "../Navigation";
 import Divider from "../components/Divider";
 import Link from "../components/Link";
 import { HomeIcon } from "../icons/HomeIcon";
@@ -70,6 +70,28 @@ function ProfileMenu() {
   );
 }
 
+const SearchInput = () => {
+  const [title, setTitle] = useState("");
+  const navigation = useNavigate();
+
+  return (
+    <Input
+      value={title}
+      onChange={(e) => {
+        setTitle(e.target.value);
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          setTitle("");
+          navigation(`${EXPLORE}${AUCTION_ITEMS}?title=${title}`);
+        }
+      }}
+      label="Search"
+      crossOrigin={"unknown"}
+    />
+  );
+};
+
 const Navbar = () => {
   const [user] = useContext(UserContext);
 
@@ -86,7 +108,7 @@ const Navbar = () => {
 
       <div className="flex justify-between md:w-full">
         <div className="hidden md:block md:flex-grow md:max-w-[700px]">
-          <Input label="Search" crossOrigin={"unknown"} />
+          <SearchInput />
         </div>
 
         <div className="flex gap-2 min-w-fit">

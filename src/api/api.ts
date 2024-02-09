@@ -133,3 +133,25 @@ export const getAuction = async (id: string): Promise<AuctionItem | null> => {
   }
   return null;
 };
+
+export const searchAuction = async (
+  title: string,
+  pageSize: number = 10,
+  page: number = 0
+): Promise<AuctionItem[] | null> => {
+  try {
+    const response = await fetch(
+      `http://localhost:3000/auctionItems?title=${title}&pageSize=${pageSize}&page=${page}`,
+      {
+        method: "GET",
+      }
+    );
+
+    const json = await response.json();
+    if (json.statusCode === 401 || json.error) return null;
+    return json;
+  } catch (err) {
+    console.log(err);
+  }
+  return null;
+};
