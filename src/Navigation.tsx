@@ -6,14 +6,20 @@ import AuctionItem from "./pages/AuctionItem";
 import AuctionSearchItems from "./pages/AuctionSearchItems";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
+import ProtectedPage from "./pages/ProtectedPage";
+import { useContext } from "react";
+import { UserContext } from "./context/userContext";
 
 export const HOME = "/home";
 export const PROFILE = "/profile";
 export const SETTINGS = "/settings";
 export const EXPLORE = "/explore";
 export const AUCTION_ITEMS = "/auction-items";
+export const SIGN_IN = "/sign-in";
 
 const Navigation = () => {
+  const [user] = useContext(UserContext);
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -22,6 +28,7 @@ const Navigation = () => {
       children: [
         {
           path: HOME,
+          element: <ProtectedPage user={user} />,
           children: [
             {
               path: `${HOME}`,
@@ -50,7 +57,11 @@ const Navigation = () => {
             },
             {
               path: `${EXPLORE}${AUCTION_ITEMS}/:id`,
-              element: <AuctionItem />,
+              element: (
+                <ProtectedPage user={user}>
+                  <AuctionItem />
+                </ProtectedPage>
+              ),
             },
           ],
         },

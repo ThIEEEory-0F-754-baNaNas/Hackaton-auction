@@ -34,7 +34,7 @@ export const getAuctionItem = async (
   id: string
 ): Promise<AuctionItemT | null> => {
   const token = localStorage.getItem("token");
-  if (!token) return null;
+  if (!token) throw new Error("Get auction item: Unauthorized");
 
   try {
     const response = await fetch(`http://localhost:3000/auctionItems/${id}`, {

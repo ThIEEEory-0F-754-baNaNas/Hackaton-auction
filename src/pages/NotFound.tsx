@@ -23,7 +23,7 @@ const NotFound = () => {
           <Button
             variant="gradient"
             onClick={() => {
-              navigate(HOME);
+              navigate(HOME, { replace: true });
             }}
           >
             To Home
