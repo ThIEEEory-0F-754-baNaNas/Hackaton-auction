@@ -14,14 +14,21 @@ import { UserContext } from "../../context/userContext";
 
 export function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const [user] = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext);
   const navigate = useNavigate();
 
   if (!user) return null;
   const profileMenuItems = [
     { label: "Profile", onClick: () => navigate(`${HOME}${PROFILE}`) },
     { label: "Settings", onClick: () => navigate(`${HOME}${SETTINGS}`) },
-    { label: "Log out", onClick: () => {} },
+    {
+      label: "Log out",
+      onClick: () => {
+        localStorage.removeItem("token");
+        setUser(null);
+        navigate("/");
+      },
+    },
   ];
 
   const closeMenu = () => setIsMenuOpen(false);
