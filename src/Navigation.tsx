@@ -3,7 +3,7 @@ import MainLayoutNavigation from "./layout/MainLayoutNavigation";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import AuctionItem from "./pages/AuctionItem";
-import AuctionItems from "./pages/AuctionItems";
+import AuctionSearchItems from "./pages/AuctionSearchItems";
 
 export const HOME = "/home";
 export const EXPLORE = "/explore";
@@ -29,7 +29,7 @@ const Navigation = () => {
             },
             {
               path: `${EXPLORE}${AUCTION_ITEMS}`,
-              element: <AuctionItems />,
+              element: <AuctionSearchItems />,
             },
             {
               path: `${EXPLORE}${AUCTION_ITEMS}/:id`,

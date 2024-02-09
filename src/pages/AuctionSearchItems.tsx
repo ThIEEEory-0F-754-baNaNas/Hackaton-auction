@@ -12,7 +12,7 @@ const getParams = (search: string) => {
   return params;
 };
 
-const AuctionItems = () => {
+const AuctionSearchItems = () => {
   const location = useLocation();
   const { title } = getParams(location.search);
   const [auctionItems, setAuctionItems] = useState<AuctionItemT[]>([]);
@@ -30,10 +30,12 @@ const AuctionItems = () => {
         Search: <span className="text-on-primary-alt">{title}</span>
       </Typography>
       {auctionItems.map((auction) => (
-        <p>{auction.title}</p>
+        <p key={auction.id}>
+          {auction.title} {auction.id}
+        </p>
       ))}
     </div>
   );
 };
 
-export default AuctionItems;
+export default AuctionSearchItems;
