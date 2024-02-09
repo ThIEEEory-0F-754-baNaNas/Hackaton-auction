@@ -33,9 +33,15 @@ export const createAuctionItem = async (
 export const getAuctionItem = async (
   id: string
 ): Promise<AuctionItemT | null> => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+
   try {
     const response = await fetch(`http://localhost:3000/auctionItems/${id}`, {
       method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     const json = await response.json();
     if (json.statusCode === 401) return null;

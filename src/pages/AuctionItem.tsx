@@ -1,3 +1,4 @@
+import { ArrowDownIcon } from "@heroicons/react/24/solid";
 import {
   Accordion,
   AccordionBody,
@@ -11,24 +12,27 @@ import {
   DialogFooter,
   DialogHeader,
   Input,
-  Switch,
   Typography,
 } from "@material-tailwind/react";
-import { useState } from "react";
+import classNames from "classnames";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { AuctionItem as AuctionItemT, fakeAuction } from "../api/api";
+import { AuctionItemT, getAuctionItem } from "../api/auctionApi";
+import { UserContext } from "../context/userContext";
 
 const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
   const humanDate = new Date(auction.createdAt).toLocaleString();
 
   return (
-    <Card className="flex-row pb-4">
-      <CardHeader floated={false} className="min-w-[240px] min-h-[240px]">
+    <Card className="md:flex-row">
+      <CardHeader
+        floated={false}
+        className="md:w-1/3 max-w-sm m-auto mt-5 md:m-7"
+      >
         <img
           src={auction.images[0]}
           alt={auction.title}
-          width={240}
-          height={240}
+          className="w-full object-cover"
         />
       </CardHeader>
       <CardBody>
@@ -48,13 +52,13 @@ const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
 
 const BidMenu = () => {
   const defaultBids = [100, 200, 300, 400, 500];
-  const [isOpen, setOpen] = useState(false);
+  const [isOpen, setOpen] = useState(true);
   const toggleDrawer = () => setOpen(!isOpen);
   const [bid, setBid] = useState(0);
 
   return (
     <Card>
-      <CardBody className="container m-auto">
+      <CardBody>
         <div className="flex flex-wrap justify-center gap-8 mb-5 text-on-primary">
           {defaultBids.map((bid) => (
             <Button
@@ -119,7 +123,14 @@ const BidList = () => {
 
   return (
     <Accordion open={isOpen}>
-      <AccordionHeader onClick={() => setOpen(!isOpen)}>Bids</AccordionHeader>
+      <AccordionHeader onClick={() => setOpen(!isOpen)}>
+        Bids{" "}
+        <ArrowDownIcon
+          className={`h-5 w-5 transition-transform ${classNames({
+            "-rotate-180": isOpen,
+          })}`}
+        />
+      </AccordionHeader>
       <AccordionBody>
         <Card>
           <CardBody>
@@ -136,21 +147,38 @@ const BidList = () => {
 };
 
 const AuctionItem = () => {
-  // const { id: auctionId } = useParams();
-  // TODO: use api
-  const auction = fakeAuction;
+  const { id: auctionId } = useParams();
+  const [auction, setAuction] = useState<AuctionItemT | null>(null);
+  const [user] = useContext(UserContext);
+  const isAuthorOfAuction =
+    user?.id && auction?.id && user.id === auction?.userId;
+
+  useEffect(() => {
+    const getAuction = async () => {
+      const auction = await getAuctionItem(auctionId || "");
+      setAuction(auction);
+    };
+
+    getAuction();
+  }, [user, auctionId]);
 
   return (
-    <div className="text-on-primary h-full">
+    <div className="text-on-primary h-full container m-auto">
       <div className="mb-3">
-        <AuctionHeader auction={auction} />
+        {auction === null ? (
+          <Typography variant="h1">Loading...</Typography>
+        ) : (
+          <AuctionHeader auction={auction} />
+        )}
       </div>
-      <div className="mb-3 container m-auto">
+      <div className="mb-3">
         <BidList />
       </div>
-      <div className="sticky bottom-0 top-0">
-        <BidMenu />
-      </div>
+      {!isAuthorOfAuction && (
+        <div className="sticky bottom-0 top-0">
+          <BidMenu />
+        </div>
+      )}
     </div>
   );
 };
