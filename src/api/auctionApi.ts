@@ -73,3 +73,29 @@ export const searchAuctionItems = async (
   }
   return null;
 };
+
+export const sendBidToAuction = async (
+  auctionId: string,
+  amount: number
+): Promise<boolean> => {
+  const token = localStorage.getItem("token");
+  if (!token) return false;
+
+  try {
+    const response = await fetch(`http://localhost:3000/auctionStakes`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ auctionId, price: amount }),
+    });
+    const json = await response.json();
+    if (json.statusCode === 401 || json.error) return false;
+    console.log(json);
+    return true;
+  } catch (err) {
+    console.log(err);
+  }
+  return false;
+};

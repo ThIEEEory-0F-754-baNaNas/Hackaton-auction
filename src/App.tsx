@@ -3,7 +3,7 @@ import theme from "./theme";
 import Navigation from "./Navigation";
 import { UserContext } from "./context/userContext";
 import { useEffect, useState } from "react";
-import { User, getUser } from "./api/userApi";
+import { User, addDeposit, getUser } from "./api/userApi";
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -13,6 +13,7 @@ function App() {
     if (!token) return;
     getUser(token).then((user) => {
       if (user) setUser(user);
+      addDeposit(500);
     });
     // TO add user
     // signUp({

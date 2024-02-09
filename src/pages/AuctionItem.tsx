@@ -17,7 +17,11 @@ import {
 import classNames from "classnames";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { AuctionItemT, getAuctionItem } from "../api/auctionApi";
+import {
+  AuctionItemT,
+  getAuctionItem,
+  sendBidToAuction,
+} from "../api/auctionApi";
 import { UserContext } from "../context/userContext";
 
 const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
@@ -43,14 +47,16 @@ const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
         >
           {humanDate}
         </Typography>
-        <Typography variant="paragraph">{auction.description}</Typography>
+        {auction.description && (
+          <Typography variant="paragraph">{auction.description}</Typography>
+        )}
         <Typography variant="h6">Start price: {auction.startPrice}</Typography>
       </CardBody>
     </Card>
   );
 };
 
-const BidMenu = () => {
+const BidMenu = ({ sendBid }: { sendBid: (bid: number) => void }) => {
   const defaultBids = [100, 200, 300, 400, 500];
   const [isOpen, setOpen] = useState(false);
   const toggleDrawer = () => setOpen(!isOpen);
@@ -62,6 +68,7 @@ const BidMenu = () => {
         <div className="flex flex-wrap justify-center gap-8 mb-5 text-on-primary">
           {defaultBids.map((bid) => (
             <Button
+              key={bid}
               onClick={() => {
                 setBid(bid);
                 toggleDrawer();
@@ -109,7 +116,14 @@ const BidMenu = () => {
           >
             <span>Cancel</span>
           </Button>
-          <Button variant="gradient" color="green" onClick={toggleDrawer}>
+          <Button
+            variant="gradient"
+            color="green"
+            onClick={() => {
+              sendBid(bid);
+              toggleDrawer();
+            }}
+          >
             <span>Confirm</span>
           </Button>
         </DialogFooter>
@@ -162,6 +176,12 @@ const AuctionItem = () => {
     getAuction();
   }, [user, auctionId]);
 
+  const sendBid = async (bid: number) => {
+    if (!auctionId) throw new Error("No auction id");
+    const res = await sendBidToAuction(auctionId, bid);
+    console.log(res);
+  };
+
   return (
     <div className="text-on-primary h-full container m-auto">
       <div className="mb-3">
@@ -176,7 +196,7 @@ const AuctionItem = () => {
       </div>
       {!isAuthorOfAuction && (
         <div className="sticky bottom-0 top-0">
-          <BidMenu />
+          <BidMenu sendBid={sendBid} />
         </div>
       )}
     </div>

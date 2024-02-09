@@ -74,3 +74,22 @@ export const signIn = async (
 
   return null;
 };
+
+export const addDeposit = async (amount: number): Promise<boolean> => {
+  try {
+    const response = await fetch("http://localhost:3000/user/deposit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+      body: JSON.stringify({ amount }),
+    });
+    const json = await response.json();
+    if (json.statusCode === 401 || json.error) return false;
+    return true;
+  } catch (error) {
+    console.error(error);
+  }
+  return false;
+};
