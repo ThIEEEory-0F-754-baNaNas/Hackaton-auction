@@ -3,7 +3,7 @@ import theme from "./theme";
 import Navigation from "./Navigation";
 import { UserContext } from "./context/userContext";
 import { useEffect, useState } from "react";
-import { User, getUser, signIn, signUp } from "./api/api";
+import { User, getUser } from "./api/userApi";
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
