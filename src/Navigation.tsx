@@ -4,8 +4,12 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import AuctionItem from "./pages/AuctionItem";
 import AuctionSearchItems from "./pages/AuctionSearchItems";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 
 export const HOME = "/home";
+export const PROFILE = "/profile";
+export const SETTINGS = "/settings";
 export const EXPLORE = "/explore";
 export const AUCTION_ITEMS = "/auction-items";
 
@@ -18,7 +22,20 @@ const Navigation = () => {
       children: [
         {
           path: HOME,
-          element: <Home />,
+          children: [
+            {
+              path: `${HOME}`,
+              element: <Home />,
+            },
+            {
+              path: `${HOME}${PROFILE}`,
+              element: <Profile />,
+            },
+            {
+              path: `${HOME}${SETTINGS}`,
+              element: <Settings />,
+            },
+          ],
         },
         {
           path: EXPLORE,

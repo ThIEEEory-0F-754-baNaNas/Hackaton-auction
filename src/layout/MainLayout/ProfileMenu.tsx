@@ -8,13 +8,16 @@ import {
 } from "@material-tailwind/react";
 import classNames from "classnames";
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { HOME, PROFILE, SETTINGS } from "../../Navigation";
 
 export function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const navigate = useNavigate();
   const profileMenuItems = [
-    { label: "Profile" },
-    { label: "Settings" },
-    { label: "Log out" },
+    { label: "Profile", onClick: () => navigate(`${HOME}${PROFILE}`) },
+    { label: "Settings", onClick: () => navigate(`${HOME}${SETTINGS}`) },
+    { label: "Log out", onClick: () => {} },
   ];
 
   const closeMenu = () => setIsMenuOpen(false);
@@ -31,12 +34,15 @@ export function ProfileMenu() {
         />
       </MenuHandler>
       <MenuList className="p-1">
-        {profileMenuItems.map(({ label }, key) => {
+        {profileMenuItems.map(({ label, onClick }, key) => {
           const isLastItem = key === profileMenuItems.length - 1;
           return (
             <MenuItem
               key={label}
-              onClick={closeMenu}
+              onClick={() => {
+                closeMenu();
+                onClick();
+              }}
               className={`flex items-center gap-2 rounded ${classNames({
                 "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10":
                   isLastItem,
