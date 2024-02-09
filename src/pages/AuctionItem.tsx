@@ -52,7 +52,7 @@ const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
 
 const BidMenu = () => {
   const defaultBids = [100, 200, 300, 400, 500];
-  const [isOpen, setOpen] = useState(true);
+  const [isOpen, setOpen] = useState(false);
   const toggleDrawer = () => setOpen(!isOpen);
   const [bid, setBid] = useState(0);
 
