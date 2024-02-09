@@ -20,7 +20,7 @@ export const Navbar = () => {
       </Typography>
 
       <div className="flex justify-between md:w-full">
-        <div className="hidden md:block md:flex-grow md:max-w-[700px]">
+        <div className="hidden md:block md:flex-grow md:max-w-[700px] mr-5">
           <SearchInput />
         </div>
 
