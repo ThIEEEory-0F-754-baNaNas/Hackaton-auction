@@ -11,10 +11,12 @@ import { useContext } from "react";
 import { UserContext } from "./context/userContext";
 
 export const HOME = "/home";
-export const PROFILE = "/profile";
-export const SETTINGS = "/settings";
+export const PROFILE = `${HOME}/profile`;
+export const SETTINGS = `${HOME}/settings`;
+
 export const EXPLORE = "/explore";
-export const AUCTION_ITEMS = "/auction-items";
+export const AUCTION_ITEMS = `${EXPLORE}/auction-items`;
+
 export const SIGN_IN = "/sign-in";
 
 const Navigation = () => {
@@ -35,11 +37,11 @@ const Navigation = () => {
               element: <Home />,
             },
             {
-              path: `${HOME}${PROFILE}`,
+              path: `${PROFILE}`,
               element: <Profile />,
             },
             {
-              path: `${HOME}${SETTINGS}`,
+              path: `${SETTINGS}`,
               element: <Settings />,
             },
           ],
@@ -52,11 +54,11 @@ const Navigation = () => {
               element: <h1>Explore</h1>,
             },
             {
-              path: `${EXPLORE}${AUCTION_ITEMS}`,
+              path: `${AUCTION_ITEMS}`,
               element: <AuctionSearchItems />,
             },
             {
-              path: `${EXPLORE}${AUCTION_ITEMS}/:id`,
+              path: `${AUCTION_ITEMS}/:id`,
               element: (
                 <ProtectedPage user={user}>
                   <AuctionItem />

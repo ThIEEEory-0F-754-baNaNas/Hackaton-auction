@@ -9,7 +9,7 @@ import {
 import classNames from "classnames";
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { HOME, PROFILE, SETTINGS } from "../../Navigation";
+import { PROFILE, SETTINGS } from "../../Navigation";
 import { UserContext } from "../../context/userContext";
 
 export function ProfileMenu() {
@@ -19,8 +19,8 @@ export function ProfileMenu() {
 
   if (!user) return null;
   const profileMenuItems = [
-    { label: "Profile", onClick: () => navigate(`${HOME}${PROFILE}`) },
-    { label: "Settings", onClick: () => navigate(`${HOME}${SETTINGS}`) },
+    { label: "Profile", onClick: () => navigate(PROFILE) },
+    { label: "Settings", onClick: () => navigate(SETTINGS) },
     {
       label: "Log out",
       onClick: () => {
