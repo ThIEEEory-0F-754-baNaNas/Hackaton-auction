@@ -25,6 +25,8 @@ import {
 import { UserContext } from "../context/userContext";
 
 const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
+  if (!auction || !auction.images) return null;
+
   const humanDate = new Date(auction.createdAt).toLocaleString();
 
   return (
