@@ -1,4 +1,5 @@
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
@@ -8,6 +9,10 @@ import classNames from "classnames";
 import { AuctionItemT } from "../../api/auctionApi";
 import { TimerComponent } from "../../components/Timer";
 import { isActive, isExpired } from "../../utils/time";
+import { useContext } from "react";
+import { UserContext } from "../../context/userContext";
+import { useNavigate } from "react-router-dom";
+import { EDIT_AUCTION } from "../../Navigation";
 
 const RightTimerForAuction = ({ auction }: { auction: AuctionItemT }) => {
   const isAuctionActive = isActive(auction.startTime, auction.endTime);
@@ -26,6 +31,27 @@ const RightTimerForAuction = ({ auction }: { auction: AuctionItemT }) => {
         <TimerComponent label="Auction starts in:" time={auction.startTime} />
       )}
     </>
+  );
+};
+
+const EditButton = ({ auction }: { auction: AuctionItemT }) => {
+  const [user] = useContext(UserContext);
+  const navigate = useNavigate();
+  const canEdit =
+    !isActive(auction.startTime, auction.endTime) &&
+    !isExpired(auction.endTime);
+
+  if (!user || auction.userId !== user.id) return null;
+
+  return (
+    <div className="flex justify-end">
+      <Button
+        disabled={!canEdit}
+        onClick={() => navigate(`${EDIT_AUCTION}/${auction.id}`)}
+      >
+        Edit
+      </Button>
+    </div>
   );
 };
 
@@ -51,22 +77,25 @@ const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
           className="w-full object-cover"
         />
       </CardHeader>
-      <CardBody>
-        <Typography variant="h2">{auction.title}</Typography>
-        <Typography
-          variant="paragraph"
-          className="relative -top-3 !text-on-primary-alt"
-        >
-          {humanDate}
-        </Typography>
-        {auction.description && (
-          <Typography variant="paragraph">{auction.description}</Typography>
-        )}
-        <Typography variant="h4">
-          Start price:{" "}
-          <span className="text-on-primary-alt">{auction.startPrice}</span>
-        </Typography>
-        <RightTimerForAuction auction={auction} />
+      <CardBody className="w-full flex justify-between">
+        <div>
+          <Typography variant="h2">{auction.title}</Typography>
+          <Typography
+            variant="paragraph"
+            className="relative -top-3 !text-on-primary-alt"
+          >
+            {humanDate}
+          </Typography>
+          {auction.description && (
+            <Typography variant="paragraph">{auction.description}</Typography>
+          )}
+          <Typography variant="h4">
+            Start price:{" "}
+            <span className="text-on-primary-alt">{auction.startPrice}</span>
+          </Typography>
+          <RightTimerForAuction auction={auction} />
+        </div>
+        <EditButton auction={auction} />
       </CardBody>
     </Card>
   );

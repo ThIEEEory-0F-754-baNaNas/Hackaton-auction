@@ -13,6 +13,8 @@ import { UserContext } from "./context/userContext";
 export const HOME = "/home";
 export const PROFILE = `${HOME}/profile`;
 export const SETTINGS = `${HOME}/settings`;
+export const CREATE_AUCTION = `${HOME}/create-auction`;
+export const EDIT_AUCTION = `${HOME}/edit-auction`;
 
 export const EXPLORE = "/explore";
 export const AUCTION_ITEMS = `${EXPLORE}/auction-items`;
@@ -43,6 +45,14 @@ const Navigation = () => {
             {
               path: `${SETTINGS}`,
               element: <Settings />,
+            },
+            {
+              path: `${CREATE_AUCTION}`,
+              element: <h1>Create Auction</h1>,
+            },
+            {
+              path: `${EDIT_AUCTION}/:id`,
+              element: <h1>Edit Auction</h1>,
             },
           ],
         },
