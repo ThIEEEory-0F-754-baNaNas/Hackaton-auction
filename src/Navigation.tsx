@@ -2,7 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import MainLayoutNavigation from "./layout/MainLayoutNavigation";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import AuctionItem from "./pages/AuctionItem";
+import AuctionItem from "./pages/AuctionItem/AuctionItem";
 import AuctionSearchItems from "./pages/AuctionSearchItems";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";

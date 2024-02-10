@@ -5,6 +5,7 @@ export type AuctionItemT = {
   images: string[];
   startPrice: number;
   createdAt: string;
+  startTime: string;
   endTime: string;
   userId: string;
 };

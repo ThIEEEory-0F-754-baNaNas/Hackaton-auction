@@ -1,64 +1,22 @@
 import { ArrowDownIcon } from "@heroicons/react/24/solid";
 import {
-  Accordion,
-  AccordionBody,
-  AccordionHeader,
-  Button,
   Card,
   CardBody,
-  CardHeader,
-  Dialog,
-  DialogBody,
-  DialogFooter,
-  DialogHeader,
+  Button,
   Input,
+  Dialog,
+  DialogHeader,
+  DialogBody,
   Typography,
+  DialogFooter,
+  Accordion,
+  AccordionHeader,
+  AccordionBody,
 } from "@material-tailwind/react";
 import classNames from "classnames";
-import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import {
-  AuctionItemT,
-  getAuctionItem,
-  sendBidToAuction,
-} from "../api/auctionApi";
-import { UserContext } from "../context/userContext";
+import { useState } from "react";
 
-const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
-  if (!auction || !auction.images) return null;
-
-  const humanDate = new Date(auction.createdAt).toLocaleString();
-
-  return (
-    <Card className="md:flex-row">
-      <CardHeader
-        floated={false}
-        className="md:w-1/3 max-w-sm m-auto mt-5 md:m-7"
-      >
-        <img
-          src={auction.images[0]}
-          alt={auction.title}
-          className="w-full object-cover"
-        />
-      </CardHeader>
-      <CardBody>
-        <Typography variant="h2">{auction.title}</Typography>
-        <Typography
-          variant="paragraph"
-          className="relative -top-3 !text-on-primary-alt"
-        >
-          {humanDate}
-        </Typography>
-        {auction.description && (
-          <Typography variant="paragraph">{auction.description}</Typography>
-        )}
-        <Typography variant="h6">Start price: {auction.startPrice}</Typography>
-      </CardBody>
-    </Card>
-  );
-};
-
-const BidMenu = ({ sendBid }: { sendBid: (bid: number) => void }) => {
+export const BidMenu = ({ sendBid }: { sendBid: (bid: number) => void }) => {
   const defaultBids = [100, 200, 300, 400, 500];
   const [isOpen, setOpen] = useState(false);
   const toggleDrawer = () => setOpen(!isOpen);
@@ -134,7 +92,7 @@ const BidMenu = ({ sendBid }: { sendBid: (bid: number) => void }) => {
   );
 };
 
-const BidList = () => {
+export const BidList = () => {
   const [isOpen, setOpen] = useState(false);
 
   return (
@@ -161,48 +119,3 @@ const BidList = () => {
     </Accordion>
   );
 };
-
-const AuctionItem = () => {
-  const { id: auctionId } = useParams();
-  const [auction, setAuction] = useState<AuctionItemT | null>(null);
-  const [user] = useContext(UserContext);
-  const isAuthorOfAuction =
-    user?.id && auction?.id && user.id === auction?.userId;
-
-  useEffect(() => {
-    const getAuction = async () => {
-      const auction = await getAuctionItem(auctionId || "");
-      setAuction(auction);
-    };
-
-    getAuction();
-  }, [user, auctionId]);
-
-  const sendBid = async (bid: number) => {
-    if (!auctionId) throw new Error("No auction id");
-    const res = await sendBidToAuction(auctionId, bid);
-    console.log(res);
-  };
-
-  return (
-    <div className="text-on-primary h-full container m-auto">
-      <div className="mb-3">
-        {auction === null ? (
-          <Typography variant="h1">Loading...</Typography>
-        ) : (
-          <AuctionHeader auction={auction} />
-        )}
-      </div>
-      <div className="mb-3">
-        <BidList />
-      </div>
-      {!isAuthorOfAuction && (
-        <div className="sticky bottom-0 top-0">
-          <BidMenu sendBid={sendBid} />
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default AuctionItem;
