@@ -112,13 +112,13 @@ const AuctionDetailsHeader = ({ auction }: { auction: AuctionItemT }) => {
         floated={false}
         className="md:w-1/3 max-w-sm m-auto mt-5 md:m-7"
       >
-        <Carousel className="bg-bg">
+        <Carousel className="bg-bg ">
           {auction.images.map((image, index) => (
             <img
               key={index}
               src={image}
               alt={`Woops! ${auction.title}`}
-              className="w-full object-cover"
+              className="h-full w-full object-cover"
             />
           ))}
         </Carousel>
