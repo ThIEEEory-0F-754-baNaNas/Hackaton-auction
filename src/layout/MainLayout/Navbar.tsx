@@ -1,9 +1,10 @@
 import { Button, Input, Typography } from "@material-tailwind/react";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AUCTION_ITEMS } from "../../Navigation";
+import { AUCTION_ITEMS, START } from "../../Navigation";
 import { UserContext } from "../../context/userContext";
 import { ProfileMenu } from "./ProfileMenu";
+import Link from "../../components/Link";
 
 export const Navbar = () => {
   const [user] = useContext(UserContext);
@@ -29,8 +30,12 @@ export const Navbar = () => {
             <ProfileMenu />
           ) : (
             <>
-              <Button variant="text">Log in</Button>
-              <Button variant="gradient">Sign in</Button>
+              <Link to={START}>
+                <Button variant="text">Sign up</Button>
+              </Link>
+              <Link to={START}>
+                <Button variant="gradient">Sign in</Button>
+              </Link> 
             </>
           )}
         </div>

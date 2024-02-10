@@ -11,6 +11,8 @@ import { useContext } from "react";
 import { UserContext } from "./context/userContext";
 import CreateAuction from "./pages/CreateAuction";
 import EditAuction from "./pages/EditAuction";
+import Explore from "./pages/Explore";
+import Start from "./pages/Start";
 
 export const HOME = "/home";
 export const PROFILE = `${HOME}/profile`;
@@ -21,7 +23,7 @@ export const EDIT_AUCTION = `${HOME}/edit-auction`;
 export const EXPLORE = "/explore";
 export const AUCTION_ITEMS = `${EXPLORE}/auction-items`;
 
-export const SIGN_IN = "/sign-in";
+export const START = "/start";
 
 const Navigation = () => {
   const [user] = useContext(UserContext);
@@ -63,7 +65,7 @@ const Navigation = () => {
           children: [
             {
               path: `${EXPLORE}`,
-              element: <h1>Explore</h1>,
+              element: <Explore />,
             },
             {
               path: `${AUCTION_ITEMS}`,
@@ -78,6 +80,10 @@ const Navigation = () => {
               ),
             },
           ],
+        },
+        {
+          path: START,
+          element: <Start />,
         },
       ],
     },
