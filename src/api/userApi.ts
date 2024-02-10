@@ -1,30 +1,32 @@
-import { getBearerToken } from "../utils/apiUtils";
+import { getBearerToken, jsonOrThrow } from "../utils/apiUtils";
 import config from "./config";
 
 const baseURL = config.baseURL;
 
-export type User = {
-  id: string;
-  avatar: string;
-  firstname: string;
-  lastname: string;
-  username: string;
-  email: string;
-  password: string;
-};
+export type User =
+  | {
+      id: string;
+      avatar: string;
+      firstname: string;
+      lastname: string;
+      username: string;
+      email: string;
+      password: string;
 
-export const getUser = async (): Promise<User | null> => {
-  try {
-    const response = await fetch(`${baseURL}/auth/whoami`, {
-      headers: { Authorization: getBearerToken() },
-    });
-    const json = await response.json();
-    if (json.statusCode === 401) return null;
-    return json;
-  } catch (error) {
-    console.error(error);
-  }
-  return null;
+      isNotOk: false;
+    }
+  | {
+      isNotOk: true;
+      isLoading: boolean;
+      error: unknown;
+    };
+
+export const getUser = async (): Promise<User> => {
+  const response = await fetch(`${baseURL}/auth/whoami`, {
+    headers: { Authorization: getBearerToken() },
+  });
+  const json = await jsonOrThrow(response);
+  return { ...json, isNotOk: false };
 };
 
 type SignUpData = {

@@ -1,8 +1,8 @@
-export const jsonOrThrow = (res: Response) => {
+export const jsonOrThrow = async (res: Response) => {
   console.log("JSON OR THROW");
   if (!res.ok) throw new Error(res.statusText);
   console.log("RES is OK");
-  const json = res.json();
+  const json = await res.json();
 
   if (json.error || json.message)
     throw new Error(json.error || json.message || "Unexpected error");

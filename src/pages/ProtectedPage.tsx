@@ -1,34 +1,21 @@
-import React, { useEffect, useState } from "react";
+import { Spinner } from "@material-tailwind/react";
+import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { SIGN_IN } from "../Navigation";
 import { User } from "../api/userApi";
-import { Spinner } from "@material-tailwind/react";
 
 interface Props {
-  user: User | null;
+  user: User;
   redirectTo?: string;
   children?: React.ReactNode;
 }
 
 const ProtectedPage = ({ user, redirectTo = SIGN_IN, children }: Props) => {
-  const [isLoading, setLoading] = useState(true);
-
-  // TODO: use real loading
-  useEffect(() => {
-    if (user) {
-      setLoading(false);
-    }
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }, [user]);
-
-  if (isLoading) {
+  if (user.isNotOk && user.isLoading) {
     return <Spinner />;
   }
 
-  if (!user) {
+  if (user.isNotOk && !user.isLoading) {
     return <Navigate to={redirectTo} replace />;
   }
 
