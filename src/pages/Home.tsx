@@ -1,7 +1,21 @@
-import React from "react";
+import { Typography } from "@material-tailwind/react";
+import AuctionCard from "../components/AuctionCard";
+import { Pagination } from "../components/Pagination";
+
+const cards = Array(20).fill(0);
 
 const Home = () => {
-  return <div>Home</div>;
+  return (
+    <div className="flex flex-col items-center gap-y-8">
+      <Typography variant="h2">All auctions</Typography>
+      <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-4">
+        {cards.map((_, index) => (
+          <AuctionCard key={index} />
+        ))}
+      </div>
+      <Pagination />
+    </div>
+  );
 };
 
 export default Home;

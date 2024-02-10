@@ -10,7 +10,7 @@ const theme = {
       variants: {
         filled: {
           primary: {
-            background: "bg-primary",
+            background: "bg-bg",
             color: "text-on-primary",
           },
         },

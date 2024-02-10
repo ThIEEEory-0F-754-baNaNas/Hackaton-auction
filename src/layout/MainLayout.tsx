@@ -15,7 +15,7 @@ import {
 import classNames from "classnames";
 import React, { PropsWithChildren, useContext } from "react";
 import { useLocation } from "react-router-dom";
-import { EXPLORE, HOME } from "../Navigation";
+import { EXPLORE, HOME, START } from "../Navigation";
 import Divider from "../components/Divider";
 import Link from "../components/Link";
 import { HomeIcon } from "../icons/HomeIcon";
@@ -94,8 +94,12 @@ const Navbar = () => {
             <ProfileMenu />
           ) : (
             <>
-              <Button variant="text">Log in</Button>
-              <Button variant="gradient">Sign in</Button>
+              <Link to={START}>
+                <Button variant="text">Sign up</Button>
+              </Link>
+              <Link to={START}>
+                <Button variant="gradient">Sign in</Button>
+              </Link> 
             </>
           )}
         </div>
@@ -139,7 +143,7 @@ const Drawer = () => {
 
 const MainContent = ({ children }: PropsWithChildren) => {
   return (
-    <div className="bg-primary w-full h-full rounded-2xl relative p-4 overflow-auto">
+    <div className="bg-primary w-full h-full -center rounded-2xl relative p-4 overflow-auto">
       {children}
     </div>
   );
