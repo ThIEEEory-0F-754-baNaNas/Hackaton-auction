@@ -1,4 +1,7 @@
 import { getBearerToken, jsonOrThrow } from "../utils/apiUtils";
+import config from "./config";
+
+const baseURL = config.baseURL;
 
 export type AuctionItemT = {
   id: string;
@@ -26,7 +29,7 @@ export type CreateAuctionDto = {
 export const createAuctionItem = async (
   item: CreateAuctionDto
 ): Promise<AuctionItemT> => {
-  const response = await fetch("http://localhost:3000/auctionItems", {
+  const response = await fetch(`${baseURL}/auctionItems`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -39,7 +42,7 @@ export const createAuctionItem = async (
 };
 
 export const getAuctionItem = async (id: string): Promise<AuctionItemT> => {
-  const response = await fetch(`http://localhost:3000/auctionItems/${id}`, {
+  const response = await fetch(`${baseURL}/auctionItems/${id}`, {
     headers: { Authorization: getBearerToken() },
   });
 
@@ -52,7 +55,7 @@ export const searchAuctionItems = async (
   page: number = 0
 ): Promise<AuctionItemT[]> => {
   const response = await fetch(
-    `http://localhost:3000/auctionItems?title=${title}&pageSize=${pageSize}&page=${page}`
+    `${baseURL}/auctionItems?title=${title}&pageSize=${pageSize}&page=${page}`
   );
 
   return jsonOrThrow(response);
@@ -62,7 +65,7 @@ export const sendBidToAuction = async (
   auctionId: string,
   amount: number
 ): Promise<boolean> => {
-  const response = await fetch(`http://localhost:3000/auctionStakes`, {
+  const response = await fetch(`${baseURL}/auctionStakes`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

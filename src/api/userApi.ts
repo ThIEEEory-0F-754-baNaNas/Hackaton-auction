@@ -1,3 +1,7 @@
+import config from "./config";
+
+const baseURL = config.baseURL;
+
 export type User = {
   id: string;
   avatar: string;
@@ -10,7 +14,7 @@ export type User = {
 
 export const getUser = async (token: string): Promise<User | null> => {
   try {
-    const response = await fetch("http://localhost:3000/auth/whoami", {
+    const response = await fetch(`${baseURL}/auth/whoami`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -36,7 +40,7 @@ type SignUpData = {
 
 export const signUp = async (data: SignUpData): Promise<User | null> => {
   try {
-    const response = await fetch("http://localhost:3000/auth/signup", {
+    const response = await fetch(`${baseURL}/auth/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -60,7 +64,7 @@ export const signIn = async (
   if (!email || !password) return null;
 
   try {
-    const response = await fetch("http://localhost:3000/auth/signin", {
+    const response = await fetch(`${baseURL}/auth/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -77,7 +81,7 @@ export const signIn = async (
 
 export const addDeposit = async (amount: number): Promise<boolean> => {
   try {
-    const response = await fetch("http://localhost:3000/user/deposit", {
+    const response = await fetch(`${baseURL}/user/deposit`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
