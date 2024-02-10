@@ -62,21 +62,36 @@ export const signIn = async (
   return jsonOrThrow(response);
 };
 
-export const addDeposit = async (amount: number): Promise<boolean> => {
-  try {
-    const response = await fetch(`${baseURL}/user/deposit`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: getBearerToken(),
-      },
-      body: JSON.stringify({ amount }),
-    });
-    const json = await response.json();
-    if (json.statusCode === 401 || json.error) return false;
-    return true;
-  } catch (error) {
-    console.error(error);
-  }
-  return false;
+export const addDeposit = async (amount: number): Promise<User> => {
+  const response = await fetch(`${baseURL}/user/deposit`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: getBearerToken(),
+    },
+    body: JSON.stringify({ amount }),
+  });
+  const json = jsonOrThrow(response);
+  return { ...json, isNotOk: false };
+};
+
+export const updateProfileAvatar = async (avatar: File): Promise<boolean> => {
+  // TODO: wait for backend to fix
+  const user = await getUser();
+  const userId = !user.isNotOk ? user.id : "";
+  //
+
+  const formData = new FormData();
+  formData.append("avatarFile", avatar);
+
+  const response = await fetch(`${baseURL}/user/${userId}/avatar`, {
+    method: "PATCH",
+    headers: {
+      // "Content-Type": "multipart/form-data",
+      Authorization: getBearerToken(),
+    },
+    body: formData,
+  });
+  const json = await jsonOrThrow(response);
+  return json;
 };
