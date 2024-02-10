@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import Navigation from "./Navigation";
-import { User, getUser } from "./api/userApi";
+import { User, getUser, signUp } from "./api/userApi";
 import { UserContext } from "./context/userContext";
 import { getTokenOrEmpty } from "./utils/apiUtils";
 
 function App() {
+  // useEffect(() => {
+  //   signUp({
+  //     firstname: "test",
+  //     lastname: "test",
+  //     username: "test",
+  //     email: "some@gmail.com",
+  //     password: "tea",
+  //   }).then((res) => console.log(res));
+  // });
+
   const [user, setUser] = useState<User>({
     isNotOk: true,
     isLoading: true,

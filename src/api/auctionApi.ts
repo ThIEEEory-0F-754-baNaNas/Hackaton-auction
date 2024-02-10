@@ -3,6 +3,28 @@ import config from "./config";
 
 const baseURL = config.baseURL;
 
+export type AuctionStakeT = {
+  id: string;
+  userId: string;
+  createdAt: string;
+  auctionItemId: string;
+  price: number;
+};
+
+export type Messages = {
+  id: string;
+  text: string;
+  userId: string;
+  createdAt: string;
+  chatId: string;
+};
+
+export type Chat = {
+  auctionItemId: string;
+  id: string;
+  messages: Messages[];
+};
+
 export type AuctionItemT = {
   id: string;
   title: string;
@@ -14,6 +36,8 @@ export type AuctionItemT = {
   endTime: string;
   minPriceStep: number;
   userId: string;
+  auctionStakes: AuctionStakeT[];
+  chat: Chat;
 };
 
 export type CreateAuctionDto = {

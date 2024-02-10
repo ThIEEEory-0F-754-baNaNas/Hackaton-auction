@@ -15,9 +15,21 @@ import {
 } from "@material-tailwind/react";
 import classNames from "classnames";
 import { useState } from "react";
+import { AuctionStakeT } from "../../api/auctionApi";
 
-export const BidMenu = ({ sendBid }: { sendBid: (bid: number) => void }) => {
-  const defaultBids = [100, 200, 300, 400, 500];
+export const BidMenu = ({
+  sendBid,
+  currentBid,
+}: {
+  sendBid: (bid: number) => void;
+  currentBid: number;
+}) => {
+  const defaultBids = [
+    currentBid + 100,
+    currentBid + 200,
+    currentBid + 500,
+    currentBid * 2,
+  ];
   const [isOpen, setOpen] = useState(false);
   const toggleDrawer = () => setOpen(!isOpen);
   const [bid, setBid] = useState(0);
@@ -92,7 +104,7 @@ export const BidMenu = ({ sendBid }: { sendBid: (bid: number) => void }) => {
   );
 };
 
-export const BidList = () => {
+export const BidList = ({ bids }: { bids: AuctionStakeT[] }) => {
   const [isOpen, setOpen] = useState(false);
 
   return (
@@ -108,11 +120,15 @@ export const BidList = () => {
       <AccordionBody>
         <Card>
           <CardBody>
-            <Typography variant="h6">Bids</Typography>
-            <Typography variant="h6">Bids</Typography>
-            <Typography variant="h6">Bids</Typography>
-            <Typography variant="h6">Bids</Typography>
-            <Typography variant="h6">Bids</Typography>
+            {bids.length === 0 && (
+              <Typography variant="h6">No bids yet</Typography>
+            )}
+            {bids.map((bid) => (
+              <div key={bid.id} className="flex justify-between">
+                <Typography variant="h6">{bid.userId}</Typography>
+                <Typography variant="h6">{bid.price}</Typography>
+              </div>
+            ))}
           </CardBody>
         </Card>
       </AccordionBody>

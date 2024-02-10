@@ -40,17 +40,19 @@ const AuctionItem = () => {
     console.log(res);
   };
 
+  const currentBid = auction!.auctionStakes[0]?.price || auction!.startPrice;
+
   return (
     <div className="text-on-primary h-full container m-auto">
       <div className="mb-3">
         <AuctionHeader auction={auction!} />
       </div>
       <div className="mb-3">
-        <BidList />
+        <BidList bids={auction!.auctionStakes} />
       </div>
       {!isAuthorOfAuction && isAuctionActive && (
         <div className="sticky bottom-0 top-0">
-          <BidMenu sendBid={sendBid} />
+          <BidMenu currentBid={currentBid} sendBid={sendBid} />
         </div>
       )}
     </div>

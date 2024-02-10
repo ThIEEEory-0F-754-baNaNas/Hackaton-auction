@@ -30,7 +30,7 @@ export const getUser = async (): Promise<User> => {
 };
 
 type SignUpData = {
-  avatar: string;
+  avatar?: string;
   firstname: string;
   lastname: string;
   username: string;
@@ -44,11 +44,11 @@ export const signUp = async (data: SignUpData): Promise<User | null> => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
-    });
-    const json = await response.json();
-    if (json.statusCode === 401 || json.error) return null;
-    console.log(json);
-    return { ...json, isNotOk: false };
+    }).catch((err) => console.error(err));
+    // const json = await response.json();
+    // if (json.statusCode === 401 || json.error) return null;
+    // console.log(json);
+    // return { ...json, isNotOk: false };
   } catch (error) {
     console.error(error);
   }
