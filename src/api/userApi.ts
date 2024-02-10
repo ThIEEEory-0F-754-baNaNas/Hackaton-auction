@@ -1,3 +1,4 @@
+import { getBearerToken } from "../utils/apiUtils";
 import config from "./config";
 
 const baseURL = config.baseURL;
@@ -12,13 +13,10 @@ export type User = {
   password: string;
 };
 
-export const getUser = async (token: string): Promise<User | null> => {
+export const getUser = async (): Promise<User | null> => {
   try {
     const response = await fetch(`${baseURL}/auth/whoami`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: getBearerToken() },
     });
     const json = await response.json();
     if (json.statusCode === 401) return null;
@@ -42,9 +40,7 @@ export const signUp = async (data: SignUpData): Promise<User | null> => {
   try {
     const response = await fetch(`${baseURL}/auth/signup`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
     const json = await response.json();
@@ -85,7 +81,7 @@ export const addDeposit = async (amount: number): Promise<boolean> => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: getBearerToken(),
       },
       body: JSON.stringify({ amount }),
     });
