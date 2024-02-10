@@ -1,18 +1,9 @@
 import { Spinner, Typography } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { AuctionItemT, searchAuctionItems } from "../api/auctionApi";
 import { useQuery } from "react-query";
+import { useLocation } from "react-router-dom";
+import { searchAuctionItems } from "../api/auctionApi";
 import ErrorIndicator from "../components/ErrorIndicator";
-
-const getParams = (search: string) => {
-  const parsed = new URLSearchParams(search);
-  const params: { [key: string]: string } = {};
-  for (const [key, value] of parsed) {
-    params[key] = value;
-  }
-  return params;
-};
+import { getParams } from "../utils/getParams";
 
 const AuctionSearchItems = () => {
   const location = useLocation();
