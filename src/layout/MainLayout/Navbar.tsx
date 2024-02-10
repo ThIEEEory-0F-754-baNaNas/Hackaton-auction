@@ -1,7 +1,7 @@
 import { Button, Input, Typography } from "@material-tailwind/react";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AUCTION_ITEMS, EXPLORE } from "../../Navigation";
+import { AUCTION_ITEMS } from "../../Navigation";
 import { UserContext } from "../../context/userContext";
 import { ProfileMenu } from "./ProfileMenu";
 
@@ -52,7 +52,7 @@ const SearchInput = () => {
       onKeyDown={(e) => {
         if (e.key === "Enter") {
           setTitle("");
-          navigation(`${EXPLORE}${AUCTION_ITEMS}?title=${title}`);
+          navigation(`${AUCTION_ITEMS}?title=${title}`);
         }
       }}
       label="Search"
