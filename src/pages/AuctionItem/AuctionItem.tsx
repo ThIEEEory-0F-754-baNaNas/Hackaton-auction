@@ -37,7 +37,7 @@ const AuctionItem = () => {
   const sendBid = async (bid: number) => {
     if (!auctionId) throw new Error("No auction id");
     const res = await sendBidToAuction(auctionId, bid);
-    console.log(res);
+    return res.price > 0;
   };
 
   const currentBid = auction!.auctionStakes[0]?.price || auction!.startPrice;

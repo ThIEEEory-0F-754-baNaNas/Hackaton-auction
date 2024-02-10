@@ -88,7 +88,7 @@ export const searchAuctionItems = async (
 export const sendBidToAuction = async (
   auctionId: string,
   amount: number
-): Promise<boolean> => {
+): Promise<AuctionStakeT> => {
   const response = await fetch(`${baseURL}/auctionStakes`, {
     method: "POST",
     headers: {
@@ -97,5 +97,6 @@ export const sendBidToAuction = async (
     },
     body: JSON.stringify({ auctionId, price: amount }),
   });
+
   return await jsonOrThrow(response);
 };
