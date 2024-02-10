@@ -1,12 +1,11 @@
 import { ThemeProvider } from "@material-tailwind/react";
-import theme from "./theme";
-import Navigation from "./Navigation";
-import { UserContext } from "./context/userContext";
 import { useEffect, useState } from "react";
-import { User, addDeposit, getUser, signIn } from "./api/userApi";
-import { QueryClient, QueryClientProvider } from "react-query";
-
-const queryClient = new QueryClient();
+import { QueryClientProvider } from "react-query";
+import Navigation from "./Navigation";
+import { User, addDeposit, getUser } from "./api/userApi";
+import queryClient from "./context/queryClient";
+import { UserContext } from "./context/userContext";
+import theme from "./theme";
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
