@@ -48,7 +48,7 @@ export const signUp = async (data: SignUpData): Promise<User | null> => {
     const json = await response.json();
     if (json.statusCode === 401 || json.error) return null;
     console.log(json);
-    return json;
+    return { ...json, isNotOk: false };
   } catch (error) {
     console.error(error);
   }
