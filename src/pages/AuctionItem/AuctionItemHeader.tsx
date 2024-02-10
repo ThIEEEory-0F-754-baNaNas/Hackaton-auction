@@ -3,6 +3,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Carousel,
   Typography,
 } from "@material-tailwind/react";
 import classNames from "classnames";
@@ -73,11 +74,16 @@ const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
         floated={false}
         className="md:w-1/3 max-w-sm m-auto mt-5 md:m-7"
       >
-        <img
-          src={auction.images[0]}
-          alt={auction.title}
-          className="w-full object-cover"
-        />
+        <Carousel className="bg-bg">
+          {auction.images.map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              alt={`Woops! ${auction.title}`}
+              className="w-full object-cover"
+            />
+          ))}
+        </Carousel>
       </CardHeader>
       <CardBody className="w-full flex justify-between">
         <div>
