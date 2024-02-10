@@ -18,7 +18,7 @@ export function ProfileMenu() {
   const [user, setUser] = useContext(UserContext);
   const navigate = useNavigate();
 
-  if (!user) return null;
+  if (user.isNotOk) return null;
   const profileMenuItems = [
     { label: "Profile", onClick: () => navigate(PROFILE) },
     { label: "Settings", onClick: () => navigate(SETTINGS) },
@@ -26,7 +26,7 @@ export function ProfileMenu() {
       label: "Log out",
       onClick: () => {
         removeToken();
-        setUser(null);
+        setUser({ isNotOk: true, isLoading: false, error: null });
         navigate("/");
       },
     },

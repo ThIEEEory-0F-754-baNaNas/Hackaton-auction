@@ -41,7 +41,7 @@ const EditButton = ({ auction }: { auction: AuctionItemT }) => {
     !isActive(auction.startTime, auction.endTime) &&
     !isExpired(auction.endTime);
 
-  if (!user || auction.userId !== user.id) return null;
+  if (user.isNotOk || auction.userId !== user.id) return null;
 
   return (
     <div className="flex justify-end">

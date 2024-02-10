@@ -25,7 +25,7 @@ export const Navbar = () => {
         </div>
 
         <div className="flex gap-2 min-w-fit">
-          {user ? (
+          {!user.isNotOk ? (
             <ProfileMenu />
           ) : (
             <>

@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import Navigation from "./Navigation";
 import { User, getUser } from "./api/userApi";
 import { UserContext } from "./context/userContext";
+import { getTokenOrEmpty } from "./utils/apiUtils";
 
 function App() {
   const [user, setUser] = useState<User>({
@@ -11,14 +12,16 @@ function App() {
     error: null,
   });
 
+  const token = getTokenOrEmpty();
+
   const {
     data: fetchedUser,
     isLoading,
     isError,
     error,
-  } = useQuery("user", getUser, {
+  } = useQuery(`user-${token}`, getUser, {
     retry: 2,
-    // cacheTime: Infinity,
+    cacheTime: token ? 1000 * 60 * 60 * 24 * 7 : 0, // todo: is not caching
     refetchOnWindowFocus: false,
     onSuccess: (data) => {
       setUser(data);

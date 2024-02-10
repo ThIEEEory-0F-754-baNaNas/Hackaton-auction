@@ -12,14 +12,18 @@ export const jsonOrThrow = async (res: Response) => {
   return json;
 };
 
-export const getToken = () => {
+export const getTokenOrThrow = () => {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("Unauthorized");
   return token;
 };
 
+export const getTokenOrEmpty = () => {
+  return localStorage.getItem("token") || "";
+};
+
 export const getBearerToken = () => {
-  return `Bearer ${getToken()}`;
+  return `Bearer ${getTokenOrThrow()}`;
 };
 
 export const removeToken = () => {

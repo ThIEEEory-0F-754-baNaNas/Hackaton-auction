@@ -25,8 +25,9 @@ const AuctionItem = () => {
   if (isLoading) return <Spinner />;
   if (isError) return <ErrorIndicator error={error} />;
 
-  const isAuthorOfAuction =
-    user?.id && auction?.id && user.id === auction?.userId;
+  const isAuthorOfAuction = user.isNotOk
+    ? false
+    : auction?.id && user.id === auction?.userId;
 
   const isAuctionActive = isActive(
     auction?.startTime || "",
