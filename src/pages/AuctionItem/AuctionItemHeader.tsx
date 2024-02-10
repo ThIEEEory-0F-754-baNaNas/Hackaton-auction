@@ -4,6 +4,11 @@ import {
   CardBody,
   CardHeader,
   Carousel,
+  Tab,
+  TabPanel,
+  Tabs,
+  TabsBody,
+  TabsHeader,
   Typography,
 } from "@material-tailwind/react";
 import classNames from "classnames";
@@ -14,6 +19,7 @@ import { useContext } from "react";
 import { UserContext } from "../../context/userContext";
 import { useNavigate } from "react-router-dom";
 import { EDIT_AUCTION } from "../../Navigation";
+import { BidList } from "./AuctionBids";
 
 const RightTimerForAuction = ({ auction }: { auction: AuctionItemT }) => {
   const isAuctionActive = isActive(auction.startTime, auction.endTime);
@@ -29,7 +35,14 @@ const RightTimerForAuction = ({ auction }: { auction: AuctionItemT }) => {
         <Typography variant="h4">Auction is expired</Typography>
       )}
       {!isAuctionExpired && !isAuctionActive && (
-        <TimerComponent label="Auction starts in:" time={auction.startTime} />
+        <>
+          <TimerComponent label="Auction starts in:" time={auction.startTime} />
+          <TimerComponent
+            label="Auction ends at:"
+            time={auction.endTime}
+            isActivated={false}
+          />
+        </>
       )}
     </>
   );
@@ -58,7 +71,7 @@ const EditButton = ({ auction }: { auction: AuctionItemT }) => {
   );
 };
 
-const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
+const AuctionDetailsHeader = ({ auction }: { auction: AuctionItemT }) => {
   if (!auction || !auction.images) return null;
 
   const humanDate = new Date(auction.createdAt).toLocaleString();
@@ -90,7 +103,7 @@ const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
           <Typography variant="h2">{auction.title}</Typography>
           <Typography
             variant="paragraph"
-            className="relative -top-3 !text-on-primary-alt"
+            className="relative -top-2 !text-on-primary-alt"
           >
             {humanDate}
           </Typography>
@@ -106,6 +119,33 @@ const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
         <EditButton auction={auction} />
       </CardBody>
     </Card>
+  );
+};
+
+const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
+  const data = [
+    { label: "Details", Element: <AuctionDetailsHeader auction={auction} /> },
+    { label: "Bids", Element: <BidList bids={auction.auctionStakes} /> },
+    // { label: "Chat", element: <Chat auction={auction} /> },
+  ];
+
+  return (
+    <Tabs value={data[0].label}>
+      <TabsHeader>
+        {data.map(({ label }) => (
+          <Tab key={label} value={label}>
+            {label}
+          </Tab>
+        ))}
+      </TabsHeader>
+      <TabsBody>
+        {data.map(({ label, Element }) => (
+          <TabPanel key={label} value={label}>
+            {Element}
+          </TabPanel>
+        ))}
+      </TabsBody>
+    </Tabs>
   );
 };
 

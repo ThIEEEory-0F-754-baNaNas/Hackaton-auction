@@ -7,7 +7,7 @@ import ErrorIndicator from "../../components/ErrorIndicator";
 import { UserContext } from "../../context/userContext";
 import { isActive } from "../../utils/time";
 import { BidList, BidMenu } from "./AuctionBids";
-import AuctionHeader from "./AuctionItemHeader";
+import AuctionDetailsHeader from "./AuctionItemHeader";
 
 const AuctionItem = () => {
   const { id: auctionId } = useParams();
@@ -45,7 +45,7 @@ const AuctionItem = () => {
   return (
     <div className="text-on-primary h-full container m-auto">
       <div className="mb-3">
-        <AuctionHeader auction={auction!} />
+        <AuctionDetailsHeader auction={auction!} />
       </div>
       <div className="mb-3">
         <BidList bids={auction!.auctionStakes} />
