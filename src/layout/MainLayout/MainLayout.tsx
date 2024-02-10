@@ -4,7 +4,7 @@ import { Navbar } from "./Navbar";
 
 const MainContent = ({ children }: PropsWithChildren) => {
   return (
-    <div className="bg-primary w-full h-full rounded-2xl relative p-4 overflow-auto">
+    <div className="bg-primary w-full h-full rounded-2xl relative p-4 overflow-y-scroll">
       {children}
     </div>
   );
