@@ -75,7 +75,11 @@ export const addDeposit = async (amount: number): Promise<User> => {
   return { ...json, isNotOk: false };
 };
 
-export const updateProfileAvatar = async (avatar: File): Promise<boolean> => {
+export const updateProfileAvatar = async (
+  avatar: File | null
+): Promise<boolean> => {
+  if (!avatar) throw new Error("No avatar provided");
+
   // TODO: wait for backend to fix
   const user = await getUser();
   const userId = !user.isNotOk ? user.id : "";
