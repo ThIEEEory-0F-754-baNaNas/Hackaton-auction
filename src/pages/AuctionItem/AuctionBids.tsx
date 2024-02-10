@@ -36,16 +36,16 @@ export const BidMenu = ({
   const [isOpen, setOpen] = useState(false);
   const toggleDrawer = () => {
     setOpen(!isOpen);
-    setWasFetched(false);
+    setShowError(false);
   };
 
   const [bid, setBid] = useState(0);
 
-  const { refetch, isLoading, isError, error } = useQuery(
+  const { refetch, isLoading, isRefetching, isError, error } = useQuery(
     "bidItem",
     () => sendBid(bid),
     {
-      retry: 1,
+      retry: 0,
       enabled: false,
       onSuccess: () => {
         setOpen(false);
@@ -53,11 +53,11 @@ export const BidMenu = ({
     }
   );
 
-  const [wasFetchedAfterDialogOpen, setWasFetched] = useState(false);
+  const [showError, setShowError] = useState(false);
 
-  const sendBidQuery = () => {
-    refetch();
-    setWasFetched(true);
+  const sendBidQuery = async () => {
+    await refetch();
+    setShowError(true);
   };
 
   return (
@@ -104,16 +104,14 @@ export const BidMenu = ({
         <DialogBody>
           You are about to place a bid. Are you sure?
           <Typography variant="h6">Bid: {bid}</Typography>
-          {wasFetchedAfterDialogOpen && isError && (
-            <ErrorIndicator error={error} />
-          )}
+          {showError && isError && <ErrorIndicator error={error} />}
         </DialogBody>
         <DialogFooter>
           <Button
             variant="text"
             color="red"
             onClick={toggleDrawer}
-            disabled={isLoading}
+            disabled={isLoading || isRefetching}
             className="mr-1"
           >
             <span>Cancel</span>
@@ -125,7 +123,7 @@ export const BidMenu = ({
             className="flex"
           >
             <span>Confirm</span>
-            {isLoading && <Spinner />}
+            {(isLoading || isRefetching) && <Spinner />}
           </Button>
         </DialogFooter>
       </Dialog>
