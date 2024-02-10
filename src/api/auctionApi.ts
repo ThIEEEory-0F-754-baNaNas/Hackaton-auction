@@ -38,7 +38,7 @@ export const createAuctionItem = async (
     body: JSON.stringify(item),
   });
 
-  return jsonOrThrow(response);
+  return await jsonOrThrow(response);
 };
 
 export const getAuctionItem = async (id: string): Promise<AuctionItemT> => {
@@ -46,7 +46,7 @@ export const getAuctionItem = async (id: string): Promise<AuctionItemT> => {
     headers: { Authorization: getBearerToken() },
   });
 
-  return jsonOrThrow(response);
+  return await jsonOrThrow(response);
 };
 
 export const searchAuctionItems = async (
@@ -58,7 +58,7 @@ export const searchAuctionItems = async (
     `${baseURL}/auctionItems?title=${title}&pageSize=${pageSize}&page=${page}`
   );
 
-  return jsonOrThrow(response);
+  return await jsonOrThrow(response);
 };
 
 export const sendBidToAuction = async (
@@ -73,5 +73,5 @@ export const sendBidToAuction = async (
     },
     body: JSON.stringify({ auctionId, price: amount }),
   });
-  return jsonOrThrow(response);
+  return await jsonOrThrow(response);
 };
