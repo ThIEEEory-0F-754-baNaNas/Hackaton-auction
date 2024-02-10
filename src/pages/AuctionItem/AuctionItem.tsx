@@ -1,20 +1,30 @@
-import { Button, Typography } from "@material-tailwind/react";
-import { useContext, useEffect, useState } from "react";
+import { Spinner } from "@material-tailwind/react";
+import { useContext } from "react";
+import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
-import {
-  AuctionItemT,
-  getAuctionItem,
-  sendBidToAuction,
-} from "../../api/auctionApi";
+import { getAuctionItem, sendBidToAuction } from "../../api/auctionApi";
+import ErrorIndicator from "../../components/ErrorIndicator";
 import { UserContext } from "../../context/userContext";
-import AuctionHeader from "./AuctionItemHeader";
-import { BidList, BidMenu } from "./AuctionBids";
 import { isActive } from "../../utils/time";
+import { BidList, BidMenu } from "./AuctionBids";
+import AuctionHeader from "./AuctionItemHeader";
 
 const AuctionItem = () => {
   const { id: auctionId } = useParams();
-  const [auction, setAuction] = useState<AuctionItemT | null>(null);
   const [user] = useContext(UserContext);
+  const {
+    data: auction,
+    isLoading,
+    isError,
+    error,
+  } = useQuery("auctionItem", () => getAuctionItem(auctionId || ""), {
+    refetchOnWindowFocus: false,
+    retry: 2,
+  });
+
+  if (isLoading) return <Spinner />;
+  if (isError) return <ErrorIndicator error={error} />;
+
   const isAuthorOfAuction =
     user?.id && auction?.id && user.id === auction?.userId;
 
@@ -23,27 +33,16 @@ const AuctionItem = () => {
     auction?.endTime || ""
   );
 
-  useEffect(() => {
-    const getAuction = async () => {
-      const auction = await getAuctionItem(auctionId || "");
-      setAuction(auction);
-    };
-
-    getAuction();
-  }, [user, auctionId]);
-
   const sendBid = async (bid: number) => {
     if (!auctionId) throw new Error("No auction id");
     const res = await sendBidToAuction(auctionId, bid);
     console.log(res);
   };
 
-  if (!auction) return <Typography variant="h1">Loading...</Typography>;
-
   return (
     <div className="text-on-primary h-full container m-auto">
       <div className="mb-3">
-        <AuctionHeader auction={auction} />
+        <AuctionHeader auction={auction!} />
       </div>
       <div className="mb-3">
         <BidList />

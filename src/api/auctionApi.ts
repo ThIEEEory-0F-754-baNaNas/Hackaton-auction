@@ -1,3 +1,5 @@
+import { getBearerToken, jsonOrThrow } from "../utils/apiUtils";
+
 export type AuctionItemT = {
   id: string;
   title: string;
@@ -23,93 +25,50 @@ export type CreateAuctionDto = {
 
 export const createAuctionItem = async (
   item: CreateAuctionDto
-): Promise<AuctionItemT | null> => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:3000/auctionItems", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(item),
-    });
-    const json = await response.json();
-    if (json.statusCode === 401) return null;
-    return json;
-  } catch (error) {
-    console.error(error);
-  }
+): Promise<AuctionItemT> => {
+  const response = await fetch("http://localhost:3000/auctionItems", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: getBearerToken(),
+    },
+    body: JSON.stringify(item),
+  });
 
-  return null;
+  return jsonOrThrow(response);
 };
 
-export const getAuctionItem = async (
-  id: string
-): Promise<AuctionItemT | null> => {
-  const token = localStorage.getItem("token");
-  if (!token) throw new Error("Get auction item: Unauthorized");
+export const getAuctionItem = async (id: string): Promise<AuctionItemT> => {
+  const response = await fetch(`http://localhost:3000/auctionItems/${id}`, {
+    headers: { Authorization: getBearerToken() },
+  });
 
-  try {
-    const response = await fetch(`http://localhost:3000/auctionItems/${id}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const json = await response.json();
-    if (json.statusCode === 401) return null;
-    return json;
-  } catch (error) {
-    console.error(error);
-  }
-  return null;
+  return jsonOrThrow(response);
 };
 
 export const searchAuctionItems = async (
   title: string,
   pageSize: number = 10,
   page: number = 0
-): Promise<AuctionItemT[] | null> => {
-  try {
-    const response = await fetch(
-      `http://localhost:3000/auctionItems?title=${title}&pageSize=${pageSize}&page=${page}`,
-      {
-        method: "GET",
-      }
-    );
+): Promise<AuctionItemT[]> => {
+  const response = await fetch(
+    `http://localhost:3000/auctionItems?title=${title}&pageSize=${pageSize}&page=${page}`
+  );
 
-    const json = await response.json();
-    if (json.statusCode === 401 || json.error) return null;
-    return json;
-  } catch (err) {
-    console.log(err);
-  }
-  return null;
+  return jsonOrThrow(response);
 };
 
 export const sendBidToAuction = async (
   auctionId: string,
   amount: number
 ): Promise<boolean> => {
-  const token = localStorage.getItem("token");
-  if (!token) return false;
-
-  try {
-    const response = await fetch(`http://localhost:3000/auctionStakes`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ auctionId, price: amount }),
-    });
-    const json = await response.json();
-    if (json.statusCode === 401 || json.error) return false;
-    console.log(json);
-    return true;
-  } catch (err) {
-    console.log(err);
-  }
-  return false;
+  const response = await fetch(`http://localhost:3000/auctionStakes`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: getBearerToken(),
+    },
+    body: JSON.stringify({ auctionId, price: amount }),
+  });
+  return jsonOrThrow(response);
 };
