@@ -37,9 +37,9 @@ const RightTimerForAuction = ({ auction }: { auction: AuctionItemT }) => {
 const EditButton = ({ auction }: { auction: AuctionItemT }) => {
   const [user] = useContext(UserContext);
   const navigate = useNavigate();
-  const canEdit = true;
-  // !isActive(auction.startTime, auction.endTime) &&
-  // !isExpired(auction.endTime);
+  const canEdit =
+    !isActive(auction.startTime, auction.endTime) &&
+    !isExpired(auction.endTime);
 
   if (!user || auction.userId !== user.id) return null;
 
