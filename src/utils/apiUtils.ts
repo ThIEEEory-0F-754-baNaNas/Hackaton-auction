@@ -21,3 +21,7 @@ export const getToken = () => {
 export const getBearerToken = () => {
   return `Bearer ${getToken()}`;
 };
+
+export const removeToken = () => {
+  localStorage.removeItem("token");
+};

@@ -5,6 +5,7 @@ import { UserContext } from "./context/userContext";
 import { useEffect, useState } from "react";
 import { User, addDeposit, getUser, signIn } from "./api/userApi";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { getToken } from "./utils/apiUtils";
 
 const queryClient = new QueryClient();
 
@@ -12,9 +13,7 @@ function App() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    getUser(token).then((user) => {
+    getUser(getToken()).then((user) => {
       if (user) setUser(user);
       addDeposit(500);
     });

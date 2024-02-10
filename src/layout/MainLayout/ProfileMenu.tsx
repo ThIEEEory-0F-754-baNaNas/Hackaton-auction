@@ -11,6 +11,7 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { PROFILE, SETTINGS } from "../../Navigation";
 import { UserContext } from "../../context/userContext";
+import { removeToken } from "../../utils/apiUtils";
 
 export function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -24,7 +25,7 @@ export function ProfileMenu() {
     {
       label: "Log out",
       onClick: () => {
-        localStorage.removeItem("token");
+        removeToken();
         setUser(null);
         navigate("/");
       },
