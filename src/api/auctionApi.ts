@@ -76,10 +76,12 @@ export const getAuctionItem = async (id: string): Promise<AuctionItemT> => {
 export const searchAuctionItems = async (
   title: string,
   pageSize: number = 10,
-  page: number = 0
+  page: number = 0,
+  sort: keyof AuctionItemT = "createdAt",
+  order: "asc" | "desc" = "desc"
 ): Promise<AuctionItemT[]> => {
   const response = await fetch(
-    `${baseURL}/auctionItems?title=${title}&pageSize=${pageSize}&page=${page}`
+    `${baseURL}/auctionItems?title=${title}&pageSize=${pageSize}&page=${page}&sort=${sort}&order=${order}`
   );
 
   return await jsonOrThrow(response);
