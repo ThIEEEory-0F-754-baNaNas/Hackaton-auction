@@ -47,7 +47,9 @@ const EditButton = ({ auction }: { auction: AuctionItemT }) => {
     <div className="flex justify-end">
       <Button
         disabled={!canEdit}
-        onClick={() => navigate(`${EDIT_AUCTION}/${auction.id}`)}
+        onClick={() =>
+          navigate(`${EDIT_AUCTION}/${auction.id}`, { state: auction })
+        }
       >
         Edit
       </Button>
