@@ -4,6 +4,7 @@ import {
   CardBody,
   CardHeader,
   Carousel,
+  Input,
   Tab,
   TabPanel,
   Tabs,
@@ -19,7 +20,6 @@ import { useContext } from "react";
 import { UserContext } from "../../context/userContext";
 import { useNavigate } from "react-router-dom";
 import { EDIT_AUCTION } from "../../Navigation";
-import { BidList } from "./AuctionBids";
 
 const RightTimerForAuction = ({ auction }: { auction: AuctionItemT }) => {
   const isAuctionActive = isActive(auction.startTime, auction.endTime);
@@ -67,6 +67,31 @@ const EditButton = ({ auction }: { auction: AuctionItemT }) => {
       >
         Edit
       </Button>
+    </div>
+  );
+};
+
+const AuctionChat = ({ auction }: { auction: AuctionItemT }) => {
+  const chat = auction.chat;
+
+  if (!chat) return "Create chat TODO:";
+
+  const messages = chat.messages || [];
+  return (
+    <div>
+      {messages.map((message, index) => (
+        <div key={index} className="flex justify-between">
+          <Typography variant="h6">{message.userId}</Typography>
+          <Typography variant="h6">{message.text}</Typography>
+        </div>
+      ))}
+
+      <Input
+        placeholder="Send message"
+        variant="outlined"
+        crossOrigin={undefined}
+        className="w-full"
+      />
     </div>
   );
 };
@@ -125,8 +150,7 @@ const AuctionDetailsHeader = ({ auction }: { auction: AuctionItemT }) => {
 const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
   const data = [
     { label: "Details", Element: <AuctionDetailsHeader auction={auction} /> },
-    { label: "Bids", Element: <BidList bids={auction.auctionStakes} /> },
-    // { label: "Chat", element: <Chat auction={auction} /> },
+    { label: "Chat", Element: <AuctionChat auction={auction} /> },
   ];
 
   return (

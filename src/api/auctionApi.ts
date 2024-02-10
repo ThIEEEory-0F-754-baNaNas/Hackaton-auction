@@ -37,7 +37,7 @@ export type AuctionItemT = {
   minPriceStep: number;
   userId: string;
   auctionStakes: AuctionStakeT[];
-  chat: Chat;
+  chat?: Chat;
 };
 
 export type CreateAuctionDto = {

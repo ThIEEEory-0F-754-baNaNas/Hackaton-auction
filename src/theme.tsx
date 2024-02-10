@@ -165,30 +165,31 @@ const theme = {
           ))}
         </div>
       ),
-      autoplay: false,
-      autoplayDelay: 5000,
-      transition: {
-        type: "tween",
-        duration: 0.5,
-      },
-      loop: false,
-      className: "",
     },
+  },
+  tabsHeader: {
     styles: {
       base: {
-        carousel: {
-          position: "relative",
-          width: "w-full",
-          height: "h-full",
-          overflowX: "overflow-x-hidden",
-          display: "flex",
+        bg: "bg-primary",
+      },
+    },
+  },
+  tab: {
+    styles: {
+      base: {
+        tab: {
+          initial: {
+            color: "text-on-primary",
+          },
         },
-
-        slide: {
-          width: "w-full",
+        indicator: {
+          position: "absolute",
+          inset: "inset-0",
+          zIndex: "z-10",
           height: "h-full",
-          display: "inline-block",
-          flex: "flex-none",
+          bg: "bg-bg",
+          borderRadius: "rounded-md",
+          boxShadow: "shadow",
         },
       },
     },
