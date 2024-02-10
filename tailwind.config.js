@@ -8,6 +8,7 @@ export default withMT({
     extend: {
       colors: {
         primary: "var(--color-primary)",
+        "on-primary-alt": "var(--color-on-primary-alt)",
         "on-primary": "var(--color-on-primary)",
         bg: "var(--color-background)",
 
