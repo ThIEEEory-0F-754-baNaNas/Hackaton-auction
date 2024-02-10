@@ -7,17 +7,30 @@ export type AuctionItemT = {
   createdAt: string;
   startTime: string;
   endTime: string;
+  minPriceStep: number;
   userId: string;
 };
 
+export type CreateAuctionDto = {
+  title: string;
+  description: string;
+  startPrice: number;
+  startTime: string;
+  endTime: string;
+  minPriceStep: number;
+  images: string[];
+};
+
 export const createAuctionItem = async (
-  item: Omit<AuctionItemT, "id" | "userId">
+  item: CreateAuctionDto
 ): Promise<AuctionItemT | null> => {
   try {
+    const token = localStorage.getItem("token");
     const response = await fetch("http://localhost:3000/auctionItems", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(item),
     });

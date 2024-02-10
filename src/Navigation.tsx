@@ -9,6 +9,7 @@ import Settings from "./pages/Settings";
 import ProtectedPage from "./pages/ProtectedPage";
 import { useContext } from "react";
 import { UserContext } from "./context/userContext";
+import CreateAuction from "./pages/CreateAuction";
 
 export const HOME = "/home";
 export const PROFILE = `${HOME}/profile`;
@@ -48,7 +49,7 @@ const Navigation = () => {
             },
             {
               path: `${CREATE_AUCTION}`,
-              element: <h1>Create Auction</h1>,
+              element: <CreateAuction />,
             },
             {
               path: `${EDIT_AUCTION}/:id`,
