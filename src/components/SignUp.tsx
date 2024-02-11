@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Card,
   Input,
@@ -6,19 +6,23 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-import { signUp } from '../api/userApi';
+import { signUp } from "../api/userApi";
+import { useNavigate } from "react-router-dom";
+import { HOME, SIGN_IN } from "../Navigation";
 
-type SignUpProps = {
-  onButtonClick: () => void;
-};
+export function SignUp() {
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [avatar, setAvatar] = useState("");
 
-export function SignUp({ onButtonClick }: SignUpProps) {
-  const [firstname, setFirstName] = useState('');
-  const [lastname, setLastName] = useState('');
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [avatar, setAvatar] = useState('');
+  const navigate = useNavigate();
+
+  const onButtonClick = () => {
+    navigate(SIGN_IN);
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -38,62 +42,68 @@ export function SignUp({ onButtonClick }: SignUpProps) {
             label="First name"
             value={firstname}
             onChange={(e) => setFirstName(e.target.value)}
-            crossOrigin={undefined}        
+            crossOrigin={undefined}
           />
           <Input
             label="Last Name"
             value={lastname}
             onChange={(e) => setLastName(e.target.value)}
-            crossOrigin={undefined}        
+            crossOrigin={undefined}
           />
           <Input
             label="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            crossOrigin={undefined}        
+            crossOrigin={undefined}
           />
           <Input
             label="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            crossOrigin={undefined}          
+            crossOrigin={undefined}
           />
           <Input
             label="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            crossOrigin={undefined}          
+            crossOrigin={undefined}
           />
           <Input
             type="text"
             label="Avatar URL"
             value={avatar}
-            onChange={(e) => setAvatar(e.target.value)} 
-            crossOrigin={undefined}        
+            onChange={(e) => setAvatar(e.target.value)}
+            crossOrigin={undefined}
           />
         </div>
         <Checkbox
-          label={<Typography
-            variant="small"
-            className="flex items-center font-normal"
-          >
-            I agree the
-            <a
-              href="#"
-              className="font-medium transition-colors hover:text-gray-900"
+          label={
+            <Typography
+              variant="small"
+              className="flex items-center font-normal"
             >
-              &nbsp;Terms and Conditions
-            </a>
-          </Typography>}
-          containerProps={{ className: "-ml-2.5" }} 
-          crossOrigin={undefined}        
+              I agree the
+              <a
+                href="#"
+                className="font-medium transition-colors hover:text-gray-900"
+              >
+                &nbsp;Terms and Conditions
+              </a>
+            </Typography>
+          }
+          containerProps={{ className: "-ml-2.5" }}
+          crossOrigin={undefined}
         />
         <Button className="mt-6" variant="gradient" fullWidth type="submit">
           Sign Up
         </Button>
         <Typography color="blue-gray" className="mt-4 text-center font-normal">
           Already have an account?{" "}
-          <a href="#" className="font-bold text-gray-900" onClick={onButtonClick}>
+          <a
+            href="#"
+            className="font-bold text-gray-900"
+            onClick={onButtonClick}
+          >
             Sign In
           </a>
         </Typography>

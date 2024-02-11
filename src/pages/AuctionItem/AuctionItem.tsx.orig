@@ -7,8 +7,14 @@ import ErrorIndicator from "../../components/ErrorIndicator";
 import { UserContext } from "../../context/userContext";
 import { isActive } from "../../utils/time";
 import { BidList, BidMenu } from "./AuctionBids";
+<<<<<<< HEAD
 import AuctionDetailsHeader from "./AuctionItemHeader";
+||||||| 371d052
+import AuctionHeader from "./AuctionItemHeader";
+=======
+import AuctionHeader from "./AuctionItemHeader";
 import { EDIT_AUCTION } from "../../Navigation";
+>>>>>>> main
 
 const AuctionItem = () => {
   const { id: auctionId } = useParams();
@@ -52,14 +58,22 @@ const AuctionItem = () => {
         <BidList bids={auction!.auctionStakes} />
       </div>
       {!isAuthorOfAuction && isAuctionActive && (
-        <div>
-          <Link to={`${EDIT_AUCTION}/${auctionId}`}>
-            <Button variant="text" fullWidth>
-              Edit auction
-            </Button>
-          </Link>
-          <BidMenu sendBid={sendBid} currentBid={currentBid} />
+<<<<<<< HEAD
+        <div className="sticky bottom-0 top-0">
+          <BidMenu currentBid={currentBid} sendBid={sendBid} />
         </div>
+||||||| 371d052
+        <div className="sticky bottom-0 top-0">
+          <BidMenu sendBid={sendBid} />
+        </div>
+=======
+      <div>
+        <Link to={`${EDIT_AUCTION}/${auctionId}`}>
+          <Button variant="text" fullWidth>Edit auction</Button>
+        </Link> 
+        <BidMenu sendBid={sendBid} />      
+      </div>
+>>>>>>> main
       )}
     </div>
   );
