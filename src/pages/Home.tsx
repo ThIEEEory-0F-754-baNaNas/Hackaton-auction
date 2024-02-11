@@ -44,7 +44,7 @@ const Home = () => {
   if (user.isNotOk) throw new Error("User is not authenticated");
 
   return (
-    <div className="text-on-primary flex flex-col items-center container">
+    <div className="text-on-primary flex flex-col items-center container m-auto">
       <Typography className="text-center" variant="h2">
         All auctions
       </Typography>
