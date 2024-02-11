@@ -26,6 +26,7 @@ function App() {
     onSuccess: (data) => {
       setUser(data);
     },
+    enabled: !!token,
   });
 
   useEffect(() => {

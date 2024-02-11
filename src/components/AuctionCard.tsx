@@ -10,8 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { AUCTION_ITEMS } from "../Navigation";
 import { AuctionItemT } from "../api/auctionApi";
-// TODO: extract timer to components
-import { RightTimerForAuction } from "../pages/AuctionItem/AuctionItemHeader";
+import RightTimerForAuction from "./TimerComponent";
 
 export default function AuctionCard({ auction }: { auction: AuctionItemT }) {
   const navigate = useNavigate();
@@ -37,7 +36,7 @@ export default function AuctionCard({ auction }: { auction: AuctionItemT }) {
       <CardBody className="h-full">
         <div className="flex flex-col gap-y-2 items-center justify-center">
           <Typography>{auction.title}</Typography>
-          <Typography>{auction.startPrice}</Typography>
+          <Typography>Start price: {auction.startPrice}</Typography>
           <RightTimerForAuction auction={auction} />
         </div>
       </CardBody>

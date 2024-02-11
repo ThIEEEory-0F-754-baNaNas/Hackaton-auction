@@ -3,6 +3,7 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { START } from "../Navigation";
 import { User } from "../api/userApi";
+import { getTokenOrEmpty } from "../utils/apiUtils";
 
 interface Props {
   user: User;
@@ -11,11 +12,13 @@ interface Props {
 }
 
 const ProtectedPage = ({ user, redirectTo = START, children }: Props) => {
-  if (user.isNotOk && user.isLoading) {
+  const token = getTokenOrEmpty();
+
+  if (token && user.isNotOk && user.isLoading) {
     return <Spinner />;
   }
 
-  if (user.isNotOk && !user.isLoading) {
+  if ((user.isNotOk && !user.isLoading) || !token) {
     return <Navigate to={redirectTo} replace />;
   }
 

@@ -5,9 +5,18 @@ import { AUCTION_ITEMS, SIGN_IN, SIGN_UP } from "../../Navigation";
 import Link from "../../components/Link";
 import { UserContext } from "../../context/userContext";
 import { ProfileMenu } from "./ProfileMenu";
+import { Deposit } from "../../components/Deposit";
+import { addDeposit } from "../../api/userApi";
 
 export const Navbar = () => {
-  const [user] = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext);
+  const [depositAmount, setDepositAmount] = useState(0);
+
+  const handleAddDeposit = async () => {
+    await addDeposit(depositAmount);
+    if (user.isNotOk) throw new Error;
+    setUser({ ...user, balance: user.balance + depositAmount });
+  };
 
   return (
     <div className="text-on-primary flex justify-between">
@@ -25,9 +34,22 @@ export const Navbar = () => {
           <SearchInput />
         </div>
 
-        <div className="flex gap-2 min-w-fit">
+        <div className="flex gap-8 min-w-fit items-center">
           {!user.isNotOk ? (
-            <ProfileMenu />
+            <>
+              <Input
+                type="number"
+                placeholder={depositAmount.toString()}
+                onChange={(e) => setDepositAmount(Number(e.target.value))}
+                label="Add Deposit" 
+                crossOrigin={undefined}              
+              />
+              <Button onClick={handleAddDeposit}>
+                Add Deposit
+              </Button>
+              <Deposit deposit={user.balance} />
+              <ProfileMenu />
+            </>
           ) : (
             <>
               <Link to={SIGN_UP}>

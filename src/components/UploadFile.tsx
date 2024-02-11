@@ -49,7 +49,7 @@ const UploadFile = ({
         />
         <Button
           variant="outlined"
-          disabled={!files || isLoading || isFetching}
+          disabled={!files.length || isLoading || isFetching}
           onClick={() => refetch()}
           className={`flex ${classNames({
             hidden: !showButton,

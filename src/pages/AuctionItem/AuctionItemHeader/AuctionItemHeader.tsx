@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   CardBody,
   CardHeader,
@@ -12,93 +11,11 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import classNames from "classnames";
-import { AuctionItemT } from "../../api/auctionApi";
-import { TimerComponent } from "../../components/Timer";
-import { isActive, isExpired } from "../../utils/time";
-import { useContext } from "react";
-import { UserContext } from "../../context/userContext";
-import { useNavigate } from "react-router-dom";
-import { EDIT_AUCTION } from "../../Navigation";
-
-export const RightTimerForAuction = ({
-  auction,
-}: {
-  auction: AuctionItemT;
-}) => {
-  const isAuctionActive = isActive(auction.startTime, auction.endTime);
-  const isAuctionExpired = isExpired(auction.endTime);
-
-  return (
-    <>
-      {isAuctionActive && (
-        <TimerComponent label="Time left:" time={auction.endTime} />
-      )}
-
-      {isAuctionExpired && (
-        <Typography variant="h4">Auction is expired</Typography>
-      )}
-      {!isAuctionExpired && !isAuctionActive && (
-        <>
-          <TimerComponent label="Auction starts in:" time={auction.startTime} />
-          <TimerComponent
-            label="Auction ends at:"
-            time={auction.endTime}
-            isActivated={false}
-          />
-        </>
-      )}
-    </>
-  );
-};
-
-const EditButton = ({ auction }: { auction: AuctionItemT }) => {
-  const [user] = useContext(UserContext);
-  const navigate = useNavigate();
-  const canEdit =
-    !isActive(auction.startTime, auction.endTime) &&
-    !isExpired(auction.endTime);
-
-  if (user.isNotOk || auction.userId !== user.id) return null;
-
-  return (
-    <div className="flex justify-end">
-      <Button
-        disabled={!canEdit}
-        onClick={() =>
-          navigate(`${EDIT_AUCTION}/${auction.id}`, { state: auction })
-        }
-      >
-        Edit
-      </Button>
-    </div>
-  );
-};
-
-const AuctionChat = ({ auction }: { auction: AuctionItemT }) => {
-  return <div>Chat TODO: {auction.id}</div>;
-  // const chat = auction.chat;
-
-  // if (!chat) return "Create chat TODO:";
-
-  // const messages = chat.messages || [];
-  // return (
-  //   <div>
-  //     {messages.map((message, index) => (
-  //       <div key={index} className="flex justify-between">
-  //         <Typography variant="h6">{message.userId}</Typography>
-  //         <Typography variant="h6">{message.text}</Typography>
-  //       </div>
-  //     ))}
-
-  //     <Input
-  //       placeholder="Send message"
-  //       variant="outlined"
-  //       crossOrigin={undefined}
-  //       className="w-full"
-  //     />
-  //   </div>
-  // );
-};
+import { AuctionItemT } from "../../../api/auctionApi";
+import RightTimerForAuction from "../../../components/TimerComponent";
+import { isActive, isExpired } from "../../../utils/time";
+import AuctionChat from "./AuctionChat";
+import EditButton from "./EditButton";
 
 const AuctionDetailsHeader = ({
   auction,
