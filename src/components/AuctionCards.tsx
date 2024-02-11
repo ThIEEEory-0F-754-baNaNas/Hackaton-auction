@@ -47,7 +47,11 @@ const AuctionCards = ({
   return (
     <>
       {mainContent}
-      <Pagination setActive={setPage} active={page} />
+      <Pagination
+        setActive={setPage}
+        active={page}
+        hasNext={(auctions?.length || 0) > 0}
+      />
     </>
   );
 };

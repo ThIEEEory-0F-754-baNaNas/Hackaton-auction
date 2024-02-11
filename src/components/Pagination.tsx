@@ -4,10 +4,12 @@ import { IconButton, Typography } from "@material-tailwind/react";
 interface PaginationProps {
   active: number;
   setActive: (page: number) => void;
+  hasNext: boolean;
 }
 
-export function Pagination({ active, setActive }: PaginationProps) {
+export function Pagination({ active, setActive, hasNext }: PaginationProps) {
   const next = () => {
+    if (!hasNext) return;
     setActive(active + 1);
   };
 
@@ -30,7 +32,12 @@ export function Pagination({ active, setActive }: PaginationProps) {
       <Typography className="font-normal">
         Page <strong className="text-on-primary">{active}</strong>
       </Typography>
-      <IconButton size="sm" variant="outlined" onClick={next}>
+      <IconButton
+        size="sm"
+        variant="outlined"
+        onClick={next}
+        disabled={!hasNext}
+      >
         <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
       </IconButton>
     </div>
