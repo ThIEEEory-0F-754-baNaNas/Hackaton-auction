@@ -1,5 +1,4 @@
 import { Alert } from "@material-tailwind/react";
-import React from "react";
 
 interface Props {
   error: unknown;
@@ -8,6 +7,7 @@ interface Props {
 
 const ErrorIndicator = ({ msg, error }: Props) => {
   if (!error) throw new Error("No error provided");
+  if (!(error instanceof Error)) throw error;
 
   const message = error.message || "Error occurred";
   const displayMessage = msg ? `${msg}: ${message}` : message;

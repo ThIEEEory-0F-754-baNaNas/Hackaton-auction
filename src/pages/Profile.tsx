@@ -1,4 +1,3 @@
-import React from "react";
 import UploadFile from "../components/UploadFile";
 import { updateProfileAvatar } from "../api/userApi";
 

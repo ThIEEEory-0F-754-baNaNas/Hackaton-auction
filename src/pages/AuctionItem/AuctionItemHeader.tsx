@@ -4,7 +4,6 @@ import {
   CardBody,
   CardHeader,
   Carousel,
-  Input,
   Tab,
   TabPanel,
   Tabs,
@@ -76,28 +75,29 @@ const EditButton = ({ auction }: { auction: AuctionItemT }) => {
 };
 
 const AuctionChat = ({ auction }: { auction: AuctionItemT }) => {
-  const chat = auction.chat;
+  return <div>Chat TODO: {auction.id}</div>;
+  // const chat = auction.chat;
 
-  if (!chat) return "Create chat TODO:";
+  // if (!chat) return "Create chat TODO:";
 
-  const messages = chat.messages || [];
-  return (
-    <div>
-      {messages.map((message, index) => (
-        <div key={index} className="flex justify-between">
-          <Typography variant="h6">{message.userId}</Typography>
-          <Typography variant="h6">{message.text}</Typography>
-        </div>
-      ))}
+  // const messages = chat.messages || [];
+  // return (
+  //   <div>
+  //     {messages.map((message, index) => (
+  //       <div key={index} className="flex justify-between">
+  //         <Typography variant="h6">{message.userId}</Typography>
+  //         <Typography variant="h6">{message.text}</Typography>
+  //       </div>
+  //     ))}
 
-      <Input
-        placeholder="Send message"
-        variant="outlined"
-        crossOrigin={undefined}
-        className="w-full"
-      />
-    </div>
-  );
+  //     <Input
+  //       placeholder="Send message"
+  //       variant="outlined"
+  //       crossOrigin={undefined}
+  //       className="w-full"
+  //     />
+  //   </div>
+  // );
 };
 
 const AuctionDetailsHeader = ({

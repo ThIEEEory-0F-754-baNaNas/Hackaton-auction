@@ -3,7 +3,7 @@ import { User } from "../api/userApi";
 
 export const UserContext = createContext<[User, (user: User) => void]>([
   {
-    ok: false,
+    isNotOk: true,
     isLoading: false,
     error: null,
   },
