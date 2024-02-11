@@ -2,7 +2,11 @@ import { Button, Spinner } from "@material-tailwind/react";
 import { useContext } from "react";
 import { useQuery } from "react-query";
 import { Link, useParams } from "react-router-dom";
-import { getAuctionItem, sendBidToAuction } from "../../api/auctionApi";
+import {
+  getAuctionItem,
+  getAuctionStakes,
+  sendBidToAuction,
+} from "../../api/auctionApi";
 import ErrorIndicator from "../../components/ErrorIndicator";
 import { UserContext } from "../../context/userContext";
 import { isActive } from "../../utils/time";
@@ -23,6 +27,15 @@ const AuctionItem = () => {
     retry: 2,
   });
 
+  const {
+    data: stakes,
+    isLoading: isStakeLoading,
+    isError: isStakeError,
+    error: stakeError,
+  } = useQuery("auctionBids", () => getAuctionStakes(auctionId || ""), {
+    retry: 0,
+  });
+
   if (isLoading) return <Spinner />;
   if (isError) return <ErrorIndicator error={error} />;
 
@@ -41,7 +54,9 @@ const AuctionItem = () => {
     return res.price > 0;
   };
 
-  const currentBid = auction!.auctionStakes[0]?.price || auction!.startPrice;
+  const lastPrice = (stakes && stakes[0]?.price) || 0;
+  const currentBid =
+    lastPrice > 0 ? lastPrice + auction!.minPriceStep : auction!.startPrice;
 
   return (
     <div className="text-on-primary h-full container m-auto">
@@ -49,7 +64,7 @@ const AuctionItem = () => {
         <AuctionDetailsHeader auction={auction!} />
       </div>
       <div className="mb-3">
-        <BidList bids={auction!.auctionStakes} />
+        <BidList bids={stakes} />
       </div>
       {!isAuthorOfAuction && isAuctionActive && (
         <div>

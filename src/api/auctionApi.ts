@@ -5,10 +5,14 @@ const baseURL = config.baseURL;
 
 export type AuctionStakeT = {
   id: string;
-  userId: string;
+  user: {
+    id: string;
+    avatar: string;
+    username: string;
+  };
   createdAt: string;
-  auctionItemId: string;
   price: number;
+  // auctionItemId: string;
 };
 
 export type Messages = {
@@ -36,8 +40,6 @@ export type AuctionItemT = {
   endTime: string;
   minPriceStep: number;
   userId: string;
-  auctionStakes: AuctionStakeT[];
-  chat?: Chat;
 };
 
 export type CreateAuctionDto = {
@@ -73,6 +75,15 @@ export const getAuctionItem = async (id: string): Promise<AuctionItemT> => {
   return await jsonOrThrow(response);
 };
 
+export const getAuctionStakes = async (
+  auctionId: string
+): Promise<AuctionStakeT[]> => {
+  const response = await fetch(`${baseURL}/auctionItems/${auctionId}/stakes`, {
+    headers: { Authorization: getBearerToken() },
+  });
+  return await jsonOrThrow(response);
+};
+
 export const searchAuctionItems = async (
   title: string,
   pageSize: number = 10,
@@ -91,13 +102,13 @@ export const sendBidToAuction = async (
   auctionId: string,
   amount: number
 ): Promise<AuctionStakeT> => {
-  const response = await fetch(`${baseURL}/auctionStakes`, {
+  const response = await fetch(`${baseURL}/auctionItems/${auctionId}/stakes`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: getBearerToken(),
     },
-    body: JSON.stringify({ auctionId, price: amount }),
+    body: JSON.stringify({ price: amount }),
   });
 
   return await jsonOrThrow(response);
