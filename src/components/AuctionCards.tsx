@@ -16,12 +16,14 @@ interface AuctionCardsProps {
     isRefetching: boolean;
   };
   auctions: AuctionItemT[] | undefined;
+  label?: string;
 }
 
 const AuctionCards = ({
   useQuery: { isError, error, isLoading, isRefetching },
   auctions,
   useState: { setPage, page },
+  label = "No auctions found",
 }: AuctionCardsProps) => {
   if (isError) return <ErrorIndicator error={error} />;
 
@@ -32,7 +34,7 @@ const AuctionCards = ({
       <>
         {auctions!.length === 0 && (
           <div className="text-center w-full">
-            <Typography variant="h4">No auctions found</Typography>
+            <Typography variant="h4">{label}</Typography>
           </div>
         )}
 
