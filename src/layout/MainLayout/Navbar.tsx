@@ -5,6 +5,7 @@ import { AUCTION_ITEMS, SIGN_IN, SIGN_UP } from "../../Navigation";
 import Link from "../../components/Link";
 import { UserContext } from "../../context/userContext";
 import { ProfileMenu } from "./ProfileMenu";
+import Link from "../../components/Link";
 
 export const Navbar = () => {
   const [user] = useContext(UserContext);
