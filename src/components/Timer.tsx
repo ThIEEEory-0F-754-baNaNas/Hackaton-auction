@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 export const TimerComponent = ({
   time,
   label,
+  isActivated = true,
 }: {
   time: string;
   label: string;
+  isActivated?: boolean;
 }) => {
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
@@ -35,16 +37,26 @@ export const TimerComponent = ({
       setSeconds(Math.floor((distance % (1000 * 60)) / 1000));
     });
 
+    if (!isActivated) clearInterval(ineterval);
+
     return () => {
       clearInterval(ineterval);
     };
-  });
+  }, [isActivated, time]);
 
   return (
     <div className="flex items-baseline">
-      <Typography variant="h4">{label} </Typography>
-      <Typography variant="paragraph" className="ml-5">
-        {days}d {hours}h {minutes}m {seconds}s
+      <Typography variant="h4">{label}</Typography>
+      <Typography variant="paragraph" className="ml-1">
+        {isActivated ? (
+          <>
+            {days}d {hours}h {minutes}m {seconds}s
+          </>
+        ) : (
+          new Date(time).toLocaleTimeString() +
+          " on " +
+          new Date(time).toLocaleDateString()
+        )}
       </Typography>
     </div>
   );

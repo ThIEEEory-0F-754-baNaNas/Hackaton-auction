@@ -1,11 +1,11 @@
 export const jsonOrThrow = async (res: Response) => {
   console.log("JSON OR THROW");
-  if (!res.ok) throw new Error(res.statusText);
-  console.log("RES is OK");
   const json = await res.json();
 
-  if (json.error || json.message)
-    throw new Error(json.error || json.message || "Unexpected error");
+  if (json.error || json.message) {
+    console.log("JSON ERROR", json);
+    throw new Error(json.message || json.error || "Unexpected error");
+  }
 
   console.log("JSON", json);
 
@@ -28,4 +28,8 @@ export const getBearerToken = () => {
 
 export const removeToken = () => {
   localStorage.removeItem("token");
+};
+
+export const setToken = (token: string) => {
+  localStorage.setItem("token", token);
 };

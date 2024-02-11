@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from "react";
 import {
   Card,
   Input,
@@ -6,26 +6,27 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-import { signIn } from '../api/userApi';
+import { signIn } from "../api/userApi";
+import { useNavigate } from "react-router-dom";
+import { SIGN_UP } from "../Navigation";
+import { UserContext } from "../context/userContext";
 
-type SignInProps = {
-  onButtonClick: () => void;
-};
+export function SignIn() {
+  // TODO: make it similar to SignUp
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [, setUser] = useContext(UserContext);
 
-export function SignIn({ onButtonClick }: SignInProps) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const onButtonClick = () => {
+    navigate(SIGN_UP);
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const result = await signIn(email, password);
-    if (result) {
-      console.log('Signed in with token:', result.token);
-      localStorage.setItem('token', result.token);
-      window.location.reload();
-    } else {
-      console.log('Failed to sign in');
-    }
+    const user = await signIn(email, password);
+    setUser(user);
   };
 
   return (
@@ -46,27 +47,33 @@ export function SignIn({ onButtonClick }: SignInProps) {
             label="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            crossOrigin={undefined}          
+            crossOrigin={undefined}
           />
         </div>
         <Checkbox
           className="border-gray-900"
-          label={<Typography
-            variant="small"
-            color="blue-gray"
-            className="flex items-center font-normal"
-          >
-            Remember me
-          </Typography>}
-          containerProps={{ className: "-ml-2.5" }} 
-          crossOrigin={undefined}        
+          label={
+            <Typography
+              variant="small"
+              color="blue-gray"
+              className="flex items-center font-normal"
+            >
+              Remember me
+            </Typography>
+          }
+          containerProps={{ className: "-ml-2.5" }}
+          crossOrigin={undefined}
         />
         <Button className="mt-6" variant="gradient" fullWidth type="submit">
           Sign In
         </Button>
         <Typography color="blue-gray" className="mt-4 text-center font-normal">
           Don't have an account?{" "}
-          <a href="#" className="font-bold text-gray-900" onClick={onButtonClick}>
+          <a
+            href="#"
+            className="font-bold text-gray-900"
+            onClick={onButtonClick}
+          >
             Sign Up
           </a>
         </Typography>

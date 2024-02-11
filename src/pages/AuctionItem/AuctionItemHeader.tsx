@@ -3,6 +3,13 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Carousel,
+  Input,
+  Tab,
+  TabPanel,
+  Tabs,
+  TabsBody,
+  TabsHeader,
   Typography,
 } from "@material-tailwind/react";
 import classNames from "classnames";
@@ -14,7 +21,11 @@ import { UserContext } from "../../context/userContext";
 import { useNavigate } from "react-router-dom";
 import { EDIT_AUCTION } from "../../Navigation";
 
-export const RightTimerForAuction = ({ auction }: { auction: AuctionItemT }) => {
+export const RightTimerForAuction = ({
+  auction,
+}: {
+  auction: AuctionItemT;
+}) => {
   const isAuctionActive = isActive(auction.startTime, auction.endTime);
   const isAuctionExpired = isExpired(auction.endTime);
 
@@ -28,7 +39,14 @@ export const RightTimerForAuction = ({ auction }: { auction: AuctionItemT }) => 
         <Typography variant="h4">Auction is expired</Typography>
       )}
       {!isAuctionExpired && !isAuctionActive && (
-        <TimerComponent label="Auction starts in:" time={auction.startTime} />
+        <>
+          <TimerComponent label="Auction starts in:" time={auction.startTime} />
+          <TimerComponent
+            label="Auction ends at:"
+            time={auction.endTime}
+            isActivated={false}
+          />
+        </>
       )}
     </>
   );
@@ -57,11 +75,43 @@ const EditButton = ({ auction }: { auction: AuctionItemT }) => {
   );
 };
 
-const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
+const AuctionChat = ({ auction }: { auction: AuctionItemT }) => {
+  const chat = auction.chat;
+
+  if (!chat) return "Create chat TODO:";
+
+  const messages = chat.messages || [];
+  return (
+    <div>
+      {messages.map((message, index) => (
+        <div key={index} className="flex justify-between">
+          <Typography variant="h6">{message.userId}</Typography>
+          <Typography variant="h6">{message.text}</Typography>
+        </div>
+      ))}
+
+      <Input
+        placeholder="Send message"
+        variant="outlined"
+        crossOrigin={undefined}
+        className="w-full"
+      />
+    </div>
+  );
+};
+
+const AuctionDetailsHeader = ({
+  auction,
+  lastPrice,
+}: {
+  auction: AuctionItemT;
+  lastPrice: number;
+}) => {
   if (!auction || !auction.images) return null;
 
   const humanDate = new Date(auction.createdAt).toLocaleString();
   const isAuctionExpired = isExpired(auction.endTime);
+  const isAuctionActive = isActive(auction.startTime, auction.endTime);
 
   return (
     <Card
@@ -73,18 +123,23 @@ const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
         floated={false}
         className="md:w-1/3 max-w-sm m-auto mt-5 md:m-7"
       >
-        <img
-          src={auction.images[0]}
-          alt={auction.title}
-          className="w-full object-cover"
-        />
+        <Carousel className="bg-bg ">
+          {auction.images.map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              alt={`Woops! ${auction.title}`}
+              className="h-full w-full object-cover"
+            />
+          ))}
+        </Carousel>
       </CardHeader>
       <CardBody className="w-full flex justify-between">
         <div>
           <Typography variant="h2">{auction.title}</Typography>
           <Typography
             variant="paragraph"
-            className="relative -top-3 !text-on-primary-alt"
+            className="relative -top-2 !text-on-primary-alt"
           >
             {humanDate}
           </Typography>
@@ -95,11 +150,63 @@ const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
             Start price:{" "}
             <span className="text-on-primary-alt">{auction.startPrice}</span>
           </Typography>
+          <Typography variant="h4">
+            Min step:{" "}
+            <span className="text-on-primary-alt">{auction.minPriceStep}</span>
+          </Typography>
+          {/* TODO: refactor            */}
+          {isAuctionActive && (
+            <Typography variant="h4">
+              Current price:{" "}
+              <span className="text-on-primary-alt">{lastPrice}</span>
+            </Typography>
+          )}
+          {isAuctionExpired && (
+            <Typography variant="h4">
+              Last price:{" "}
+              <span className="text-on-primary-alt">{lastPrice}</span>
+            </Typography>
+          )}
           <RightTimerForAuction auction={auction} />
         </div>
         <EditButton auction={auction} />
       </CardBody>
     </Card>
+  );
+};
+
+const AuctionHeader = ({
+  auction,
+  lastPrice,
+}: {
+  auction: AuctionItemT;
+  lastPrice: number;
+}) => {
+  const data = [
+    {
+      label: "Details",
+      Element: <AuctionDetailsHeader lastPrice={lastPrice} auction={auction} />,
+    },
+    { label: "Chat", Element: <AuctionChat auction={auction} /> },
+  ];
+
+  return (
+    <Tabs value={data[0].label}>
+      <TabsHeader>
+        {data.map(({ label }) => (
+          <Tab key={label} value={label}>
+            {label}
+          </Tab>
+        ))}
+      </TabsHeader>
+      <TabsBody>
+        {data.map(({ label, Element }) => (
+          <TabPanel key={label} value={label}>
+            {Element}
+          </TabPanel>
+        ))}
+      </TabsBody>
+    </Tabs>
   );
 };
 
