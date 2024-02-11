@@ -1,3 +1,5 @@
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+
 const theme = {
   button: {
     defaultProps: {
@@ -121,6 +123,73 @@ const theme = {
         container: {
           bg: "bg-bg",
           color: "text-on-bg",
+        },
+      },
+    },
+  },
+  carousel: {
+    defaultProps: {
+      // @ts-ignore
+      prevArrow: ({ loop, handlePrev, firstIndex }) => {
+        return (
+          <button
+            onClick={handlePrev}
+            disabled={!loop && firstIndex}
+            className="!absolute top-2/4 left-4 -translate-y-2/4 rounded-full select-none transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-12 max-w-[48px] h-12 max-h-[48px] text-on-primary hover:text-on-primary-alt active:bg-primary/30 grid place-items-center"
+          >
+            <ChevronLeftIcon strokeWidth={3} className="-ml-1 h-7 w-7" />
+          </button>
+        );
+      },
+      // @ts-ignore
+      nextArrow: ({ loop, handleNext, lastIndex }) => (
+        <button
+          onClick={handleNext}
+          disabled={!loop && lastIndex}
+          className="!absolute top-2/4 right-4 -translate-y-2/4 rounded-full select-none transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-12 max-w-[48px] h-12 max-h-[48px] text-on-primary hover:text-on-primary-alt active:bg-primary/30 grid place-items-center"
+        >
+          <ChevronRightIcon strokeWidth={3} className="ml-1 h-7 w-7" />
+        </button>
+      ),
+      // @ts-ignore
+      navigation: ({ setActiveIndex, activeIndex, length }) => (
+        <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
+          {new Array(length).fill("").map((_, i) => (
+            <span
+              key={i}
+              className={`block h-3 w-3 cursor-pointer rounded-full transition-colors content-['c'] ${
+                activeIndex === i ? "text-on-primary-alt" : "text-on-primary"
+              }`}
+              onClick={() => setActiveIndex(i)}
+            />
+          ))}
+        </div>
+      ),
+    },
+  },
+  tabsHeader: {
+    styles: {
+      base: {
+        bg: "bg-primary",
+      },
+    },
+  },
+  tab: {
+    styles: {
+      base: {
+        tab: {
+          initial: {
+            color: "text-on-primary",
+          },
+        },
+        indicator: {
+          position: "absolute",
+          inset: "inset-0",
+          zIndex: "z-10",
+          height: "h-full",
+          bg: "bg-bg",
+          borderRadius: "rounded-md",
+          boxShadow: "shadow",
         },
       },
     },

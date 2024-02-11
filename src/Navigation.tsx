@@ -13,6 +13,8 @@ import CreateAuction from "./pages/CreateAuction";
 import EditAuction from "./pages/EditAuction";
 import Explore from "./pages/Explore";
 import Start from "./pages/Start";
+import { SignIn } from "./components/SignIn";
+import { SignUp } from "./components/SignUp";
 
 export const HOME = "/home";
 export const PROFILE = `${HOME}/profile`;
@@ -24,6 +26,9 @@ export const EXPLORE = "/explore";
 export const AUCTION_ITEMS = `${EXPLORE}/auction-items`;
 
 export const START = "/start";
+
+export const SIGN_IN = `${START}/sign-in`;
+export const SIGN_UP = `${START}/sign-up`;
 
 const Navigation = () => {
   const [user] = useContext(UserContext);
@@ -83,7 +88,20 @@ const Navigation = () => {
         },
         {
           path: START,
-          element: <Start />,
+          children: [
+            {
+              path: START,
+              element: <Start />,
+            },
+            {
+              path: SIGN_IN,
+              element: <SignIn />,
+            },
+            {
+              path: SIGN_UP,
+              element: <SignUp />,
+            },
+          ],
         },
       ],
     },

@@ -1,7 +1,8 @@
 import { Button, Input, Typography } from "@material-tailwind/react";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AUCTION_ITEMS, START } from "../../Navigation";
+import { AUCTION_ITEMS, SIGN_IN, SIGN_UP } from "../../Navigation";
+import Link from "../../components/Link";
 import { UserContext } from "../../context/userContext";
 import { ProfileMenu } from "./ProfileMenu";
 import Link from "../../components/Link";
@@ -30,12 +31,12 @@ export const Navbar = () => {
             <ProfileMenu />
           ) : (
             <>
-              <Link to={START}>
+              <Link to={SIGN_UP}>
                 <Button variant="text">Sign up</Button>
               </Link>
-              <Link to={START}>
+              <Link to={SIGN_IN}>
                 <Button variant="gradient">Sign in</Button>
-              </Link> 
+              </Link>
             </>
           )}
         </div>

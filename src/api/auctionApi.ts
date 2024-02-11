@@ -3,6 +3,28 @@ import config from "./config";
 
 const baseURL = config.baseURL;
 
+export type AuctionStakeT = {
+  id: string;
+  userId: string;
+  createdAt: string;
+  auctionItemId: string;
+  price: number;
+};
+
+export type Messages = {
+  id: string;
+  text: string;
+  userId: string;
+  createdAt: string;
+  chatId: string;
+};
+
+export type Chat = {
+  auctionItemId: string;
+  id: string;
+  messages: Messages[];
+};
+
 export type AuctionItemT = {
   id: string;
   title: string;
@@ -14,6 +36,8 @@ export type AuctionItemT = {
   endTime: string;
   minPriceStep: number;
   userId: string;
+  auctionStakes: AuctionStakeT[];
+  chat?: Chat;
 };
 
 export type CreateAuctionDto = {
@@ -52,10 +76,12 @@ export const getAuctionItem = async (id: string): Promise<AuctionItemT> => {
 export const searchAuctionItems = async (
   title: string,
   pageSize: number = 10,
-  page: number = 0
+  page: number = 0,
+  sort: keyof AuctionItemT = "createdAt",
+  order: "asc" | "desc" = "desc"
 ): Promise<AuctionItemT[]> => {
   const response = await fetch(
-    `${baseURL}/auctionItems?title=${title}&pageSize=${pageSize}&page=${page}`
+    `${baseURL}/auctionItems?title=${title}&pageSize=${pageSize}&page=${page}&sort=${sort}&order=${order}`
   );
 
   return await jsonOrThrow(response);
@@ -64,7 +90,7 @@ export const searchAuctionItems = async (
 export const sendBidToAuction = async (
   auctionId: string,
   amount: number
-): Promise<boolean> => {
+): Promise<AuctionStakeT> => {
   const response = await fetch(`${baseURL}/auctionStakes`, {
     method: "POST",
     headers: {
@@ -73,5 +99,6 @@ export const sendBidToAuction = async (
     },
     body: JSON.stringify({ auctionId, price: amount }),
   });
+
   return await jsonOrThrow(response);
 };

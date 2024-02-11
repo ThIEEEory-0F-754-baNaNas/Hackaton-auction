@@ -12,15 +12,53 @@ import {
   Accordion,
   AccordionHeader,
   AccordionBody,
+  Spinner,
 } from "@material-tailwind/react";
 import classNames from "classnames";
 import { useState } from "react";
+import { AuctionStakeT } from "../../api/auctionApi";
+import { useQuery } from "react-query";
+import ErrorIndicator from "../../components/ErrorIndicator";
 
-export const BidMenu = ({ sendBid }: { sendBid: (bid: number) => void }) => {
-  const defaultBids = [100, 200, 300, 400, 500];
+export const BidMenu = ({
+  sendBid,
+  currentBid,
+}: {
+  sendBid: (bid: number) => Promise<boolean>;
+  currentBid: number;
+}) => {
+  const defaultBids = [
+    currentBid + 100,
+    currentBid + 200,
+    currentBid + 500,
+    currentBid * 2,
+  ];
   const [isOpen, setOpen] = useState(false);
-  const toggleDrawer = () => setOpen(!isOpen);
+  const toggleDrawer = () => {
+    setOpen(!isOpen);
+    setShowError(false);
+  };
+
   const [bid, setBid] = useState(0);
+
+  const { refetch, isLoading, isRefetching, isError, error } = useQuery(
+    "bidItem",
+    () => sendBid(bid),
+    {
+      retry: 0,
+      enabled: false,
+      onSuccess: () => {
+        setOpen(false);
+      },
+    }
+  );
+
+  const [showError, setShowError] = useState(false);
+
+  const sendBidQuery = async () => {
+    await refetch();
+    setShowError(true);
+  };
 
   return (
     <Card>
@@ -66,12 +104,14 @@ export const BidMenu = ({ sendBid }: { sendBid: (bid: number) => void }) => {
         <DialogBody>
           You are about to place a bid. Are you sure?
           <Typography variant="h6">Bid: {bid}</Typography>
+          {showError && isError && <ErrorIndicator error={error} />}
         </DialogBody>
         <DialogFooter>
           <Button
             variant="text"
             color="red"
             onClick={toggleDrawer}
+            disabled={isLoading || isRefetching}
             className="mr-1"
           >
             <span>Cancel</span>
@@ -79,12 +119,11 @@ export const BidMenu = ({ sendBid }: { sendBid: (bid: number) => void }) => {
           <Button
             variant="gradient"
             color="green"
-            onClick={() => {
-              sendBid(bid);
-              toggleDrawer();
-            }}
+            onClick={() => sendBidQuery()}
+            className="flex"
           >
             <span>Confirm</span>
+            {(isLoading || isRefetching) && <Spinner />}
           </Button>
         </DialogFooter>
       </Dialog>
@@ -92,7 +131,7 @@ export const BidMenu = ({ sendBid }: { sendBid: (bid: number) => void }) => {
   );
 };
 
-export const BidList = () => {
+export const BidList = ({ bids }: { bids: AuctionStakeT[] }) => {
   const [isOpen, setOpen] = useState(false);
 
   return (
@@ -108,11 +147,15 @@ export const BidList = () => {
       <AccordionBody>
         <Card>
           <CardBody>
-            <Typography variant="h6">Bids</Typography>
-            <Typography variant="h6">Bids</Typography>
-            <Typography variant="h6">Bids</Typography>
-            <Typography variant="h6">Bids</Typography>
-            <Typography variant="h6">Bids</Typography>
+            {bids.length === 0 && (
+              <Typography variant="h6">No bids yet</Typography>
+            )}
+            {[...bids].reverse().map((bid) => (
+              <div key={bid.id} className="flex justify-between">
+                <Typography variant="h6">{bid.userId}</Typography>
+                <Typography variant="h6">{bid.price}</Typography>
+              </div>
+            ))}
           </CardBody>
         </Card>
       </AccordionBody>

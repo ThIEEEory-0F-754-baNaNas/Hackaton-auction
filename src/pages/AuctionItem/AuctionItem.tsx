@@ -7,7 +7,7 @@ import ErrorIndicator from "../../components/ErrorIndicator";
 import { UserContext } from "../../context/userContext";
 import { isActive } from "../../utils/time";
 import { BidList, BidMenu } from "./AuctionBids";
-import AuctionHeader from "./AuctionItemHeader";
+import AuctionDetailsHeader from "./AuctionItemHeader";
 import { EDIT_AUCTION } from "../../Navigation";
 
 const AuctionItem = () => {
@@ -38,24 +38,28 @@ const AuctionItem = () => {
   const sendBid = async (bid: number) => {
     if (!auctionId) throw new Error("No auction id");
     const res = await sendBidToAuction(auctionId, bid);
-    console.log(res);
+    return res.price > 0;
   };
+
+  const currentBid = auction!.auctionStakes[0]?.price || auction!.startPrice;
 
   return (
     <div className="text-on-primary h-full container m-auto">
       <div className="mb-3">
-        <AuctionHeader auction={auction!} />
+        <AuctionDetailsHeader auction={auction!} />
       </div>
       <div className="mb-3">
-        <BidList />
+        <BidList bids={auction!.auctionStakes} />
       </div>
       {!isAuthorOfAuction && isAuctionActive && (
-      <div>
-        <Link to={`${EDIT_AUCTION}/${auctionId}`}>
-          <Button variant="text" fullWidth>Edit auction</Button>
-        </Link> 
-        <BidMenu sendBid={sendBid} />      
-      </div>
+        <div>
+          <Link to={`${EDIT_AUCTION}/${auctionId}`}>
+            <Button variant="text" fullWidth>
+              Edit auction
+            </Button>
+          </Link>
+          <BidMenu sendBid={sendBid} currentBid={currentBid} />
+        </div>
       )}
     </div>
   );
