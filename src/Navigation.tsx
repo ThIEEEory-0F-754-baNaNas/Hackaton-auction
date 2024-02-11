@@ -85,11 +85,7 @@ const Navigation = () => {
             },
             {
               path: `${AUCTION_ITEMS}/:id`,
-              element: (
-                <ProtectedPage user={user}>
-                  <AuctionItem />
-                </ProtectedPage>
-              ),
+              element: <AuctionItem />,
             },
           ],
         },

@@ -56,12 +56,12 @@ export const createAuctionItem = async (
   images: File[]
 ): Promise<AuctionItemT> => {
   const formData = new FormData();
-  formData.append('title', item.title);
-  formData.append('description', item.description);
-  formData.append('startPrice', item.startPrice.toString());
-  formData.append('startTime', item.startTime);
-  formData.append('endTime', item.endTime);
-  formData.append('minPriceStep', item.minPriceStep.toString());
+  formData.append("title", item.title);
+  formData.append("description", item.description);
+  formData.append("startPrice", item.startPrice.toString());
+  formData.append("startTime", item.startTime);
+  formData.append("endTime", item.endTime);
+  formData.append("minPriceStep", item.minPriceStep.toString());
   if (images) {
     images.forEach((image) => {
       formData.append(`photos`, image);
@@ -82,15 +82,15 @@ export const createAuctionItem = async (
 export const updateAuctionItem = async (
   item: CreateAuctionDto,
   images: File[],
-  auctionId: string,
+  auctionId: string
 ): Promise<AuctionItemT> => {
   const formData = new FormData();
-  formData.append('title', item.title);
-  formData.append('description', item.description);
-  formData.append('startPrice', item.startPrice.toString());
-  formData.append('startTime', item.startTime);
-  formData.append('endTime', item.endTime);
-  formData.append('minPriceStep', item.minPriceStep.toString());
+  formData.append("title", item.title);
+  formData.append("description", item.description);
+  formData.append("startPrice", item.startPrice.toString());
+  formData.append("startTime", item.startTime);
+  formData.append("endTime", item.endTime);
+  formData.append("minPriceStep", item.minPriceStep.toString());
   if (images) {
     images.forEach((image) => {
       formData.append(`photos`, image);
@@ -110,9 +110,7 @@ export const updateAuctionItem = async (
 
 export const getAuctionItem = async (id?: string): Promise<AuctionItemT> => {
   if (!id) throw new Error("No auction id");
-  const response = await fetch(`${baseURL}/auctionItems/${id}`, {
-    headers: { Authorization: getBearerToken() },
-  });
+  const response = await fetch(`${baseURL}/auctionItems/${id}`);
 
   return await jsonOrThrow(response);
 };
@@ -120,9 +118,7 @@ export const getAuctionItem = async (id?: string): Promise<AuctionItemT> => {
 export const getAuctionStakes = async (
   auctionId: string
 ): Promise<AuctionStakeT[]> => {
-  const response = await fetch(`${baseURL}/auctionItems/${auctionId}/stakes`, {
-    headers: { Authorization: getBearerToken() },
-  });
+  const response = await fetch(`${baseURL}/auctionItems/${auctionId}/stakes`);
   return await jsonOrThrow(response);
 };
 

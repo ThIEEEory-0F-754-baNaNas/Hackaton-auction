@@ -98,9 +98,12 @@ const AuctionItem = () => {
         <ErrorIndicator msg="Can't load stakes" error={stakeError} />
       )}
       <div className="mb-3">
-        <BidList bids={stakes} />
+        <BidList
+          bids={stakes}
+          isLoading={isStakeLoading || isStakeRefetching}
+        />
       </div>
-      {!isAuthorOfAuction && isAuctionActive && (
+      {!isAuthorOfAuction && isAuctionActive && !user.isNotOk && (
         // TODO: featuree flag
         <div className={`${classNames({ "sticky bottom-0 top-0": false })}`}>
           <BidMenu sendBid={sendBid} currentBid={currentBid} />
