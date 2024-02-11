@@ -1,7 +1,7 @@
 import { Button, Spinner } from "@material-tailwind/react";
 import { useContext } from "react";
 import { useQuery } from "react-query";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import {
   getAuctionItem,
   getAuctionStakes,
@@ -16,6 +16,9 @@ import { EDIT_AUCTION } from "../../Navigation";
 
 const AuctionItem = () => {
   const { id: auctionId } = useParams();
+  const location = useLocation();
+  const auctionFromLocation = location.state.auction;
+
   const [user] = useContext(UserContext);
   const {
     data: auction,
@@ -26,6 +29,7 @@ const AuctionItem = () => {
   } = useQuery("auctionItem", () => getAuctionItem(auctionId), {
     refetchOnWindowFocus: false,
     retry: 2,
+    initialData: auctionFromLocation,
   });
 
   // TODO: read https://stackoverflow.com/questions/73140256/react-query-how-to-refresh-a-usequery-query-function-after-some-of-that-functi
