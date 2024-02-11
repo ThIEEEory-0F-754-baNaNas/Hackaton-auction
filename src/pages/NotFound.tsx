@@ -3,7 +3,12 @@ import { useNavigate, useRouteError } from "react-router-dom";
 import { HOME } from "../Navigation";
 
 const NotFound = () => {
-  const error = useRouteError();
+  const error = useRouteError() as {
+    status?: number;
+    statusText?: string;
+    data?: string;
+  };
+
   const status = error?.status || 404;
   const statusText = error?.statusText || "Not Found";
   const data = error?.data;

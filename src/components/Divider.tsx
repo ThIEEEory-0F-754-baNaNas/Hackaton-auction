@@ -1,5 +1,3 @@
-import React from "react";
-
 const Divider = () => {
   return <div className="w-full h-[3px] bg-primary rounded-full" />;
 };
