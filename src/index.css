@@ -3,11 +3,22 @@
 @tailwind utilities;
 
 .bg-bg {
-  background: linear-gradient(-45deg, var(--color-background) 10%, var(--color-background-alt) 100%);
+  background: linear-gradient(45deg, var(--color-background) 10%, var(--color-background-alt) 100%);
+  background-size: 200% 200%;
+  animation: diagonal-gradient 10s linear infinite alternate;
 }
 
 .bg-primary {
   background: linear-gradient(45deg, var(--color-primary) 50%, var(--color-primary-alt) 100%);
+}
+
+@keyframes diagonal-gradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
 }
 
 :root {
@@ -18,7 +29,7 @@
   --color-on-primary-alt: #5a1534;
 
   --color-background: #FFF7E1;
-  --color-background-alt: #f8f4e9;
+  --color-background-alt: #FBE3C7;
 
   --left-drawer-width: 250px;
   /*
