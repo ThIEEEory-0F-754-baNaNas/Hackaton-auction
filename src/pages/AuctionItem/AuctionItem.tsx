@@ -23,18 +23,22 @@ const AuctionItem = () => {
     isError,
     refetch: refetchAuction,
     error,
-  } = useQuery("auctionItem", () => getAuctionItem(auctionId || ""), {
+  } = useQuery("auctionItem", () => getAuctionItem(auctionId), {
     refetchOnWindowFocus: false,
     retry: 2,
   });
 
+  // TODO: read https://stackoverflow.com/questions/73140256/react-query-how-to-refresh-a-usequery-query-function-after-some-of-that-functi
   const {
     data: stakes,
     refetch: refetchStakes,
     isLoading: isStakeLoading,
     isRefetching: isStakeRefetching,
-  } = useQuery("auctionBids", () => getAuctionStakes(auctionId || ""), {
+    isError: isStakeError,
+    error: stakeError,
+  } = useQuery(["auctionBids"], () => getAuctionStakes(auctionId!), {
     retry: 0,
+    enabled: !!auctionId,
   });
 
   if (isLoading) return <Spinner />;
@@ -69,13 +73,18 @@ const AuctionItem = () => {
   }
 
   const currentBid =
-    lastPrice > 0 ? lastPrice + auction!.minPriceStep : auction!.startPrice;
+    lastPrice > 0
+      ? lastPrice + auction!.minPriceStep
+      : auction!.startPrice + auction!.minPriceStep;
 
   return (
     <div className="text-on-primary h-full container m-auto">
       <div className="mb-3">
         <AuctionDetailsHeader lastPrice={lastPrice} auction={auction!} />
       </div>
+      {isStakeError && (
+        <ErrorIndicator msg="Can't load stakes" error={stakeError} />
+      )}
       <div className="mb-3">
         <BidList bids={stakes} />
       </div>

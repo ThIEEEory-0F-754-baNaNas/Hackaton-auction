@@ -28,6 +28,7 @@ export const BidMenu = ({
   currentBid: number;
 }) => {
   const defaultBids = [
+    currentBid,
     currentBid + 100,
     currentBid + 200,
     currentBid + 500,

@@ -67,7 +67,8 @@ export const createAuctionItem = async (
   return await jsonOrThrow(response);
 };
 
-export const getAuctionItem = async (id: string): Promise<AuctionItemT> => {
+export const getAuctionItem = async (id?: string): Promise<AuctionItemT> => {
+  if (!id) throw new Error("No auction id");
   const response = await fetch(`${baseURL}/auctionItems/${id}`, {
     headers: { Authorization: getBearerToken() },
   });
