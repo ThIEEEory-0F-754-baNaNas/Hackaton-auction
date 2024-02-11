@@ -1,3 +1,3 @@
 export default {
-  baseURL: import.meta.env.BASE_URL,
+  baseURL: import.meta.env.VITE_SERVER_URL,
 };
