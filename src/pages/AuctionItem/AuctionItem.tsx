@@ -65,7 +65,7 @@ const AuctionItem = () => {
   let lastPrice = 0;
   if (!isStakeLoading && !isStakeRefetching && stakes) {
     const lastStake = stakes[stakes.length - 1];
-    lastPrice = lastStake.price;
+    lastPrice = lastStake ? lastStake.price : 0;
   }
 
   const currentBid =
