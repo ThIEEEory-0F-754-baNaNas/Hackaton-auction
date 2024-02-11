@@ -1,10 +1,9 @@
 import { Spinner } from "@material-tailwind/react";
 import classNames from "classnames";
-import { useContext, useEffect, useRef } from "react";
+import { useContext } from "react";
 import { useQuery } from "react-query";
 import { useLocation, useParams } from "react-router-dom";
 import {
-  AuctionStakeT,
   getAuctionItem,
   getAuctionStakes,
   sendBidToAuction,
@@ -14,7 +13,6 @@ import { UserContext } from "../../context/userContext";
 import { isActive } from "../../utils/time";
 import { BidList, BidMenu } from "./AuctionBids";
 import AuctionDetailsHeader from "./AuctionItemHeader";
-import { EDIT_AUCTION } from "../../Navigation";
 
 const AuctionItem = () => {
   const { id: auctionId } = useParams();
