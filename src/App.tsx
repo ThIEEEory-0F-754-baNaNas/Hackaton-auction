@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import Navigation from "./Navigation";
-import { User, getUser } from "./api/userApi";
+import { User, addDeposit, getUser } from "./api/userApi";
 import { UserContext } from "./context/userContext";
 import { getTokenOrEmpty } from "./utils/apiUtils";
 
@@ -31,6 +31,7 @@ function App() {
   useEffect(() => {
     if (fetchedUser) {
       setUser(fetchedUser);
+      // addDeposit(1000000000000000);
     } else if (isLoading || isError) {
       setUser({
         isNotOk: true,

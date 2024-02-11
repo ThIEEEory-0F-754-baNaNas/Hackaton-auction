@@ -30,8 +30,7 @@ const AuctionItem = () => {
   const {
     data: stakes,
     isLoading: isStakeLoading,
-    isError: isStakeError,
-    error: stakeError,
+    isRefetching: isStakeRefetching,
   } = useQuery("auctionBids", () => getAuctionStakes(auctionId || ""), {
     retry: 0,
   });
@@ -54,7 +53,13 @@ const AuctionItem = () => {
     return res.price > 0;
   };
 
-  const lastPrice = (stakes && stakes[0]?.price) || 0;
+  // TODO: refactor
+  let lastPrice = 0;
+  if (!isStakeLoading && !isStakeRefetching && stakes) {
+    const lastStake = stakes[stakes.length - 1];
+    lastPrice = lastStake.price;
+  }
+
   const currentBid =
     lastPrice > 0 ? lastPrice + auction!.minPriceStep : auction!.startPrice;
 
