@@ -47,7 +47,7 @@ const Home = () => {
   return (
     <div className="text-on-primary flex flex-col items-center container m-auto">
       <Typography className="text-center" variant="h2">
-        All auctions
+        Your auctions
       </Typography>
       <HomeAuctions user={user} />
     </div>

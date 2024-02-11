@@ -176,7 +176,9 @@ export const sendBidToAuction = async (
 
 export const getNewestAuctionItems = async (
   pageSize: number = 10,
-  page: number = 0
+  page: number = 0,
+  sort: keyof AuctionItemT,
+  order: "asc" | "desc",
 ): Promise<AuctionItemT[]> => {
-  return await searchAuctionItems("", pageSize, page, "createdAt", "desc");
+  return await searchAuctionItems("", pageSize, page, sort, order);
 };
