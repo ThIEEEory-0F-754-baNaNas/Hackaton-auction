@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { SIGN_UP } from "../Navigation";
 
 export function SignIn() {
+  // TODO: make it similar to SignUp
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -25,6 +26,7 @@ export function SignIn() {
     const result = await signIn(email, password);
     if (result) {
       console.log("Signed in with token:", result.token);
+      // TODO: extract to a api utils
       localStorage.setItem("token", result.token);
       window.location.reload();
     } else {

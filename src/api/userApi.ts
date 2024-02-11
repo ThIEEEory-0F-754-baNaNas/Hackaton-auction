@@ -30,7 +30,7 @@ export const getUser = async (): Promise<User> => {
 };
 
 type SignUpData = {
-  avatar?: string;
+  avatar?: File | null;
   firstname: string;
   lastname: string;
   username: string;
@@ -39,6 +39,7 @@ type SignUpData = {
 };
 
 export const signUp = async (data: SignUpData): Promise<User> => {
+  // TODO: handle avatar -> take a look into updateProfileAvatar
   const response = await fetch(`${baseURL}/auth/signup`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

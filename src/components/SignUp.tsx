@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Card,
   Input,
   Checkbox,
   Button,
   Typography,
+  Spinner,
 } from "@material-tailwind/react";
 import { signUp } from "../api/userApi";
 import { useNavigate } from "react-router-dom";
 import { HOME, SIGN_IN } from "../Navigation";
+import { useQuery } from "react-query";
+import { UserContext } from "../context/userContext";
+import ErrorIndicator from "./ErrorIndicator";
+import UploadFile from "./UploadFile";
 
 export function SignUp() {
   const [firstname, setFirstName] = useState("");
@@ -16,19 +21,31 @@ export function SignUp() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [avatar, setAvatar] = useState("");
+  const [avatar, setAvatar] = useState<File | null>(null);
 
   const navigate = useNavigate();
+  const [, setUser] = useContext(UserContext);
 
   const onButtonClick = () => {
     navigate(SIGN_IN);
   };
 
+  const { isLoading, isError, error, refetch } = useQuery(
+    "signUp",
+    () => signUp({ firstname, lastname, username, email, password, avatar }),
+    {
+      retry: 0,
+      enabled: false,
+      onSuccess: (data) => {
+        setUser(data);
+        navigate(HOME);
+      },
+    }
+  );
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const data = { firstname, lastname, username, email, password, avatar };
-    const user = await signUp(data);
-    console.log(user);
+    refetch();
   };
 
   return (
@@ -68,13 +85,7 @@ export function SignUp() {
             onChange={(e) => setPassword(e.target.value)}
             crossOrigin={undefined}
           />
-          <Input
-            type="text"
-            label="Avatar URL"
-            value={avatar}
-            onChange={(e) => setAvatar(e.target.value)}
-            crossOrigin={undefined}
-          />
+          <UploadFile label="Avatar" onUpload={setAvatar} showButton={false} />
         </div>
         <Checkbox
           label={
@@ -96,6 +107,7 @@ export function SignUp() {
         />
         <Button className="mt-6" variant="gradient" fullWidth type="submit">
           Sign Up
+          {isLoading && <Spinner />}
         </Button>
         <Typography color="blue-gray" className="mt-4 text-center font-normal">
           Already have an account?{" "}
@@ -107,6 +119,7 @@ export function SignUp() {
             Sign In
           </a>
         </Typography>
+        {isError && <ErrorIndicator error={error} />}
       </form>
     </Card>
   );
