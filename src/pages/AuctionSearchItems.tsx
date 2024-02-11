@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { searchAuctionItems } from "../api/auctionApi";
 import ErrorIndicator from "../components/ErrorIndicator";
 import { getParams } from "../utils/getParams";
+import AuctionCard from "../components/AuctionCard";
 
 const AuctionSearchItems = () => {
   const location = useLocation();
@@ -24,15 +25,15 @@ const AuctionSearchItems = () => {
   if (isError) return <ErrorIndicator error={error} />;
 
   return (
-    <div className="text-on-primary">
+    <div className="flex flex-col items-center gap-y-8">
       <Typography variant="h2">
         Search: <span className="text-on-primary-alt">{title}</span>
       </Typography>
-      {auctionItems!.map((auction) => (
-        <p key={auction.id}>
-          {auction.title} {auction.id}
-        </p>
-      ))}
+      <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-4">
+        {auctionItems!.map((auction) => (
+          <AuctionCard key={auction.id} auction={auction} />
+        ))}
+      </div>
     </div>
   );
 };

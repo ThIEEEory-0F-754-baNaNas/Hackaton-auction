@@ -1,13 +1,14 @@
-import { Spinner } from "@material-tailwind/react";
+import { Button, Spinner } from "@material-tailwind/react";
 import { useContext } from "react";
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getAuctionItem, sendBidToAuction } from "../../api/auctionApi";
 import ErrorIndicator from "../../components/ErrorIndicator";
 import { UserContext } from "../../context/userContext";
 import { isActive } from "../../utils/time";
 import { BidList, BidMenu } from "./AuctionBids";
 import AuctionHeader from "./AuctionItemHeader";
+import { EDIT_AUCTION } from "../../Navigation";
 
 const AuctionItem = () => {
   const { id: auctionId } = useParams();
@@ -49,9 +50,12 @@ const AuctionItem = () => {
         <BidList />
       </div>
       {!isAuthorOfAuction && isAuctionActive && (
-        <div className="sticky bottom-0 top-0">
-          <BidMenu sendBid={sendBid} />
-        </div>
+      <div>
+        <Link to={`${EDIT_AUCTION}/${auctionId}`}>
+          <Button variant="text" fullWidth>Edit auction</Button>
+        </Link> 
+        <BidMenu sendBid={sendBid} />      
+      </div>
       )}
     </div>
   );

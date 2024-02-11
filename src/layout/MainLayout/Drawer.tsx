@@ -1,7 +1,7 @@
-import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { List, ListItem, ListItemPrefix } from "@material-tailwind/react";
 import { useLocation } from "react-router-dom";
-import { EXPLORE, HOME } from "../../Navigation";
+import { CREATE_AUCTION, EXPLORE, HOME } from "../../Navigation";
 import Divider from "../../components/Divider";
 import Link from "../../components/Link";
 import { HomeIcon } from "../../icons/HomeIcon";
@@ -19,6 +19,11 @@ export const Drawer = () => {
       label: "Explore",
       path: EXPLORE,
       icon: <MagnifyingGlassIcon className="h-5 w-5" />,
+    },
+    {
+      label: "Create Auction",
+      path: CREATE_AUCTION,
+      icon: <PlusIcon className="h-5 w-5"/>,
     },
   ];
 
