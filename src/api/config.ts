@@ -1,3 +1,3 @@
 export default {
-  baseURL: "http://localhost:3000",
+  baseURL: import.meta.env.BASE_URL,
 };
