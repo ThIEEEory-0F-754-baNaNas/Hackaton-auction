@@ -6,17 +6,9 @@ import Link from "../../components/Link";
 import { UserContext } from "../../context/userContext";
 import { ProfileMenu } from "./ProfileMenu";
 import { Deposit } from "../../components/Deposit";
-import { addDeposit } from "../../api/userApi";
 
 export const Navbar = () => {
-  const [user, setUser] = useContext(UserContext);
-  const [depositAmount, setDepositAmount] = useState(0);
-
-  const handleAddDeposit = async () => {
-    await addDeposit(depositAmount);
-    if (user.isNotOk) throw new Error;
-    setUser({ ...user, balance: user.balance + depositAmount });
-  };
+  const [user] = useContext(UserContext);
 
   return (
     <div className="text-on-primary flex justify-between">
@@ -37,16 +29,6 @@ export const Navbar = () => {
         <div className="flex gap-8 min-w-fit items-center">
           {!user.isNotOk ? (
             <>
-              <Input
-                type="number"
-                placeholder={depositAmount.toString()}
-                onChange={(e) => setDepositAmount(Number(e.target.value))}
-                label="Add Deposit" 
-                crossOrigin={undefined}              
-              />
-              <Button onClick={handleAddDeposit}>
-                Add Deposit
-              </Button>
               <Deposit deposit={user.balance} />
               <ProfileMenu />
             </>

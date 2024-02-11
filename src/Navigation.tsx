@@ -1,21 +1,21 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import MainLayoutNavigation from "./layout/MainLayoutNavigation";
-import Home from "./pages/Home";
-import NotFound from "./pages/NotFound";
-import AuctionItem from "./pages/AuctionItem/AuctionItem";
-import AuctionSearchItems from "./pages/AuctionSearchItems";
-import Profile from "./pages/Profile";
-import Settings from "./pages/Settings";
-import ProtectedPage from "./pages/ProtectedPage";
 import { useContext } from "react";
-import { UserContext } from "./context/userContext";
-import CreateAuction from "./pages/CreateAuction";
-import EditAuction from "./pages/EditAuction";
-import Explore from "./pages/Explore";
-import Start from "./pages/Start";
+import { RouterProvider, createHashRouter } from "react-router-dom";
 import { SignIn } from "./components/SignIn";
 import { SignUp } from "./components/SignUp";
 import { BASE_URL } from "./config";
+import { UserContext } from "./context/userContext";
+import MainLayoutNavigation from "./layout/MainLayoutNavigation";
+import AuctionItem from "./pages/AuctionItem/AuctionItem";
+import AuctionSearchItems from "./pages/AuctionSearchItems";
+import CreateAuction from "./pages/CreateAuction";
+import EditAuction from "./pages/EditAuction";
+import Explore from "./pages/Explore";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import Profile from "./pages/Profile";
+import ProtectedPage from "./pages/ProtectedPage";
+import Settings from "./pages/Settings";
+import Start from "./pages/Start";
 
 export const BASE = BASE_URL;
 
@@ -36,7 +36,7 @@ export const SIGN_UP = `${START}/sign-up`;
 const Navigation = () => {
   const [user] = useContext(UserContext);
 
-  const router = createBrowserRouter([
+  const router = createHashRouter([
     {
       path: BASE_URL,
       element: <MainLayoutNavigation />,
