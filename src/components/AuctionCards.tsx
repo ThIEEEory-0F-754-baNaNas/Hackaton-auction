@@ -1,6 +1,4 @@
 import { Spinner, Typography } from "@material-tailwind/react";
-import { useState } from "react";
-import { useQuery } from "react-query";
 import { AuctionItemT } from "../api/auctionApi";
 import AuctionCard from "./AuctionCard";
 import ErrorIndicator from "./ErrorIndicator";
@@ -31,21 +29,23 @@ const AuctionCards = ({
     isLoading || isRefetching ? (
       <Spinner />
     ) : (
-      <div>
+      <>
         {auctions!.length === 0 && (
           <Typography variant="h4">No auctions found</Typography>
         )}
         {auctions!.map((auction) => (
           <AuctionCard key={auction.id} auction={auction} />
         ))}
-      </div>
+      </>
     );
 
   return (
-    <div>
-      <div className="mb-5">{mainContent}</div>
+    <>
+      <div className="w-full grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-4">
+        {mainContent}
+      </div>
       <Pagination setActive={setPage} active={page} />
-    </div>
+    </>
   );
 };
 

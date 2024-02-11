@@ -1,33 +1,39 @@
-import { Spinner, Typography } from "@material-tailwind/react";
-import AuctionCard from "../components/AuctionCard";
+import { Typography } from "@material-tailwind/react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { getNewestAuctionItems } from "../api/auctionApi";
-import ErrorIndicator from "../components/ErrorIndicator";
+import AuctionCards from "../components/AuctionCards";
 
 const Newest = () => {
+  const [page, setPage] = useState(1);
   const {
     data: cardsNewest,
-    isLoading: isNewestLoading,
-    isRefetching: isNewestRefetching,
-    isError: isNewestError,
-    error: NewestError,
-  } = useQuery("newest", () => getNewestAuctionItems(), {
+    isLoading,
+    isRefetching,
+    isError,
+    error,
+  } = useQuery(["newest", { page }], () => getNewestAuctionItems(4, page), {
     retry: 1,
   });
 
   return (
     <>
       <Typography variant="h2">Newest</Typography>
-      {(isNewestLoading || isNewestRefetching) && <Spinner />}
-      {isNewestError && <ErrorIndicator error={NewestError} />}
-      {
+      <AuctionCards
+        useState={{ page, setPage }}
+        useQuery={{ isError, error, isLoading, isRefetching }}
+        auctions={cardsNewest}
+      />
+      {/* {(isLoading || isRefetching) && <Spinner />}
+      {isError && <ErrorIndicator error={error} />} */}
+      {/* {
         <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-4">
           {cardsNewest &&
             cardsNewest.map((auction, index) => (
               <AuctionCard key={index} auction={auction} />
             ))}
         </div>
-      }
+      } */}
     </>
   );
 };
