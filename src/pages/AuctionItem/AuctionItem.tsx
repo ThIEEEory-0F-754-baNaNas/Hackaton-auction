@@ -21,6 +21,7 @@ const AuctionItem = () => {
     data: auction,
     isLoading,
     isError,
+    refetch: refetchAuction,
     error,
   } = useQuery("auctionItem", () => getAuctionItem(auctionId || ""), {
     refetchOnWindowFocus: false,
@@ -29,6 +30,7 @@ const AuctionItem = () => {
 
   const {
     data: stakes,
+    refetch: refetchStakes,
     isLoading: isStakeLoading,
     isRefetching: isStakeRefetching,
   } = useQuery("auctionBids", () => getAuctionStakes(auctionId || ""), {
@@ -47,9 +49,15 @@ const AuctionItem = () => {
     auction?.endTime || ""
   );
 
+  const updateData = () => {
+    refetchAuction();
+    refetchStakes();
+  };
+
   const sendBid = async (bid: number) => {
     if (!auctionId) throw new Error("No auction id");
     const res = await sendBidToAuction(auctionId, bid);
+    updateData();
     return res.price > 0;
   };
 
