@@ -1,1 +1,1 @@
-export const BASE_URL = "/Hackaton-auction";
+export const BASE_URL = import.meta.env.BASE_URL;
