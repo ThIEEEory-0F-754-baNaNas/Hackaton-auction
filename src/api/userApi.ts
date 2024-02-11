@@ -1,4 +1,4 @@
-import { getBearerToken, jsonOrThrow } from "../utils/apiUtils";
+import { getBearerToken, jsonOrThrow, setToken } from "../utils/apiUtils";
 import config from "./config";
 
 const baseURL = config.baseURL;
@@ -52,7 +52,7 @@ export const signUp = async (data: SignUpData): Promise<User> => {
 export const signIn = async (
   email: string | undefined,
   password: string | undefined
-): Promise<{ token: string }> => {
+): Promise<User> => {
   if (!email || !password) throw new Error("Email and password are required");
 
   const response = await fetch(`${baseURL}/auth/signin`, {
@@ -60,7 +60,9 @@ export const signIn = async (
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
-  return jsonOrThrow(response);
+  const result: { token: string } = await jsonOrThrow(response);
+  setToken(result.token);
+  return await getUser();
 };
 
 export const addDeposit = async (amount: number): Promise<User> => {

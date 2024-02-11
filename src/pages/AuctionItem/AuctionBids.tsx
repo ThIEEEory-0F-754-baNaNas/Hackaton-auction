@@ -131,7 +131,7 @@ export const BidMenu = ({
   );
 };
 
-export const BidList = ({ bids }: { bids: AuctionStakeT[] }) => {
+export const BidList = ({ bids }: { bids?: AuctionStakeT[] }) => {
   const [isOpen, setOpen] = useState(false);
 
   return (
@@ -147,15 +147,20 @@ export const BidList = ({ bids }: { bids: AuctionStakeT[] }) => {
       <AccordionBody>
         <Card>
           <CardBody>
-            {bids.length === 0 && (
+            {!bids && <Spinner />}
+            {bids && bids.length === 0 && (
               <Typography variant="h6">No bids yet</Typography>
             )}
-            {[...bids].reverse().map((bid) => (
-              <div key={bid.id} className="flex justify-between">
-                <Typography variant="h6">{bid.userId}</Typography>
-                <Typography variant="h6">{bid.price}</Typography>
-              </div>
-            ))}
+            {bids &&
+              [...bids].reverse().map((bid) => (
+                <div key={bid.id} className="flex justify-between">
+                  <Typography variant="h6">{bid.user.username}</Typography>
+                  <Typography variant="h6">
+                    {new Date(bid.createdAt).toLocaleString()}
+                  </Typography>
+                  <Typography variant="h6">{bid.price}</Typography>
+                </div>
+              ))}
           </CardBody>
         </Card>
       </AccordionBody>

@@ -2,7 +2,11 @@ import { Button, Spinner } from "@material-tailwind/react";
 import { useContext } from "react";
 import { useQuery } from "react-query";
 import { Link, useParams } from "react-router-dom";
-import { getAuctionItem, sendBidToAuction } from "../../api/auctionApi";
+import {
+  getAuctionItem,
+  getAuctionStakes,
+  sendBidToAuction,
+} from "../../api/auctionApi";
 import ErrorIndicator from "../../components/ErrorIndicator";
 import { UserContext } from "../../context/userContext";
 import { isActive } from "../../utils/time";
@@ -17,10 +21,20 @@ const AuctionItem = () => {
     data: auction,
     isLoading,
     isError,
+    refetch: refetchAuction,
     error,
   } = useQuery("auctionItem", () => getAuctionItem(auctionId || ""), {
     refetchOnWindowFocus: false,
     retry: 2,
+  });
+
+  const {
+    data: stakes,
+    refetch: refetchStakes,
+    isLoading: isStakeLoading,
+    isRefetching: isStakeRefetching,
+  } = useQuery("auctionBids", () => getAuctionStakes(auctionId || ""), {
+    retry: 0,
   });
 
   if (isLoading) return <Spinner />;
@@ -35,21 +49,35 @@ const AuctionItem = () => {
     auction?.endTime || ""
   );
 
+  const updateData = () => {
+    refetchAuction();
+    refetchStakes();
+  };
+
   const sendBid = async (bid: number) => {
     if (!auctionId) throw new Error("No auction id");
     const res = await sendBidToAuction(auctionId, bid);
+    updateData();
     return res.price > 0;
   };
 
-  const currentBid = auction!.auctionStakes[0]?.price || auction!.startPrice;
+  // TODO: refactor
+  let lastPrice = 0;
+  if (!isStakeLoading && !isStakeRefetching && stakes) {
+    const lastStake = stakes[stakes.length - 1];
+    lastPrice = lastStake ? lastStake.price : 0;
+  }
+
+  const currentBid =
+    lastPrice > 0 ? lastPrice + auction!.minPriceStep : auction!.startPrice;
 
   return (
     <div className="text-on-primary h-full container m-auto">
       <div className="mb-3">
-        <AuctionDetailsHeader auction={auction!} />
+        <AuctionDetailsHeader lastPrice={lastPrice} auction={auction!} />
       </div>
       <div className="mb-3">
-        <BidList bids={auction!.auctionStakes} />
+        <BidList bids={stakes} />
       </div>
       {!isAuthorOfAuction && isAuctionActive && (
         <div>

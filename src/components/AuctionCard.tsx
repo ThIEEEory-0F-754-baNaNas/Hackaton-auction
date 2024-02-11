@@ -10,7 +10,7 @@ import { AuctionItemT } from "../api/auctionApi";
 import Link from "./Link";
 import { AUCTION_ITEMS } from "../Navigation";
 import { RightTimerForAuction } from "../pages/AuctionItem/AuctionItemHeader";
- 
+
 export default function AuctionCard({ auction }: { auction: AuctionItemT }) {
   return (
     <Card className="w-56">
@@ -23,21 +23,14 @@ export default function AuctionCard({ auction }: { auction: AuctionItemT }) {
       </CardHeader>
       <CardBody>
         <div className="flex flex-col gap-y-2 items-center justify-center">
-          <Typography>
-            {auction.title}
-          </Typography>
-          <Typography>
-            {auction.startPrice}
-          </Typography>
+          <Typography>{auction.title}</Typography>
+          <Typography>{auction.startPrice}</Typography>
           <RightTimerForAuction auction={auction} />
         </div>
       </CardBody>
       <CardFooter className="pt-0">
         <Link to={`${AUCTION_ITEMS}/${auction.id}`}>
-          <Button
-            variant="gradient"
-            fullWidth={true}
-          >
+          <Button variant="gradient" fullWidth={true}>
             Details
           </Button>
         </Link>

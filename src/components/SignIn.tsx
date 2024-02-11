@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Card,
   Input,
@@ -9,11 +9,13 @@ import {
 import { signIn } from "../api/userApi";
 import { useNavigate } from "react-router-dom";
 import { SIGN_UP } from "../Navigation";
+import { UserContext } from "../context/userContext";
 
 export function SignIn() {
   // TODO: make it similar to SignUp
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [, setUser] = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -23,15 +25,8 @@ export function SignIn() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const result = await signIn(email, password);
-    if (result) {
-      console.log("Signed in with token:", result.token);
-      // TODO: extract to a api utils
-      localStorage.setItem("token", result.token);
-      window.location.reload();
-    } else {
-      console.log("Failed to sign in");
-    }
+    const user = await signIn(email, password);
+    setUser(user);
   };
 
   return (

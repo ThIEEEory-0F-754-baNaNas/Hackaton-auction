@@ -21,7 +21,11 @@ import { UserContext } from "../../context/userContext";
 import { useNavigate } from "react-router-dom";
 import { EDIT_AUCTION } from "../../Navigation";
 
-export const RightTimerForAuction = ({ auction }: { auction: AuctionItemT }) => {
+export const RightTimerForAuction = ({
+  auction,
+}: {
+  auction: AuctionItemT;
+}) => {
   const isAuctionActive = isActive(auction.startTime, auction.endTime);
   const isAuctionExpired = isExpired(auction.endTime);
 
@@ -96,11 +100,18 @@ const AuctionChat = ({ auction }: { auction: AuctionItemT }) => {
   );
 };
 
-const AuctionDetailsHeader = ({ auction }: { auction: AuctionItemT }) => {
+const AuctionDetailsHeader = ({
+  auction,
+  lastPrice,
+}: {
+  auction: AuctionItemT;
+  lastPrice: number;
+}) => {
   if (!auction || !auction.images) return null;
 
   const humanDate = new Date(auction.createdAt).toLocaleString();
   const isAuctionExpired = isExpired(auction.endTime);
+  const isAuctionActive = isActive(auction.startTime, auction.endTime);
 
   return (
     <Card
@@ -139,6 +150,23 @@ const AuctionDetailsHeader = ({ auction }: { auction: AuctionItemT }) => {
             Start price:{" "}
             <span className="text-on-primary-alt">{auction.startPrice}</span>
           </Typography>
+          <Typography variant="h4">
+            Min step:{" "}
+            <span className="text-on-primary-alt">{auction.minPriceStep}</span>
+          </Typography>
+          {/* TODO: refactor            */}
+          {isAuctionActive && (
+            <Typography variant="h4">
+              Current price:{" "}
+              <span className="text-on-primary-alt">{lastPrice}</span>
+            </Typography>
+          )}
+          {isAuctionExpired && (
+            <Typography variant="h4">
+              Last price:{" "}
+              <span className="text-on-primary-alt">{lastPrice}</span>
+            </Typography>
+          )}
           <RightTimerForAuction auction={auction} />
         </div>
         <EditButton auction={auction} />
@@ -147,9 +175,18 @@ const AuctionDetailsHeader = ({ auction }: { auction: AuctionItemT }) => {
   );
 };
 
-const AuctionHeader = ({ auction }: { auction: AuctionItemT }) => {
+const AuctionHeader = ({
+  auction,
+  lastPrice,
+}: {
+  auction: AuctionItemT;
+  lastPrice: number;
+}) => {
   const data = [
-    { label: "Details", Element: <AuctionDetailsHeader auction={auction} /> },
+    {
+      label: "Details",
+      Element: <AuctionDetailsHeader lastPrice={lastPrice} auction={auction} />,
+    },
     { label: "Chat", Element: <AuctionChat auction={auction} /> },
   ];
 
