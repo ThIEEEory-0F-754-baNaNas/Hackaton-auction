@@ -12,7 +12,7 @@ import ErrorIndicator from "../../components/ErrorIndicator";
 import { UserContext } from "../../context/userContext";
 import { isActive } from "../../utils/time";
 import { BidList, BidMenu } from "./AuctionBids";
-import AuctionDetailsHeader from "./AuctionItemHeader";
+import AuctionDetailsHeader from "./AuctionItemHeader/AuctionItemHeader";
 
 const AuctionItem = () => {
   const { id: auctionId } = useParams();
