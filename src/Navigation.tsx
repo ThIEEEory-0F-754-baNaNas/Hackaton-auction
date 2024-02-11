@@ -15,19 +15,21 @@ import Explore from "./pages/Explore";
 import Start from "./pages/Start";
 import { SignIn } from "./components/SignIn";
 import { SignUp } from "./components/SignUp";
+import { BASE_URL } from "./config";
 
-export const HOME = "/home";
+export const BASE = BASE_URL;
+
+export const HOME = `${BASE_URL}/home`;
 export const PROFILE = `${HOME}/profile`;
 export const SETTINGS = `${HOME}/settings`;
 export const EDIT_AUCTION = `${HOME}/edit-auction`;
 
-export const CREATE_AUCTION = `/create-auction`;
+export const CREATE_AUCTION = `${BASE_URL}/create-auction`;
 
-export const EXPLORE = "/explore";
+export const EXPLORE = `${BASE_URL}/explore`;
 export const AUCTION_ITEMS = `${EXPLORE}/auction-items`;
 
-export const START = "/start";
-
+export const START = `${BASE_URL}/start`;
 export const SIGN_IN = `${START}/sign-in`;
 export const SIGN_UP = `${START}/sign-up`;
 
@@ -36,7 +38,7 @@ const Navigation = () => {
 
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: BASE_URL,
       element: <MainLayoutNavigation />,
       errorElement: <NotFound />,
       children: [

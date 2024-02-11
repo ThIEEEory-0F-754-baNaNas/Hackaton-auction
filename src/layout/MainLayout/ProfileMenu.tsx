@@ -9,7 +9,7 @@ import {
 import classNames from "classnames";
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { PROFILE, SETTINGS } from "../../Navigation";
+import { BASE, PROFILE, SETTINGS } from "../../Navigation";
 import { UserContext } from "../../context/userContext";
 import { removeToken } from "../../utils/apiUtils";
 
@@ -27,7 +27,7 @@ export function ProfileMenu() {
       onClick: () => {
         removeToken();
         setUser({ isNotOk: true, isLoading: false, error: null });
-        navigate("/");
+        navigate(BASE);
       },
     },
   ];
