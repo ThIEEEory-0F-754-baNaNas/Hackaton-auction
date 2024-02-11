@@ -1,52 +1,40 @@
-import React from "react";
-import { Button } from "@material-tailwind/react";
-import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
- 
-export function Pagination() {
-  const [active, setActive] = React.useState(1);
- 
-  const getItemProps = (index: React.SetStateAction<number>) =>
-    ({
-      variant: active === index ? "filled" : "text",
-      onClick: () => setActive(index),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
- 
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
+import { IconButton, Typography } from "@material-tailwind/react";
+
+interface PaginationProps {
+  active: number;
+  setActive: (page: number) => void;
+}
+
+export function Pagination({ active, setActive }: PaginationProps) {
   const next = () => {
-    if (active === 3) return;
- 
     setActive(active + 1);
   };
- 
+
   const prev = () => {
     if (active === 1) return;
- 
+
     setActive(active - 1);
   };
- 
+
   return (
-    <div className="flex items-center">
-      <Button
-        variant="text"
-        className="flex items-center"
+    <div className="flex items-center gap-8">
+      <IconButton
+        size="sm"
+        variant="outlined"
         onClick={prev}
         disabled={active === 1}
       >
-        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> 
-      </Button>
-      <div className="flex items-center">
-        <Button {...getItemProps(1)}>1</Button>
-        <Button {...getItemProps(2)}>2</Button>
-        <Button {...getItemProps(3)}>3</Button>
-      </div>
-      <Button
-        variant="text"
-        className="flex items-center"
-        onClick={next}
-        disabled={active === 3}
-      >
+        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
+      </IconButton>
+      <Typography className="font-normal">
+        Page <strong className="text-on-primary">{active}</strong>
+      </Typography>
+      <IconButton size="sm" variant="outlined" onClick={next}>
         <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-      </Button>
+      </IconButton>
     </div>
   );
 }
+
+export default Pagination;
