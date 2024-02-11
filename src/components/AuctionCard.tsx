@@ -37,7 +37,7 @@ export default function AuctionCard({ auction }: { auction: AuctionItemT }) {
       <CardBody className="h-full">
         <div className="flex flex-col gap-y-2 items-center justify-center">
           <Typography>{auction.title}</Typography>
-          <Typography>{auction.startPrice}</Typography>
+          <Typography>Start price: {auction.startPrice}</Typography>
           <RightTimerForAuction auction={auction} />
         </div>
       </CardBody>
