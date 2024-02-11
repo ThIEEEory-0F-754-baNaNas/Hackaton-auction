@@ -14,6 +14,7 @@ const Newest = () => {
     error,
   } = useQuery(["newest", { page }], () => getNewestAuctionItems(4, page), {
     retry: 1,
+    cacheTime: 1000 * 5,
   });
 
   return (
