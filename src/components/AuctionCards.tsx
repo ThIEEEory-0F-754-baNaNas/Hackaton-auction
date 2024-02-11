@@ -7,31 +7,24 @@ import ErrorIndicator from "./ErrorIndicator";
 import Pagination from "./Pagination";
 
 interface AuctionCardsProps {
-  auctionFunction: (page: number) => Promise<AuctionItemT[]>;
-  cacheName?: string;
-
-  // TODO: add type
-  queryOptions?: any;
+  useState: {
+    setPage: (page: number) => void;
+    page: number;
+  };
+  useQuery: {
+    isError: boolean;
+    error: unknown;
+    isLoading: boolean;
+    isRefetching: boolean;
+  };
+  auctions: AuctionItemT[] | undefined;
 }
 
-const AuctionCards = (props: AuctionCardsProps) => {
-  const [page, setPage] = useState(1);
-
-  const {
-    data: auctions,
-    isLoading,
-    isRefetching,
-    isError,
-    error,
-  } = useQuery(
-    ["userAuctions", props.cacheName, { page }],
-    () => props.auctionFunction(page),
-    props.queryOptions || {
-      retry: 1,
-      cacheTime: 1000 * 60 * 1,
-    }
-  );
-
+const AuctionCards = ({
+  useQuery: { isError, error, isLoading, isRefetching },
+  auctions,
+  useState: { setPage, page },
+}: AuctionCardsProps) => {
   if (isError) return <ErrorIndicator error={error} />;
 
   const mainContent =
