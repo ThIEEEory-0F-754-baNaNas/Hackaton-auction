@@ -31,19 +31,22 @@ const AuctionCards = ({
     ) : (
       <>
         {auctions!.length === 0 && (
-          <Typography variant="h4">No auctions found</Typography>
+          <div className="text-center w-full">
+            <Typography variant="h4">No auctions found</Typography>
+          </div>
         )}
-        {auctions!.map((auction) => (
-          <AuctionCard key={auction.id} auction={auction} />
-        ))}
+
+        <div className="w-full grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-4">
+          {auctions!.map((auction) => (
+            <AuctionCard key={auction.id} auction={auction} />
+          ))}
+        </div>
       </>
     );
 
   return (
     <>
-      <div className="w-full grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-4">
-        {mainContent}
-      </div>
+      {mainContent}
       <Pagination setActive={setPage} active={page} />
     </>
   );
