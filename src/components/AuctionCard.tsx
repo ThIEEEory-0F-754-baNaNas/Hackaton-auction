@@ -7,11 +7,17 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { AuctionItemT } from "../api/auctionApi";
-import Link from "./Link";
 import { AUCTION_ITEMS } from "../Navigation";
 import { RightTimerForAuction } from "../pages/AuctionItem/AuctionItemHeader";
+import { useNavigate } from "react-router-dom";
 
 export default function AuctionCard({ auction }: { auction: AuctionItemT }) {
+  const navigate = useNavigate();
+
+  const onDetailsClick = () => {
+    navigate(`${AUCTION_ITEMS}/${auction.id}`, { state: { auction } });
+  };
+
   return (
     <Card className="w-56 flex flex-col justify-between">
       <CardHeader shadow={false} floated={false} className="h-48">
@@ -29,11 +35,9 @@ export default function AuctionCard({ auction }: { auction: AuctionItemT }) {
         </div>
       </CardBody>
       <CardFooter className="pt-0">
-        <Link to={`${AUCTION_ITEMS}/${auction.id}`}>
-          <Button variant="gradient" fullWidth={true}>
-            Details
-          </Button>
-        </Link>
+        <Button onClick={onDetailsClick} variant="gradient" fullWidth={true}>
+          Details
+        </Button>
       </CardFooter>
     </Card>
   );
