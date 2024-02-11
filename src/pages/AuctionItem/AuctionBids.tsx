@@ -155,6 +155,9 @@ export const BidList = ({ bids }: { bids?: AuctionStakeT[] }) => {
               [...bids].reverse().map((bid) => (
                 <div key={bid.id} className="flex justify-between">
                   <Typography variant="h6">{bid.user.username}</Typography>
+                  <Typography variant="h6">
+                    {new Date(bid.createdAt).toLocaleString()}
+                  </Typography>
                   <Typography variant="h6">{bid.price}</Typography>
                 </div>
               ))}
