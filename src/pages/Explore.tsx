@@ -10,8 +10,9 @@ const Newest = () => {
   const [order, setOrder] = useState<"asc" | "desc">("desc");
 
   const sortOptions = [
-    { value: "createdAt", label: "Created at" },
+    { value: "endTime", label: "endTime" },
     { value: "startPrice", label: "Start price" },
+    { value: "auctionStakes", label: "Auction stakes" },
   ];
 
   const orderOptions = [
@@ -25,10 +26,14 @@ const Newest = () => {
     isRefetching,
     isError,
     error,
-  } = useQuery(["newest", { page, sort, order }], () => getNewestAuctionItems(4, page, sort, order), {
-    retry: 1,
-    cacheTime: 1000 * 5,
-  });
+  } = useQuery(
+    ["newest", { page, sort, order }],
+    () => getNewestAuctionItems(4, page, sort, order),
+    {
+      retry: 1,
+      cacheTime: 1000 * 5,
+    }
+  );
 
   return (
     <>
@@ -61,7 +66,6 @@ const Newest = () => {
             ))}
           </Select>
         </div>
-
       </div>
       <AuctionCards
         useState={{ page, setPage }}
