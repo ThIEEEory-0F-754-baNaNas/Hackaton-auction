@@ -35,6 +35,7 @@ const HomeAuctions = ({ user }: { user: User }) => {
         isLoading,
         isRefetching,
       }}
+      label="You have no personal auctions, create one or bid on others"
     />
   );
 };

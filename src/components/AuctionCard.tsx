@@ -10,8 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { AUCTION_ITEMS } from "../Navigation";
 import { AuctionItemT } from "../api/auctionApi";
-// TODO: extract timer to components
-import { RightTimerForAuction } from "../pages/AuctionItem/AuctionItemHeader";
+import RightTimerForAuction from "./TimerComponent";
 
 export default function AuctionCard({ auction }: { auction: AuctionItemT }) {
   const navigate = useNavigate();

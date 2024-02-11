@@ -12,7 +12,7 @@ import ErrorIndicator from "../../components/ErrorIndicator";
 import { UserContext } from "../../context/userContext";
 import { isActive } from "../../utils/time";
 import { BidList, BidMenu } from "./AuctionBids";
-import AuctionDetailsHeader from "./AuctionItemHeader";
+import AuctionDetailsHeader from "./AuctionItemHeader/AuctionItemHeader";
 
 const AuctionItem = () => {
   const { id: auctionId } = useParams();
@@ -98,9 +98,12 @@ const AuctionItem = () => {
         <ErrorIndicator msg="Can't load stakes" error={stakeError} />
       )}
       <div className="mb-3">
-        <BidList bids={stakes} />
+        <BidList
+          bids={stakes}
+          isLoading={isStakeLoading || isStakeRefetching}
+        />
       </div>
-      {!isAuthorOfAuction && isAuctionActive && (
+      {!isAuthorOfAuction && isAuctionActive && !user.isNotOk && (
         // TODO: featuree flag
         <div className={`${classNames({ "sticky bottom-0 top-0": false })}`}>
           <BidMenu sendBid={sendBid} currentBid={currentBid} />

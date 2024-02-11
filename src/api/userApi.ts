@@ -41,14 +41,14 @@ type SignUpData = {
 export const signUp = async (data: SignUpData): Promise<User> => {
   const formData = new FormData();
   if (data.avatar && data.avatar[0]) {
-    formData.append('avatarFile', data.avatar[0]);
+    formData.append("avatarFile", data.avatar[0]);
   }
-  formData.append('firstname', data.firstname);
-  formData.append('lastname', data.lastname);
-  formData.append('username', data.username);
-  formData.append('email', data.email);
-  formData.append('password', data.password);
-  
+  formData.append("firstname", data.firstname);
+  formData.append("lastname", data.lastname);
+  formData.append("username", data.username);
+  formData.append("email", data.email);
+  formData.append("password", data.password);
+
   const response = await fetch(`${baseURL}/auth/signup`, {
     method: "POST",
     body: formData,
@@ -86,9 +86,7 @@ export const addDeposit = async (amount: number): Promise<User> => {
   return { ...json, isNotOk: false };
 };
 
-export const updateProfileAvatar = async (
-  avatar: File[],
-): Promise<boolean> => {
+export const updateProfileAvatar = async (avatar: File[]): Promise<User> => {
   if (!avatar[0]) throw new Error("No avatar provided");
   const formData = new FormData();
   formData.append("avatarFile", avatar[0]);
@@ -101,5 +99,5 @@ export const updateProfileAvatar = async (
     body: formData,
   });
   const json = await jsonOrThrow(response);
-  return json;
+  return { ...json, isNotOk: false };
 };

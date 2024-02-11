@@ -131,7 +131,13 @@ export const BidMenu = ({
   );
 };
 
-export const BidList = ({ bids }: { bids?: AuctionStakeT[] }) => {
+export const BidList = ({
+  bids,
+  isLoading,
+}: {
+  bids?: AuctionStakeT[];
+  isLoading: boolean;
+}) => {
   const [isOpen, setOpen] = useState(false);
 
   return (
@@ -147,7 +153,8 @@ export const BidList = ({ bids }: { bids?: AuctionStakeT[] }) => {
       <AccordionBody>
         <Card>
           <CardBody>
-            {!bids && <Spinner />}
+            {isLoading && <Spinner />}
+            {!bids && !isLoading && <Typography variant="h6">Woops</Typography>}
             {bids && bids.length === 0 && (
               <Typography variant="h6">No bids yet</Typography>
             )}
