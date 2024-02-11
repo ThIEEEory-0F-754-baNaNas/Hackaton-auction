@@ -140,6 +140,28 @@ export const searchAuctionItems = async (
   return await jsonOrThrow(response);
 };
 
+export const getUserAuctionItems = async ({
+  userId,
+  pageSize = 10,
+  page = 1,
+  sort = "createdAt",
+  order = "desc",
+}: {
+  userId: string;
+  pageSize?: number;
+  page?: number;
+  sort?: keyof AuctionItemT;
+  order?: "asc" | "desc";
+}): Promise<AuctionItemT[]> => {
+  const response = await fetch(
+    `${baseURL}/auctionItems/user/${userId}?pageSize=${pageSize}&page=${
+      page - 1
+    }&sort=${sort}&order=${order}`
+  );
+
+  return await jsonOrThrow(response);
+};
+
 export const sendBidToAuction = async (
   auctionId: string,
   amount: number

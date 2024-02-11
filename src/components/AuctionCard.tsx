@@ -1,15 +1,17 @@
 import {
+  Button,
   Card,
-  CardHeader,
   CardBody,
   CardFooter,
+  CardHeader,
+  Carousel,
   Typography,
-  Button,
 } from "@material-tailwind/react";
-import { AuctionItemT } from "../api/auctionApi";
-import { AUCTION_ITEMS } from "../Navigation";
-import { RightTimerForAuction } from "../pages/AuctionItem/AuctionItemHeader";
 import { useNavigate } from "react-router-dom";
+import { AUCTION_ITEMS } from "../Navigation";
+import { AuctionItemT } from "../api/auctionApi";
+// TODO: extract timer to components
+import { RightTimerForAuction } from "../pages/AuctionItem/AuctionItemHeader";
 
 export default function AuctionCard({ auction }: { auction: AuctionItemT }) {
   const navigate = useNavigate();
@@ -19,15 +21,20 @@ export default function AuctionCard({ auction }: { auction: AuctionItemT }) {
   };
 
   return (
-    <Card className="w-56 flex flex-col justify-between">
-      <CardHeader shadow={false} floated={false} className="h-48">
-        <img
-          src={auction.images[0]}
-          alt="card-image"
-          className="h-full w-full object-cover"
-        />
+    <Card className="min-w-14 flex flex-col justify-between">
+      <CardHeader shadow={false} floated={false} className="min-h-48">
+        <Carousel className="bg-bg min-w-fit">
+          {auction.images.map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              alt={`Woops! ${auction.title}`}
+              className="h-full w-full object-cover"
+            />
+          ))}
+        </Carousel>
       </CardHeader>
-      <CardBody>
+      <CardBody className="h-full">
         <div className="flex flex-col gap-y-2 items-center justify-center">
           <Typography>{auction.title}</Typography>
           <Typography>{auction.startPrice}</Typography>

@@ -19,8 +19,9 @@ import { SignUp } from "./components/SignUp";
 export const HOME = "/home";
 export const PROFILE = `${HOME}/profile`;
 export const SETTINGS = `${HOME}/settings`;
-export const CREATE_AUCTION = `${HOME}/create-auction`;
 export const EDIT_AUCTION = `${HOME}/edit-auction`;
+
+export const CREATE_AUCTION = `/create-auction`;
 
 export const EXPLORE = "/explore";
 export const AUCTION_ITEMS = `${EXPLORE}/auction-items`;
@@ -56,14 +57,18 @@ const Navigation = () => {
               element: <Settings />,
             },
             {
-              path: `${CREATE_AUCTION}`,
-              element: <CreateAuction />,
-            },
-            {
               path: `${EDIT_AUCTION}/:id`,
               element: <EditAuction />,
             },
           ],
+        },
+        {
+          path: CREATE_AUCTION,
+          element: (
+            <ProtectedPage user={user}>
+              <CreateAuction />
+            </ProtectedPage>
+          ),
         },
         {
           path: EXPLORE,
