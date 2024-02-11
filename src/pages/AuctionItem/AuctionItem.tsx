@@ -26,11 +26,15 @@ const AuctionItem = () => {
     isError,
     refetch: refetchAuction,
     error,
-  } = useQuery("auctionItem", () => getAuctionItem(auctionId), {
-    refetchOnWindowFocus: false,
-    retry: 2,
-    initialData: auctionFromLocation,
-  });
+  } = useQuery(
+    ["auctionItem", { auction: auctionId }],
+    () => getAuctionItem(auctionId),
+    {
+      refetchOnWindowFocus: false,
+      retry: 2,
+      initialData: auctionFromLocation,
+    }
+  );
 
   // TODO: read https://stackoverflow.com/questions/73140256/react-query-how-to-refresh-a-usequery-query-function-after-some-of-that-functi
   const {
@@ -40,10 +44,14 @@ const AuctionItem = () => {
     isRefetching: isStakeRefetching,
     isError: isStakeError,
     error: stakeError,
-  } = useQuery(["auctionBids"], () => getAuctionStakes(auctionId!), {
-    retry: 0,
-    enabled: !!auctionId,
-  });
+  } = useQuery(
+    ["auctionBids", { auction: auctionId }],
+    () => getAuctionStakes(auctionId!),
+    {
+      retry: 0,
+      enabled: !!auctionId,
+    }
+  );
 
   if (isLoading) return <Spinner />;
   if (isError) return <ErrorIndicator error={error} />;
