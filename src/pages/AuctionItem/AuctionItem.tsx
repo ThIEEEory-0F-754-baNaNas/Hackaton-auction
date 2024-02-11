@@ -66,7 +66,7 @@ const AuctionItem = () => {
   return (
     <div className="text-on-primary h-full container m-auto">
       <div className="mb-3">
-        <AuctionDetailsHeader auction={auction!} />
+        <AuctionDetailsHeader lastPrice={lastPrice} auction={auction!} />
       </div>
       <div className="mb-3">
         <BidList bids={stakes} />
