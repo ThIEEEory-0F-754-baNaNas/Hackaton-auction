@@ -17,7 +17,7 @@ import AuctionDetailsHeader from "./AuctionItemHeader";
 const AuctionItem = () => {
   const { id: auctionId } = useParams();
   const location = useLocation();
-  const auctionFromLocation = location.state.auction;
+  const auctionFromLocation = location.state?.auction;
 
   const [user] = useContext(UserContext);
   const {
