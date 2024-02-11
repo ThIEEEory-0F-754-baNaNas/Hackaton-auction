@@ -113,3 +113,10 @@ export const sendBidToAuction = async (
 
   return await jsonOrThrow(response);
 };
+
+export const getNewestAuctionItems = async (
+  pageSize: number = 10,
+  page: number = 0
+): Promise<AuctionItemT[]> => {
+  return await searchAuctionItems("", pageSize, page);
+};
