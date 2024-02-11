@@ -3,22 +3,22 @@
 @tailwind utilities;
 
 .bg-bg {
-  background: linear-gradient(-90deg, var(--color-background) 10%, var(--color-background-alt) 100%);
+  background: linear-gradient(-45deg, var(--color-background) 10%, var(--color-background-alt) 100%);
 }
 
 .bg-primary {
-  background: linear-gradient(90deg, var(--color-primary) 50%, var(--color-primary-alt) 100%);
+  background: linear-gradient(45deg, var(--color-primary) 50%, var(--color-primary-alt) 100%);
 }
 
 :root {
   --color-primary: #FBE3C7;
-  --color-primary-alt: #ffdaaf;
+  --color-primary-alt: #fed3a1;
 
   --color-on-primary: #18020C;
   --color-on-primary-alt: #5a1534;
 
   --color-background: #FFF7E1;
-  --color-background-alt: #fdf8ea;
+  --color-background-alt: #f8f4e9;
 
   --left-drawer-width: 250px;
   /*
