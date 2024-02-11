@@ -13,7 +13,7 @@ import { RightTimerForAuction } from "../pages/AuctionItem/AuctionItemHeader";
 
 export default function AuctionCard({ auction }: { auction: AuctionItemT }) {
   return (
-    <Card className="w-56">
+    <Card className="w-56 flex flex-col justify-between">
       <CardHeader shadow={false} floated={false} className="h-48">
         <img
           src={auction.images[0]}
