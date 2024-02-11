@@ -30,7 +30,7 @@ export const getUser = async (): Promise<User> => {
 };
 
 type SignUpData = {
-  avatar?: File | null;
+  avatar?: File[] | [];
   firstname: string;
   lastname: string;
   username: string;
@@ -39,11 +39,19 @@ type SignUpData = {
 };
 
 export const signUp = async (data: SignUpData): Promise<User> => {
-  // TODO: handle avatar -> take a look into updateProfileAvatar
+  const formData = new FormData();
+  if (data.avatar && data.avatar[0]) {
+    formData.append('avatarFile', data.avatar[0]);
+  }
+  formData.append('firstname', data.firstname);
+  formData.append('lastname', data.lastname);
+  formData.append('username', data.username);
+  formData.append('email', data.email);
+  formData.append('password', data.password);
+  
   const response = await fetch(`${baseURL}/auth/signup`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
+    body: formData,
   });
   const json = await jsonOrThrow(response);
   return { ...json, isNotOk: false };
@@ -79,22 +87,15 @@ export const addDeposit = async (amount: number): Promise<User> => {
 };
 
 export const updateProfileAvatar = async (
-  avatar: File | null
+  avatar: File[],
 ): Promise<boolean> => {
-  if (!avatar) throw new Error("No avatar provided");
-
-  // TODO: wait for backend to fix
-  const user = await getUser();
-  const userId = !user.isNotOk ? user.id : "";
-  //
-
+  if (!avatar[0]) throw new Error("No avatar provided");
   const formData = new FormData();
-  formData.append("avatarFile", avatar);
+  formData.append("avatarFile", avatar[0]);
 
-  const response = await fetch(`${baseURL}/user/${userId}/avatar`, {
+  const response = await fetch(`${baseURL}/user/avatar`, {
     method: "PATCH",
     headers: {
-      // "Content-Type": "multipart/form-data",
       Authorization: getBearerToken(),
     },
     body: formData,

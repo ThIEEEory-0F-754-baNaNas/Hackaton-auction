@@ -21,7 +21,7 @@ export default function AuctionCard({ auction }: { auction: AuctionItemT }) {
   };
 
   return (
-    <Card className="min-w-14">
+    <Card className="min-w-14 flex flex-col justify-between">
       <CardHeader shadow={false} floated={false} className="min-h-48">
         <Carousel className="bg-bg min-w-fit">
           {auction.images.map((image, index) => (

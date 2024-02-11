@@ -1,7 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { UserContext } from '../context/userContext';
 import { CreateAuctionDto, createAuctionItem } from '../api/auctionApi';
-import { Button, Input, Card, Typography } from '@material-tailwind/react';
+import { Button, Input, Card, Typography, Spinner } from '@material-tailwind/react';
+import UploadFile from '../components/UploadFile';
+import { useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { AUCTION_ITEMS } from '../Navigation';
+import ErrorIndicator from '../components/ErrorIndicator';
 
 const CreateAuction = () => {
   const [user] = useContext(UserContext);
@@ -9,22 +14,38 @@ const CreateAuction = () => {
   const [description, setDescription] = useState('');
   const [startPrice, setStartPrice] = useState(0);
   const [minPriceStep, setMinPriceStep] = useState(0);
-  const [images, setImages] = useState('');
-  
+  const [images, setImages] = useState<File[]>([]);
+
+  const navigate = useNavigate();
+
+  const handleUpload = (files: File[]) => {
+    setImages(files);
+  };
+
+  const data: CreateAuctionDto = {
+    title,
+    description,
+    startPrice,
+    minPriceStep,
+    startTime: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(),
+    endTime: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3).toISOString(),
+  };
+
+  const { isLoading, isError, error, refetch } = useQuery(
+    "createAuction",
+    () => createAuctionItem(data, images),
+    {
+      retry: 0,
+      enabled: false,
+      onSuccess: (data) => {
+        navigate(`${AUCTION_ITEMS}/${data.id}`)
+      },
+    }
+  );
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const data: CreateAuctionDto = {
-      title,
-      description,
-      startPrice,
-      minPriceStep,
-      startTime: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(),
-      endTime: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3).toISOString(),
-      images: [images],
-    };
-    const res = await createAuctionItem(data);
-    console.log(res);
+    refetch();
   };
 
   if (!user) return null;
@@ -61,16 +82,12 @@ const CreateAuction = () => {
           onChange={(e) => setMinPriceStep(Number(e.target.value))} 
           crossOrigin={undefined}        
         />
-        <Input
-          type="text"
-          label="Image URL"
-          value={images}
-          onChange={(e) => setImages(e.target.value)} 
-          crossOrigin={undefined}        
-        />
+        <UploadFile onUpload={handleUpload} showButton={false} label="Image" multiple={true} />
         <Button type="submit" className="mb-4">
+          {isLoading && <Spinner />}
           Create Auction
         </Button>
+        {isError && <ErrorIndicator error={error} />}
       </form>
     </Card>
   );

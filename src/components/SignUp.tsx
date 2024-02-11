@@ -21,7 +21,7 @@ export function SignUp() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [avatar, setAvatar] = useState<File | null>(null);
+  const [avatar, setAvatar] = useState<File[]>([]);
 
   const navigate = useNavigate();
   const [, setUser] = useContext(UserContext);
@@ -50,7 +50,7 @@ export function SignUp() {
 
   return (
     <Card color="transparent" shadow={false}>
-      <Typography variant="h1" color="blue-gray">
+      <Typography variant="h1">
         Sign Up
       </Typography>
       <form className="mt-8 mb-2 sm:w-full w-48" onSubmit={handleSubmit}>
@@ -109,7 +109,7 @@ export function SignUp() {
           Sign Up
           {isLoading && <Spinner />}
         </Button>
-        <Typography color="blue-gray" className="mt-4 text-center font-normal">
+        <Typography className="mt-4 text-center font-normal">
           Already have an account?{" "}
           <a
             href="#"
