@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { useLocation, useParams } from 'react-router-dom';
-import { getAuctionItem } from '../api/auctionApi';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { CreateAuctionDto, getAuctionItem, updateAuctionItem } from '../api/auctionApi';
 import { Button, Input, Card, Typography } from '@material-tailwind/react';
 import { Spinner } from "@material-tailwind/react";
+import { AUCTION_ITEMS } from '../Navigation';
 import ErrorIndicator from "../components/ErrorIndicator";
+import UploadFile from '../components/UploadFile';
 
 const EditAuction = () => {
   const { id: auctionId = "" } = useParams();
@@ -26,7 +28,39 @@ const EditAuction = () => {
   const [description, setDescription] = useState(auction?.description || '');
   const [startPrice, setStartPrice] = useState(auction?.startPrice || 0);
   const [minPriceStep, setMinPriceStep] = useState(auction?.minPriceStep || 0);
-  const [images, setImages] = useState(auction?.images[0] || '');
+  const [images, setImages] = useState(auction?.images || []);
+
+  const handleUpload = (files: File[]) => {
+    setImages(files);
+  };
+
+  const navigate = useNavigate();
+
+  const editData: CreateAuctionDto = {
+    title,
+    description,
+    startPrice,
+    minPriceStep,
+    startTime: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(),
+    endTime: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3).toISOString(),
+  };
+
+  const { isLoading: isEditLoading, isError: isEditError, error: editError, refetch } = useQuery(
+    "auctionEdit",
+    () => updateAuctionItem(editData, images, auctionId),
+    {
+      retry: 0,
+      enabled: false,
+      onSuccess: (data) => {
+        navigate(`${AUCTION_ITEMS}/${data.id}`)
+      }
+    }
+  )
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    refetch();
+  };
 
   useEffect(() => {
     if (auction) {
@@ -34,7 +68,7 @@ const EditAuction = () => {
       setDescription(auction.description);
       setStartPrice(auction.startPrice);
       setMinPriceStep(auction.minPriceStep);
-      setImages(auction.images[0]);
+      setImages(auction.images);
     }
   }, [auction]);
 
@@ -46,7 +80,7 @@ const EditAuction = () => {
       {auction && (
         <Card className="h-full p-4">
           <Typography variant="h2" className="mb-8">Edit Auction</Typography>
-          <form className="flex flex-col h-full justify-between">
+          <form className="flex flex-col h-full justify-between" onSubmit={handleSubmit}>
             <Input
               type="text"
               label="Title"
@@ -75,16 +109,12 @@ const EditAuction = () => {
               onChange={(e) => setMinPriceStep(Number(e.target.value))} 
               crossOrigin={undefined}            
             />
-            <Input
-              type="text"
-              label="Image URL"
-              value={images}
-              onChange={(e) => setImages(e.target.value)} 
-              crossOrigin={undefined}            
-            />
+            <UploadFile onUpload={handleUpload} showButton={false} label="Image" multiple={true} />
             <Button type="submit">
+              {isEditLoading && <Spinner />}
               Update Auction
             </Button>
+            {isEditError && <ErrorIndicator error={editError} />}
           </form>
         </Card>
       )}

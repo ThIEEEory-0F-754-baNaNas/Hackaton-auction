@@ -5,33 +5,47 @@ import {
   Checkbox,
   Button,
   Typography,
+  Spinner,
 } from "@material-tailwind/react";
 import { signIn } from "../api/userApi";
 import { useNavigate } from "react-router-dom";
-import { SIGN_UP } from "../Navigation";
+import { HOME, SIGN_UP } from "../Navigation";
+import { useQuery } from "react-query";
+import ErrorIndicator from "./ErrorIndicator";
 import { UserContext } from "../context/userContext";
 
 export function SignIn() {
-  // TODO: make it similar to SignUp
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [, setUser] = useContext(UserContext);
 
   const navigate = useNavigate();
+  const [, setUser] = useContext(UserContext);
 
   const onButtonClick = () => {
     navigate(SIGN_UP);
   };
 
+  const { isLoading, isError, error, refetch } = useQuery(
+    "signIn",
+    () => signIn(email, password),
+    {
+      retry: 0,
+      enabled: false,
+      onSuccess: (data) => {
+        setUser(data);
+        navigate(HOME);
+      },
+    }
+  );
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const user = await signIn(email, password);
-    setUser(user);
+    refetch();
   };
 
   return (
     <Card color="transparent" shadow={false}>
-      <Typography variant="h1" color="blue-gray">
+      <Typography variant="h1">
         Sign In
       </Typography>
       <form className="mt-8 mb-2 sm:w-full w-48" onSubmit={handleSubmit}>
@@ -55,7 +69,6 @@ export function SignIn() {
           label={
             <Typography
               variant="small"
-              color="blue-gray"
               className="flex items-center font-normal"
             >
               Remember me
@@ -66,8 +79,9 @@ export function SignIn() {
         />
         <Button className="mt-6" variant="gradient" fullWidth type="submit">
           Sign In
+          {isLoading && <Spinner />}
         </Button>
-        <Typography color="blue-gray" className="mt-4 text-center font-normal">
+        <Typography className="mt-4 text-center font-normal">
           Don't have an account?{" "}
           <a
             href="#"
@@ -77,6 +91,7 @@ export function SignIn() {
             Sign Up
           </a>
         </Typography>
+        {isError && <ErrorIndicator error={error} />}
       </form>
     </Card>
   );

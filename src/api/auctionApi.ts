@@ -49,19 +49,60 @@ export type CreateAuctionDto = {
   startTime: string;
   endTime: string;
   minPriceStep: number;
-  images: string[];
 };
 
 export const createAuctionItem = async (
-  item: CreateAuctionDto
+  item: CreateAuctionDto,
+  images: File[]
 ): Promise<AuctionItemT> => {
+  const formData = new FormData();
+  formData.append('title', item.title);
+  formData.append('description', item.description);
+  formData.append('startPrice', item.startPrice.toString());
+  formData.append('startTime', item.startTime);
+  formData.append('endTime', item.endTime);
+  formData.append('minPriceStep', item.minPriceStep.toString());
+  if (images) {
+    images.forEach((image) => {
+      formData.append(`photos`, image);
+    });
+  }
+
   const response = await fetch(`${baseURL}/auctionItems`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
       Authorization: getBearerToken(),
     },
-    body: JSON.stringify(item),
+    body: formData,
+  });
+
+  return await jsonOrThrow(response);
+};
+
+export const updateAuctionItem = async (
+  item: CreateAuctionDto,
+  images: File[],
+  auctionId: string,
+): Promise<AuctionItemT> => {
+  const formData = new FormData();
+  formData.append('title', item.title);
+  formData.append('description', item.description);
+  formData.append('startPrice', item.startPrice.toString());
+  formData.append('startTime', item.startTime);
+  formData.append('endTime', item.endTime);
+  formData.append('minPriceStep', item.minPriceStep.toString());
+  if (images) {
+    images.forEach((image) => {
+      formData.append(`photos`, image);
+    });
+  }
+
+  const response = await fetch(`${baseURL}/auctionItems/${auctionId}`, {
+    method: "PATCH",
+    headers: {
+      Authorization: getBearerToken(),
+    },
+    body: formData,
   });
 
   return await jsonOrThrow(response);

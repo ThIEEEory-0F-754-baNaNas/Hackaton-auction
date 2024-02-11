@@ -5,21 +5,23 @@ import ErrorIndicator from "./ErrorIndicator";
 import classNames from "classnames";
 
 interface UploadFileProps {
-  onUpload: (file: File) => void;
+  onUpload: (files: File[]) => void;
   label: string;
   showButton?: boolean;
+  multiple?: boolean;
 }
 
 const UploadFile = ({
   onUpload,
   label,
   showButton = true,
+  multiple = false,
 }: UploadFileProps) => {
-  const [file, setFile] = React.useState<File | null>(null);
+  const [files, setFiles] = React.useState<File[]>([]);
 
   const { data, isLoading, isFetching, isError, error, refetch } = useQuery(
     "loadFile",
-    () => file && onUpload(file),
+    () => files && onUpload(files),
     {
       enabled: false,
     }
@@ -27,11 +29,11 @@ const UploadFile = ({
 
   useEffect(() => {
     refetch();
-  }, [file]);
+  }, [files]);
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setFile(e.target.files[0]);
+      setFiles(Array.from(e.target.files));
     }
   };
 
@@ -39,10 +41,10 @@ const UploadFile = ({
     <div>
       <div className="flex gap-3">
         <Typography variant="h6">{label}</Typography>
-        <Input type="file" onChange={onFileChange} crossOrigin={undefined} />
+        <Input type="file" onChange={onFileChange} crossOrigin={undefined} multiple={multiple} />
         <Button
           variant="outlined"
-          disabled={!file || isLoading || isFetching}
+          disabled={!files || isLoading || isFetching}
           onClick={() => refetch()}
           className={`flex ${classNames({
             hidden: !showButton,
