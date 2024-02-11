@@ -21,7 +21,7 @@ const UploadFile = ({
 
   const { data, isLoading, isFetching, isError, error, refetch } = useQuery(
     "loadFile",
-    () => files && onUpload(files),
+    () => files.length && onUpload(files),
     {
       enabled: false,
     }
@@ -41,7 +41,12 @@ const UploadFile = ({
     <div>
       <div className="flex gap-3">
         <Typography variant="h6">{label}</Typography>
-        <Input type="file" onChange={onFileChange} crossOrigin={undefined} multiple={multiple} />
+        <Input
+          type="file"
+          onChange={onFileChange}
+          crossOrigin={undefined}
+          multiple={multiple}
+        />
         <Button
           variant="outlined"
           disabled={!files || isLoading || isFetching}
