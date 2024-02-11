@@ -21,7 +21,7 @@ import { UserContext } from "../../context/userContext";
 import { useNavigate } from "react-router-dom";
 import { EDIT_AUCTION } from "../../Navigation";
 
-const RightTimerForAuction = ({ auction }: { auction: AuctionItemT }) => {
+export const RightTimerForAuction = ({ auction }: { auction: AuctionItemT }) => {
   const isAuctionActive = isActive(auction.startTime, auction.endTime);
   const isAuctionExpired = isExpired(auction.endTime);
 

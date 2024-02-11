@@ -1,7 +1,7 @@
 import { Spinner } from "@material-tailwind/react";
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { SIGN_IN } from "../Navigation";
+import { START } from "../Navigation";
 import { User } from "../api/userApi";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
   children?: React.ReactNode;
 }
 
-const ProtectedPage = ({ user, redirectTo = SIGN_IN, children }: Props) => {
+const ProtectedPage = ({ user, redirectTo = START, children }: Props) => {
   if (user.isNotOk && user.isLoading) {
     return <Spinner />;
   }
