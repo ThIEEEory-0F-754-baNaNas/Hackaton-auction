@@ -1,8 +1,10 @@
-import { Button, Spinner } from "@material-tailwind/react";
-import { useContext } from "react";
+import { Spinner } from "@material-tailwind/react";
+import classNames from "classnames";
+import { useContext, useEffect, useRef } from "react";
 import { useQuery } from "react-query";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
+  AuctionStakeT,
   getAuctionItem,
   getAuctionStakes,
   sendBidToAuction,
@@ -101,12 +103,8 @@ const AuctionItem = () => {
         <BidList bids={stakes} />
       </div>
       {!isAuthorOfAuction && isAuctionActive && (
-        <div>
-          <Link to={`${EDIT_AUCTION}/${auctionId}`}>
-            <Button variant="text" fullWidth>
-              Edit auction
-            </Button>
-          </Link>
+        // TODO: featuree flag
+        <div className={`${classNames({ "sticky bottom-0 top-0": false })}`}>
           <BidMenu sendBid={sendBid} currentBid={currentBid} />
         </div>
       )}
